@@ -13,7 +13,7 @@ module.exports = {
       }
     },
       screens: {
-        'xsm': '500px',
+        'xsm': '550px',
         'flexbreak': "1080px"
       },
     },
