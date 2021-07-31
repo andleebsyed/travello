@@ -18,7 +18,7 @@ export function Landing() {
                     <Link to="/login">
                         <button className="border border-blue-light rounded-2xl p-4 text-blue-light font-bold mt-4 mb-4 xsm:mr-4 xsm:mt-0 w-full xsm:w-60">Log in</button>
                     </Link>
-                    <Link to="#" >
+                    <Link to="/signup" >
                          <button className="bg-blue-light p-4 xsm:mr-4 rounded-2xl w-full text-white font-bold xsm:w-60">Sign Up</button>
                     </Link>
                    

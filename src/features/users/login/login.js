@@ -1,14 +1,15 @@
+import { Link } from "react-router-dom"
 
 
 export function Login() {
-    function signinHandler(e) {
+    function loginHandler(e) {
         e.preventDefault()
     }
     return (
-        <main className=" flex justify-center ">
+        <div className=" flex justify-center ">
                 <main className="flex flex-col p-4 justify-between  mt-4 flex-1 max-w-sm ">
             <h1 className="font-extrabold text-2xl text-white">Login to Travello</h1>
-            <form className="flex flex-col justify-between  text-blue-light h-80 flex-shrink-0 ">
+            <form className="flex flex-col justify-between  text-blue-light h-80  ">
                 
                 <div className="flex flex-col mt-4">
                     <label>Username</label>
@@ -20,16 +21,22 @@ export function Login() {
                 </div>
                 
                 
-                <input type="submit" onClick={signinHandler} value="Login" className=" btn-primary text-white font-bold "/>
+                <input type="submit" onClick={loginHandler} value="Login" className=" btn-primary text-white font-bold "/>
                 
                 </form>
                 <section className="flex text-blue-light justify-center mt-4">
-                    <button>Forgot Password?</button>
-                    <span className="p-1">.</span>
-                    <button>Sign Up</button>
+                    <Link to="#">
+                        <button>Forgot Password?</button>
+                    </Link>
+                    
+                    <span className="pl-1 pr-1">.</span>
+                    <Link to="/signup">
+                         <button>Sign Up</button>
+                    </Link>
+                   
                 </section>
         </main>
-        </main>
+        </div>
         
     )
 }
