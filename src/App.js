@@ -1,11 +1,16 @@
 import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-
+import {Landing} from './common/pages/landing/landing'
 function App() {
   return (
-    <div className="flex justify-center items-center min-h-screen">
-     <h1 className="text-red-500 text-center font-bold">configured with tailwindcss</h1>
+    <div className="bg-blue">
+      <Routes>
+        <Route path="/" element={<Landing />} />  
+      </Routes> 
     </div>
+    
+
   );
 }
 
