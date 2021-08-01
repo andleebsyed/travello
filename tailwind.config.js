@@ -16,6 +16,14 @@ module.exports = {
         'xsm': '550px',
         'flexbreak': "1080px"
       },
+      gridTemplateColumns: {
+          //for homepage 
+         'home': '1fr  5fr'
+      },
+      gridTemplateRows: {
+           //for homepage 
+         'home': '1fr 3fr'
+        }
     },
   
   },
