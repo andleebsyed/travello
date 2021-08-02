@@ -1,12 +1,13 @@
 import { CreatePost } from "../../../features/posts/createPost";
+import { ShowPost } from "../../../features/posts/showPost";
 
 export function Homepage() {
     return (
-        <div className="grid grid-cols-home grid-rows-home gap-4 text-white min-h-screen">
-           
-            <div className="col-span-1 row-span-full border border-red-800 ">sidebar</div>
+        <div className="flex flex-col p-4 xsm:p-0 xsm:grid xsm:grid-cols-home-middle xsm:grid-rows-home gridbreak:grid gridbreak:grid-cols-home gridbreak:grid-rows-home  text-white min-h-screen">
              <CreatePost />
-            <div>posts</div>
+            <ShowPost />
+                        <div className=" xsm:col-start-1 xsm:col-end-2 xsm:row-span-full border border-red-800 ">sidebar</div>
+
         </div>
     )
 }

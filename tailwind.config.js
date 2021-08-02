@@ -14,15 +14,19 @@ module.exports = {
     },
       screens: {
         'xsm': '550px',
-        'flexbreak': "1080px"
+        'flexbreak': "1080px",
+        'gridbreak': '950px'
       },
       gridTemplateColumns: {
           //for homepage 
-         'home': '1fr  5fr'
+        'home': '1fr 3fr 1fr',
+        'home-middle':'1fr 5fr',
+        'home-mobile': '1fr'
       },
       gridTemplateRows: {
            //for homepage 
-         'home': '1fr 3fr'
+        'home': '1fr 3fr',
+        'home-mobile': '1fr 2fr 1fr'
         }
     },
   
