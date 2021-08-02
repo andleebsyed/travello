@@ -8,24 +8,18 @@ export function ShowPost() {
     }
     return (
         <main className="p-2 pl-4 border border-red-800 col-start-2 col-end-3 row-start-2 row-end-3 ">
-            
-            {/* <section className="pl-4"> */}
-                
                 <section className="flex justify-between ">
                     <div className="flex justify-between">
                         <img alt="avatar" src="https://via.placeholder.com/48" className="rounded-3xl w-12 h-12  " />
                         <div className="pl-1">
                                 <h1 className="self-center">Syed Andleeb</h1>
                                 <h1>@andleeb_dev</h1>
-                            
                         </div>
-                    
                     </div>
-                    
-                    
-                    <button className="self-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M7 6V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5zm2-2v2h6V4H9z" fill="rgba(149,164,166,1)"/></svg></button>
-            </section>
-            <p>DD/MM at HH:MM</p>
+                    <button className="self-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M7 6V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5zm2-2v2h6V4H9z" fill="rgba(149,164,166,1)" /></svg>
+                    </button>
+                </section>
+                <p>DD/MM at HH:MM</p>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pretium, dui sed efficitur condimentum, est justo tempus eros, id facilisis metus enim quis lorem. Nam auctor aliquam tellus ut tempor. Quisque commodo fringilla facilisis. Donec in orci id odio aliquam feugiat. Proin tempus facilisis iaculis. Aenean condimentum sagittis risus, sit amet mollis odio tincidunt eget. Sed consectetur fringilla vestibulum. Ut congue dictum purus, vel congue velit ullamcorper ultricies. Vivamus tristique dui eget lacinia vehicula. Cras viverra porttitor purus, id tristique dolor. Integer sed metus lectus. Duis tristique orci vitae hendrerit ornare. Praesent gravida consectetur maximus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas porttitor euismod est non imperdiet. Suspendisse at nibh at tellus egestas sodales sit amet nec eros.
                 </p>
