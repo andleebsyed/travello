@@ -9,4 +9,10 @@
   .btn-primary {
     @apply bg-blue-light p-4 rounded-2xl cursor-pointer;
   }
+  .navbar-list-item {
+    @apply xsm:flex rounded-full hover:bg-blue-xlight xsm:w-full m-4 xsm:justify-center;
+  }
+  .navbar-list-item-name {
+    @apply hidden xsm:block self-center text-blue-light font-bold text-xl p-4;
+  }
 }
