@@ -21,7 +21,7 @@ module.exports = {
       gridTemplateColumns: {
           //for homepage 
         'home': '1fr 3fr 1fr',
-        'home-middle':'1fr 5fr',
+        'home-middle': 'minmax(0px,1fr) 3fr',
         'home-mobile': '1fr'
       },
       gridTemplateRows: {
