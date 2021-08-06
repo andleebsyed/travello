@@ -1,39 +1,12 @@
-.App {
-  text-align: center;
+.input-box {
+  @apply h-12 rounded bg-blue text-white border outline-none focus:ring-2 focus:ring-blue-light focus:ring-opacity-100 focus:border-blue-light;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.btn-primary {
+  @apply bg-blue-light p-4 rounded-2xl cursor-pointer;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-float infinite 3s ease-in-out;
-  }
+.navbar-list-item {
+  @apply xsm:flex rounded-full hover:bg-blue-xlight m-4 xsm:p-4  gridbreak:p-0 gridbreak:pl-4 xsm:justify-center xsm:items-center gridbreak:justify-start gridbreak:items-start;
 }
-
-.App-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-}
-
-.App-link {
-  color: rgb(112, 76, 182);
-}
-
-@keyframes App-logo-float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+.navbar-list-item-name {
+  @apply hidden gridbreak:block self-center text-blue-light font-bold text-xl p-4;
 }
