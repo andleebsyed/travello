@@ -7,7 +7,7 @@ export function ShowPost() {
        commentBoxVisibility ==="hidden"? setCommentBoxVisibility("block"): setCommentBoxVisibility("hidden")
     }
     return (
-        <main className="p-2 pl-4 border border-red-800 col-start-2 col-end-3 row-start-2 row-end-3 ">
+        <main className="p-2 pl-4  col-start-2 col-end-3 row-start-2 row-end-3 ">
                 <section className="flex justify-between ">
                     <div className="flex justify-between">
                         <img alt="avatar" src="https://via.placeholder.com/48" className="rounded-3xl w-12 h-12  " />

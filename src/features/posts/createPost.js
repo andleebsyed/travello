@@ -20,7 +20,7 @@ export function CreatePost() {
     return (
         
         <div  className="xsm:col-start-2 xsm:col-end-3 xsm:row-start-1 xsm:row-end-2">
-            <form className="p-4 border border-red-800 flex flex-col">
+            <form className="p-4  flex flex-col">
                 <input type="text" name="newPost" placeholder="Write Something..." className="h-16 bg-blue outline-none" />
                 <img alt="selected file" src={ imageData.url} className={`${imageData.showStatus}  self-center mb-4`} />
                 <section className="flex justify-between">
@@ -30,7 +30,7 @@ export function CreatePost() {
                         <input type="file" id="img" name="img" accept="image/*" className="hidden" onChange={fileUploadHandler }/>
                 </label>
                 
-                <input type="submit" value="Post" onClick={newPostHandler} className="btn-primary w-16 h-9 p-0  self-end"/>
+                <input type="submit" value="Post" onClick={newPostHandler} className="bg-blue-light  rounded-2xl cursor-pointer w-16 p-2   "/>
                 </section>
                
             </form>
