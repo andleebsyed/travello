@@ -4,7 +4,7 @@ import './App.css';
 import { Homepage } from './common/pages/homepage/homepage';
 import {Landing} from './common/pages/landing/landing'
 import { Login } from './features/users/login/login';
-import { Signup } from './features/users/login/signup';
+import { Signup } from './features/users/signup/signup';
 function App() {
   return (
     <div>
