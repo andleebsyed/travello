@@ -4,7 +4,6 @@ import { BASE_URL } from "../url";
 export async function UserSignIn(userInfo) {
   try {
     const response = await axios.post(BASE_URL + "users/signin", userInfo);
-    console.log("response in api call", { response });
     if (response.status === 200) {
       return response.data;
     }
@@ -16,9 +15,7 @@ export async function UserSignIn(userInfo) {
 export async function UserSignUp({ username, password, email }) {
   try {
     const userDetails = { userDetails: { username, password, email } };
-    console.log("signup info from user", { userDetails });
     const response = await axios.post(BASE_URL + "users/signup", userDetails);
-    console.log("response in api call", { response });
     if (response.status === 200) {
       return response.data;
     }

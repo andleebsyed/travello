@@ -12,7 +12,6 @@ export function Login() {
     setButtonText("Logging you in...");
     const response = await UserSignIn(userDetails);
     setButtonText("Login");
-    console.log("response on view ", { response });
     if (response.status && response.allowUser) {
       localStorage.setItem("token", response.token);
       navigate("/home", { replace: true });
