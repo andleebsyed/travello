@@ -11,6 +11,9 @@ module.exports = {
       },
       white: {
         DEFAULT: "#FFFFFF"
+        },
+        red: {
+        DEFAULT: "#DC2626"
       }
     },
       screens: {
