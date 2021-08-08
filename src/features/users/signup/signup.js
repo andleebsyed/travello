@@ -71,6 +71,18 @@ export function Signup() {
           className="flex flex-col justify-between  text-blue-light"
           onSubmit={SignupHandler}
         >
+          <div className="flex flex-col">
+            <label>Full name</label>
+            <input
+              type="text"
+              name="name"
+              className="input-box"
+              required
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, name: e.target.value })
+              }
+            />
+          </div>
           <div className="flex flex-col mt-4">
             <label>Username</label>
             <input
