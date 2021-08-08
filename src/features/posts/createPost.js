@@ -1,16 +1,33 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { PostCreation } from "../../services/posts/posts";
-
 export function CreatePost() {
   const [postContent, setPostContent] = useState({ text: "", image: File });
+  const [postButtonDetails, setPostButtonDetails] = useState({
+    text: "Post",
+    diableStatus: false,
+  });
   const [imageData, setImageData] = useState({
     url: "#",
     showStatus: "hidden",
   });
+  const formRef = useRef();
   async function newPostHandler(e) {
     e.preventDefault();
+    setPostButtonDetails({
+      ...postButtonDetails,
+      text: "Posting",
+      diableStatus: true,
+    });
     const response = await PostCreation(postContent);
-    // console.log({ postContent });
+    setPostButtonDetails({
+      ...postButtonDetails,
+      text: "Post",
+      diableStatus: false,
+    });
+    if (response.status) {
+      setImageData({ ...imageData, showStatus: "hidden" });
+      formRef.current.reset();
+    }
   }
   function fileUploadHandler(e) {
     if (e.target.files && e.target.files[0]) {
@@ -28,7 +45,12 @@ export function CreatePost() {
   }
   return (
     <div className="xsm:col-start-2 xsm:col-end-3 xsm:row-start-1 xsm:row-end-2">
-      <form className="p-4  flex flex-col" onSubmit={newPostHandler}>
+      <form
+        ref={formRef}
+        className="p-4  flex flex-col"
+        onSubmit={newPostHandler}
+        autoComplete="off"
+      >
         <input
           type="text"
           name="newPost"
@@ -72,7 +94,8 @@ export function CreatePost() {
 
           <input
             type="submit"
-            value="Post"
+            disabled={postButtonDetails.diableStatus}
+            value={postButtonDetails.text}
             className="bg-blue-light  rounded-2xl cursor-pointer w-16 p-2   "
           />
         </section>
