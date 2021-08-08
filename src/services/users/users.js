@@ -12,9 +12,10 @@ export async function UserSignIn(userInfo) {
   }
 }
 
-export async function UserSignUp({ username, password, email }) {
+export async function UserSignUp({ name, username, password, email }) {
   try {
-    const userDetails = { userDetails: { username, password, email } };
+    const userDetails = { userDetails: { name, username, password, email } };
+    console.log({ userDetails });
     const response = await axios.post(BASE_URL + "users/signup", userDetails);
     if (response.status === 200) {
       return response.data;
