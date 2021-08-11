@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserSignIn } from "../../../services/users/users";
+import {
+  setUpAuthHeaderForServiceCalls,
+  UserSignIn,
+} from "../../../services/users/users";
 
 export function Login() {
   const navigate = useNavigate();
@@ -14,6 +17,7 @@ export function Login() {
     setButtonText("Login");
     if (response.status && response.allowUser) {
       localStorage.setItem("token", response.token);
+      setUpAuthHeaderForServiceCalls(response.token);
       navigate("/home", { replace: true });
     }
     if (!response.allowUser) {
