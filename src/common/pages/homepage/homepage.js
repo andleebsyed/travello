@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { CreatePost } from "../../../features/posts/createPost";
 import { loadPosts } from "../../../features/posts/postSlice";
 import { ShowPost } from "../../../features/posts/showPost";
-// import { FetchAllPosts } from "../../../services/posts/posts";
 import { setUpAuthHeaderForServiceCalls } from "../../../services/users/users";
 import { Navbar } from "../navbar/navbar";
 
@@ -16,8 +15,6 @@ export function Homepage() {
       console.log("useeffct to get posts ran");
       setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
       dispatch(loadPosts());
-      //   const response = await FetchAllPosts();
-      //   console.log({ response });
     }
     if (status === "idle") {
       Run();
