@@ -24,3 +24,14 @@ export async function UserSignUp({ name, username, password, email }) {
     console.log("errror occured while signining in ", error?.message);
   }
 }
+
+export function setUpAuthHeaderForServiceCalls(token) {
+  console.log("function called");
+  if (token) {
+    console.log("token attached");
+    return (axios.defaults.headers.common["Authorization"] = token);
+  } else {
+    console.log("token was not recieved");
+    delete axios.defaults.headers.common["Authorization"];
+  }
+}
