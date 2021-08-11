@@ -44,7 +44,7 @@ export function CreatePost() {
     }
   }
   return (
-    <div className="xsm:col-start-2 xsm:col-end-3 xsm:row-start-1 xsm:row-end-2">
+    <div className="">
       <form
         ref={formRef}
         className="p-4  flex flex-col"
