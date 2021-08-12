@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { PostCreation } from "../../services/posts/posts";
+import { loadPosts } from "./postSlice";
 export function CreatePost() {
   const [postContent, setPostContent] = useState({ text: "", image: File });
   const [postButtonDetails, setPostButtonDetails] = useState({
@@ -11,6 +13,7 @@ export function CreatePost() {
     showStatus: "hidden",
   });
   const formRef = useRef();
+  const dispatch = useDispatch();
   async function newPostHandler(e) {
     e.preventDefault();
     setPostButtonDetails({
@@ -25,6 +28,7 @@ export function CreatePost() {
       diableStatus: false,
     });
     if (response.status) {
+      dispatch(loadPosts());
       setImageData({ ...imageData, showStatus: "hidden" });
       formRef.current.reset();
     }
@@ -44,7 +48,7 @@ export function CreatePost() {
     }
   }
   return (
-    <div className="">
+    <div className="border mt-4 rounded mb-4">
       <form
         ref={formRef}
         className="p-4  flex flex-col"
