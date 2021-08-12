@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Homepage } from "./common/pages/homepage/homepage";
 import { Landing } from "./common/pages/landing/landing";
 import { Navbar } from "./common/pages/navbar/navbar";
@@ -31,21 +31,24 @@ function App() {
     setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
   }, []);
   return (
-    <div className={authorized ? "flex" : ""}>
-      {authorized && <Navbar />}
-      <Routes>
-        <Route path="/" element={authorized ? <Homepage /> : <Landing />} />
-        <Redirector
-          path="/login"
-          element={authorized ? <Homepage /> : <Login />}
-        />
-        <Route
-          path="/signup"
-          element={authorized ? <Homepage /> : <Signup />}
-        />
-        <PrivateRoute path="/home" element={<Homepage />} />
-      </Routes>
-    </div>
+    <>
+      <div className={authorized ? "flex" : ""}>
+        {authorized && <Navbar />}
+        <Routes>
+          <Route path="/" element={authorized ? <Homepage /> : <Landing />} />
+          <Redirector
+            path="/login"
+            element={authorized ? <Homepage /> : <Login />}
+          />
+          <Route
+            path="/signup"
+            element={authorized ? <Homepage /> : <Signup />}
+          />
+          <PrivateRoute path="/home" element={<Homepage />} />
+        </Routes>
+      </div>
+      <footer className="h-16"></footer>
+    </>
   );
 }
 
