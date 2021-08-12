@@ -7,6 +7,10 @@ const initialState = {
 };
 export const loadPosts = createAsyncThunk("user/posts", async () => {
   const response = await FetchAllPosts();
+  if (response.status === 401) {
+    console.log("unauthorixed access in thunk");
+    return true;
+  }
   console.log("response in thunk ", { response });
   return response.ourUser.posts;
 });
