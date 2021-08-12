@@ -32,8 +32,17 @@ export function Homepage() {
   }, [authorized, navigate]);
 
   return (
-    <div className="flex p-4 xsm:p-0  text-white  ">
+    <div className="flex p-4 xsm:p-0  text-white" id="home">
       <section className="w-full md:w-[70vw] xsm:mr-4 gridbreak:mr-0">
+        <div className="sticky top-0 bg-blue h-14 border-b border-l border-r border-opacity-50 ">
+          <a
+            href="#home"
+            className="text-white  text-xl  m-4 font-semibold outline-none "
+          >
+            Home
+          </a>
+        </div>
+
         <CreatePost />
         {posts.length < 0 ? (
           <h1 className="text-white">Loading...</h1>
