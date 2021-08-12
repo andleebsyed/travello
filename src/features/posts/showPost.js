@@ -17,7 +17,7 @@ export function ShowPost({ post }) {
   return (
     <main
       id={post?._id}
-      className="p-2 pl-4  m-[1px] border border-gray-400 rounded   "
+      className="p-2 pl-4  m-[1px] border-b border-l border-r border-opacity-50  "
     >
       <section className="flex justify-between ">
         <div className="flex justify-between">

@@ -48,7 +48,7 @@ export function CreatePost() {
     }
   }
   return (
-    <div className="border mt-4 rounded mb-4">
+    <div className="border-b border-l border-r border-opacity-50   ">
       <form
         ref={formRef}
         className="p-4  flex flex-col"
