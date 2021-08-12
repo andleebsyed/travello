@@ -1,15 +1,19 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import { CreatePost } from "../../../features/posts/createPost";
 import { loadPosts } from "../../../features/posts/postSlice";
 import { ShowPost } from "../../../features/posts/showPost";
 import { setUpAuthHeaderForServiceCalls } from "../../../services/users/users";
-import { Navbar } from "../navbar/navbar";
 
 export function Homepage() {
   const dispatch = useDispatch();
   const { posts, status } = useSelector((state) => state.posts);
-  console.log({ posts });
+  const { authorized } = useSelector((state) => state.users);
+  const navigate = useNavigate();
+  console.log("auth check ", authorized);
+  console.log("status ", status);
+  console.log("posts ", posts);
   useEffect(() => {
     async function Run() {
       console.log("useeffct to get posts ran");
@@ -17,13 +21,19 @@ export function Homepage() {
       dispatch(loadPosts());
     }
     if (status === "idle") {
+      console.log("posts being collected");
       Run();
     }
   }, [status, dispatch]);
+  useEffect(() => {
+    if (authorized === false) {
+      navigate("/login", { replace: true });
+    }
+  }, [authorized, navigate]);
+
   return (
     <div className="flex p-4 xsm:p-0  text-white  ">
-      <Navbar />
-      <section className="w-full md:w-[70vw]">
+      <section className="w-full md:w-[70vw] xsm:mr-4 gridbreak:mr-0">
         <CreatePost />
         {posts.length < 0 ? (
           <h1 className="text-white">Loading...</h1>
