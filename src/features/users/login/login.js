@@ -1,23 +1,29 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
   setUpAuthHeaderForServiceCalls,
   UserSignIn,
 } from "../../../services/users/users";
+import { setToken } from "../userSlice";
 
 export function Login() {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState({});
   const [error, setError] = useState({ message: "", status: "hidden" });
   const [buttonText, setButtonText] = useState("Login");
+  const dispatch = useDispatch();
   async function LoginHandler(e) {
     e.preventDefault();
     setButtonText("Logging you in...");
     const response = await UserSignIn(userDetails);
     setButtonText("Login");
     if (response.status && response.allowUser) {
-      localStorage.setItem("token", response.token);
+      console.log("coming here");
       setUpAuthHeaderForServiceCalls(response.token);
+      localStorage.setItem("token", response.token);
+      dispatch(setToken());
+
       navigate("/home", { replace: true });
     }
     if (!response.allowUser) {
