@@ -9,6 +9,7 @@ import { Signup } from "./features/users/signup/signup";
 import { setUpAuthHeaderForServiceCalls } from "./services/users/users";
 function App() {
   const { authorized } = useSelector((state) => state.users);
+  const { status } = useSelector((state) => state.posts);
   function PrivateRoute(props) {
     if (authorized) {
       console.log("user is authenticated");
