@@ -15,12 +15,7 @@ export function CreatePost() {
   });
   const dispatch = useDispatch();
   const formRef = useRef();
-  // const hasFetchedData = useRef(false);
   useEffect(() => {
-    // let isMounted = true;
-    // console.log({ isMounted });
-    // hasFetchedData.current = false;
-    // if (hasFetchedData.current === false) {
     if (!postContent.text && imageData.showStatus === "hidden") {
       setPostButtonDetails((postButtonDetails) => ({
         ...postButtonDetails,
