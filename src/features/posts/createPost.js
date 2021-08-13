@@ -1,36 +1,60 @@
-import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { PostCreation } from "../../services/posts/posts";
 import { loadPosts } from "./postSlice";
 export function CreatePost() {
-  const [postContent, setPostContent] = useState({ text: "", image: File });
+  const [postContent, setPostContent] = useState({ text: null, image: null });
   const [postButtonDetails, setPostButtonDetails] = useState({
     text: "Post",
     diableStatus: false,
+    color: "bg-blue-xlight",
   });
   const [imageData, setImageData] = useState({
-    url: "#",
+    url: null,
     showStatus: "hidden",
   });
+  // const { isLoading } = useSelector((state) => state.posts);
   const formRef = useRef();
+  useEffect(() => {
+    console.log("image status ", imageData.showStatus);
+
+    if (!postContent.text && imageData.showStatus === "hidden") {
+      console.log("nahi hooraha yaaaar");
+      setPostButtonDetails({
+        ...postButtonDetails,
+        diableStatus: true,
+        color: "bg-blue-xlight",
+      });
+    } else if (postContent.text || imageData.showStatus === "block") {
+      console.log("post jaaraaha hai");
+      setPostButtonDetails({
+        ...postButtonDetails,
+        diableStatus: false,
+        color: "bg-blue-light",
+      });
+    }
+  }, [postContent.text, imageData.showStatus]);
   const dispatch = useDispatch();
+
   async function newPostHandler(e) {
     e.preventDefault();
     setPostButtonDetails({
       ...postButtonDetails,
       text: "Posting",
       diableStatus: true,
+      color: "bg-blue-xlight",
     });
     const response = await PostCreation(postContent);
     setPostButtonDetails({
       ...postButtonDetails,
       text: "Post",
       diableStatus: false,
+      color: "bg-blue-light",
     });
     if (response.status) {
-      dispatch(loadPosts());
-      setImageData({ ...imageData, showStatus: "hidden" });
       formRef.current.reset();
+      setImageData({ ...imageData, showStatus: "hidden" });
+      dispatch(loadPosts());
     }
   }
   function fileUploadHandler(e) {
@@ -48,7 +72,7 @@ export function CreatePost() {
     }
   }
   return (
-    <div className="border-b border-l border-r border-opacity-50   ">
+    <div className="border-t xsm:border-t-0 border-b border-l border-r border-opacity-50   ">
       <form
         ref={formRef}
         className="p-4  flex flex-col"
@@ -100,7 +124,7 @@ export function CreatePost() {
             type="submit"
             disabled={postButtonDetails.diableStatus}
             value={postButtonDetails.text}
-            className="bg-blue-light  rounded-2xl cursor-pointer w-16 p-2   "
+            className={` ${postButtonDetails.color} rounded-2xl cursor-pointer w-16 p-2   `}
           />
         </section>
       </form>
