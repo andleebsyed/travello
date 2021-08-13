@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { PostCreation } from "../../services/posts/posts";
 import { loadPosts } from "./postSlice";
 export function CreatePost() {
@@ -13,28 +13,29 @@ export function CreatePost() {
     url: null,
     showStatus: "hidden",
   });
-  // const { isLoading } = useSelector((state) => state.posts);
+  const dispatch = useDispatch();
   const formRef = useRef();
+  // const hasFetchedData = useRef(false);
   useEffect(() => {
-    console.log("image status ", imageData.showStatus);
-
+    // let isMounted = true;
+    // console.log({ isMounted });
+    // hasFetchedData.current = false;
+    // if (hasFetchedData.current === false) {
     if (!postContent.text && imageData.showStatus === "hidden") {
-      console.log("nahi hooraha yaaaar");
-      setPostButtonDetails({
+      setPostButtonDetails((postButtonDetails) => ({
         ...postButtonDetails,
         diableStatus: true,
         color: "bg-blue-xlight",
-      });
+      }));
     } else if (postContent.text || imageData.showStatus === "block") {
-      console.log("post jaaraaha hai");
-      setPostButtonDetails({
+      setPostButtonDetails((postButtonDetails) => ({
         ...postButtonDetails,
         diableStatus: false,
         color: "bg-blue-light",
-      });
+      }));
     }
+    // }
   }, [postContent.text, imageData.showStatus]);
-  const dispatch = useDispatch();
 
   async function newPostHandler(e) {
     e.preventDefault();
