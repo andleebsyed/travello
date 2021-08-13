@@ -14,6 +14,19 @@ export function Homepage() {
   console.log("auth check ", authorized);
   console.log("status ", status);
   console.log("posts ", posts);
+  let orderedPosts = posts.map((post) => ({
+    ...post,
+    timestamp: Date.parse(post.timestamp),
+  }));
+  console.log({ orderedPosts });
+  orderedPosts = orderedPosts.sort((a, b) => b.timestamp - a.timestamp);
+  if (posts.length > 0) {
+    posts.map((post) => console.log("timestamps ", Date.parse(post.timestamp)));
+    // orderedPosts = posts.sort(
+    //   (a, b) => a.timestamp.getTime() > b.timestamp.getTime()
+    // );
+  }
+  console.log({ orderedPosts });
   useEffect(() => {
     async function Run() {
       console.log("useeffct to get posts ran");
@@ -48,7 +61,7 @@ export function Homepage() {
           <h1 className="text-white">Loading...</h1>
         ) : (
           <div className="   ">
-            {posts.map((post) => (
+            {orderedPosts.map((post) => (
               <ShowPost post={post} />
             ))}
           </div>
