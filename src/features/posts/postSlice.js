@@ -4,6 +4,8 @@ const initialState = {
   status: "idle",
   error: null,
   posts: [],
+  username: null,
+  name: null,
 };
 export const loadPosts = createAsyncThunk("user/posts", async () => {
   const response = await FetchAllPosts();
@@ -12,7 +14,7 @@ export const loadPosts = createAsyncThunk("user/posts", async () => {
     return true;
   }
   console.log("response in thunk ", { response });
-  return response.ourUser.posts;
+  return response.userData;
 });
 export const postSlice = createSlice({
   name: "postSlice",
@@ -23,8 +25,12 @@ export const postSlice = createSlice({
       state.status = "loading";
     },
     [loadPosts.fulfilled]: (state, action) => {
-      state.posts = action.payload;
+      const { updatedPosts, username, name } = action.payload;
+
+      state.posts = updatedPosts;
       state.status = "success";
+      state.username = username;
+      state.name = name;
     },
     [loadPosts.rejected]: (state, action) => {
       state.status = "error";
