@@ -13,12 +13,10 @@ export function Homepage() {
   const navigate = useNavigate();
   useEffect(() => {
     async function Run() {
-      console.log("useeffct to get posts ran");
       setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
       dispatch(loadPosts());
     }
     if (status === "idle") {
-      console.log("posts being collected");
       Run();
     }
   }, [status, dispatch]);

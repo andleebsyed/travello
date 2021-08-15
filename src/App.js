@@ -9,10 +9,8 @@ import { Signup } from "./features/users/signup/signup";
 import { setUpAuthHeaderForServiceCalls } from "./services/users/users";
 function App() {
   const { authorized } = useSelector((state) => state.users);
-  const { status } = useSelector((state) => state.posts);
   function PrivateRoute(props) {
     if (authorized) {
-      console.log("user is authenticated");
       return <Route {...props} />;
     } else {
       return <Route element={<Login />} {...props} />;
@@ -28,7 +26,6 @@ function App() {
     }
   }
   useEffect(() => {
-    console.log("mainpage useeffect ran");
     setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
   }, []);
   return (
