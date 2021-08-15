@@ -1,19 +1,43 @@
 import { useState } from "react";
-// import { useSelector } from "react-redux";
-
+import { useSelector } from "react-redux";
+import { LikeInteraction } from "../../services/posts/posts";
 export function ShowPost({ post }) {
   const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
-  //   const { posts } = useSelector((state) => state.posts);
-  console.log("post to show ", post?.postText);
   function commentBoxHandler() {
     commentBoxVisibility === "hidden"
       ? setCommentBoxVisibility("block")
       : setCommentBoxVisibility("hidden");
   }
-
-  //   !post ? (
-  //     <div>loading</div>
-  //   ) : (
+  const { name, username } = useSelector((state) => state.posts);
+  const date = new Date(post.timestamp);
+  const timestamp = {
+    day: date.getDate(),
+    month: date.getMonth() + 1,
+    hour: date.getHours(),
+    minutes: date.getMinutes(),
+  };
+  const [buttonTransition, setButtonTransition] = useState({
+    liked: post.liked,
+    likes: post.likedBy.length,
+  });
+  async function likeButtonHandler({ postId, action }) {
+    const data = { postId, action };
+    const response = await LikeInteraction(data);
+    console.log({ response });
+    if (response.status) {
+      action === "inc"
+        ? setButtonTransition({
+            ...buttonTransition,
+            liked: true,
+            likes: buttonTransition.likes + 1,
+          })
+        : setButtonTransition({
+            ...buttonTransition,
+            liked: false,
+            likes: buttonTransition.likes - 1,
+          });
+    }
+  }
   return (
     <main
       id={post?._id}
@@ -27,8 +51,8 @@ export function ShowPost({ post }) {
             className="rounded-3xl w-12 h-12  "
           />
           <div className="pl-1">
-            <h1 className="self-center">Syed Andleeb</h1>
-            <h1>@andleeb_dev</h1>
+            <h1 className="self-center">{name}</h1>
+            <h1>{username}</h1>
           </div>
         </div>
         <button className="self-center">
@@ -46,7 +70,7 @@ export function ShowPost({ post }) {
           </svg>
         </button>
       </section>
-      <p>DD/MM at HH:MM</p>
+      <p>{`${timestamp.day}/${timestamp.month} at ${timestamp.hour}:${timestamp.minutes}`}</p>
       <p>{post?.postText}</p>
       {post?.postImage ? (
         <img alt="posted update by user" src={post.postImage} />
@@ -54,20 +78,50 @@ export function ShowPost({ post }) {
         ""
       )}
       <footer className="flex justify-start pt-4">
-        <button className=" w-6 h-6 pr-32">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-          >
-            <path fill="none" d="M0 0H24V24H0z" />
-            <path
-              d="M12.001 4.529c2.349-2.109 5.979-2.039 8.242.228 2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236 2.265-2.264 5.888-2.34 8.244-.228zm6.826 1.641c-1.5-1.502-3.92-1.563-5.49-.153l-1.335 1.198-1.336-1.197c-1.575-1.412-3.99-1.35-5.494.154-1.49 1.49-1.565 3.875-.192 5.451L12 18.654l7.02-7.03c1.374-1.577 1.299-3.959-.193-5.454z"
-              fill="rgba(149,164,166,1)"
-            />
-          </svg>
-        </button>
+        <div className="flex mr-32">
+          {!buttonTransition.liked ? (
+            <button
+              onClick={() =>
+                likeButtonHandler({ postId: post._id, action: "inc" })
+              }
+              className=" w-6 h-6 mr-2 "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+              >
+                <path fill="none" d="M0 0H24V24H0z" />
+                <path
+                  d="M12.001 4.529c2.349-2.109 5.979-2.039 8.242.228 2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236 2.265-2.264 5.888-2.34 8.244-.228zm6.826 1.641c-1.5-1.502-3.92-1.563-5.49-.153l-1.335 1.198-1.336-1.197c-1.575-1.412-3.99-1.35-5.494.154-1.49 1.49-1.565 3.875-.192 5.451L12 18.654l7.02-7.03c1.374-1.577 1.299-3.959-.193-5.454z"
+                  fill="rgba(149,164,166,1)"
+                />
+              </svg>
+            </button>
+          ) : (
+            <button
+              onClick={() =>
+                likeButtonHandler({ postId: post._id, action: "dec" })
+              }
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+              >
+                <path fill="none" d="M0 0H24V24H0z" />
+                <path
+                  d="M12.001 4.529c2.349-2.109 5.979-2.039 8.242.228 2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236 2.265-2.264 5.888-2.34 8.244-.228z"
+                  fill="rgba(248,20,20,1)"
+                />
+              </svg>
+            </button>
+          )}
+          <p className="self-start">{buttonTransition.likes}</p>
+        </div>
+
         <button onClick={commentBoxHandler} className=" w-6 h-6">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +160,6 @@ export function ShowPost({ post }) {
           </button>
         </form>
       </section>
-      {/* </section> */}
     </main>
   );
 }
