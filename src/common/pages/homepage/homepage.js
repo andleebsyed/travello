@@ -42,11 +42,13 @@ export function Homepage() {
         {status === "loading" ? (
           <h1 className="text-white">Loading...</h1>
         ) : (
-          <div className="   ">
+          <ul className="   ">
             {posts.map((post) => (
-              <ShowPost post={post} />
+              <li key={post._id}>
+                <ShowPost post={post} />
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </section>
     </div>
