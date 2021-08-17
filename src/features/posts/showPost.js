@@ -1,6 +1,7 @@
-import { useState } from "react";
+import moment from "moment";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // import { Link, useNavigate } from "react-router-dom";
 import { Comments } from "../../common/components/Comments";
 import { LikeInteraction } from "../../services/posts/posts";
@@ -15,13 +16,21 @@ export function ShowPost({ post }) {
     }
   }
   const { name, username } = useSelector((state) => state.posts);
-  const date = new Date(post.timestamp);
-  const timestamp = {
-    day: date.getDate(),
-    month: date.getMonth() + 1,
-    hour: date.getHours(),
-    minutes: date.getMinutes(),
-  };
+  const { postId } = useParams();
+  const [postParameters, setPostParameters] = useState(
+    postId
+      ? {
+          singlePost: true,
+          postStyle: "p-2 pl-4 mt-8 border-b border-opacity-20 ",
+          postText: "text-lg",
+        }
+      : {
+          singlePost: false,
+          postStyle:
+            "p-2 pl-4   border-b   border-opacity-20 hover:bg-dark-hover cursor-pointer",
+          postText: "",
+        }
+  );
   const [buttonTransition, setButtonTransition] = useState({
     liked: post.liked,
     likes: post.likedBy.length,
@@ -48,15 +57,16 @@ export function ShowPost({ post }) {
   const navigate = useNavigate();
   return (
     <main>
-      {/* </main> */}
       <div
-        // className=""
         onClick={(event) => {
-          event.stopPropagation();
-          navigate(`/post/${post._id}`);
+          if (!postParameters.singlePost) {
+            event.stopPropagation();
+            navigate(`/post/${post._id}`);
+          }
         }}
         id={post?._id}
-        className="p-2 pl-4  m-[1px] border-b   border-opacity-20 hover:bg-dark-hover cursor-pointer  "
+        className={`${postParameters.postStyle}`}
+        // "p-2 pl-4  m-[1px] border-b   border-opacity-20 hover:bg-dark-hover cursor-pointer  "
       >
         <section className="flex justify-between ">
           <div className="flex justify-between">
@@ -65,12 +75,15 @@ export function ShowPost({ post }) {
               src="https://via.placeholder.com/48"
               className="rounded-3xl w-12 h-12  "
             />
-            <div className="pl-1">
-              <h1 className="self-center">{name}</h1>
-              <h1>{username}</h1>
+            <div className="pl-1 flex items-center">
+              <span className=" ml-2 font-bold">{name}</span>
+              <span className="ml-2 ">@{username}</span>
             </div>
           </div>
-          <button className="self-center">
+          <span className="self-center ml-auto">
+            {moment(post.createdAt).fromNow(true)}
+          </span>
+          {/* <button className="self-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -83,10 +96,9 @@ export function ShowPost({ post }) {
                 fill="rgba(149,164,166,1)"
               />
             </svg>
-          </button>
+          </button> */}
         </section>
-        <p>{`${timestamp.day}/${timestamp.month} at ${timestamp.hour}:${timestamp.minutes}`}</p>
-        <p>{post?.postText}</p>
+        <p className={postParameters.postText}>{post?.postText}</p>
         {post?.postImage ? (
           <img alt="posted update by user" src={post.postImage} />
         ) : (
