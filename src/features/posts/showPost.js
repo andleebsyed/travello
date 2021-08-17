@@ -56,7 +56,7 @@ export function ShowPost({ post }) {
           navigate(`/post/${post._id}`);
         }}
         id={post?._id}
-        className="p-2 pl-4  m-[1px] border-b border-l border-r border-opacity-50 hover:bg-dark-hover cursor-pointer  "
+        className="p-2 pl-4  m-[1px] border-b   border-opacity-20 hover:bg-dark-hover cursor-pointer  "
       >
         <section className="flex justify-between ">
           <div className="flex justify-between">
@@ -154,7 +154,7 @@ export function ShowPost({ post }) {
         </div>
       </div>
       <div
-        className={`${commentBoxVisibility} border-l border-r border-t-0 border-b border-opacity-50  p-2 `}
+        className={`${commentBoxVisibility}  border-b border-opacity-20  p-2 `}
       >
         <Comments
           postId={post._id}

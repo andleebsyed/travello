@@ -31,7 +31,7 @@ function App() {
   }, []);
   return (
     <>
-      <div className={authorized ? "flex" : ""}>
+      <div className={authorized ? "flex " : ""}>
         {authorized && <Navbar />}
         <Routes>
           <Route path="/" element={authorized ? <Homepage /> : <Landing />} />
@@ -47,7 +47,7 @@ function App() {
           <PrivateRoute path="/post/:postId" element={<SinglePost />} />
         </Routes>
       </div>
-      <footer className="h-16"></footer>
+      {/* <footer className="h-16"></footer> */}
     </>
   );
 }

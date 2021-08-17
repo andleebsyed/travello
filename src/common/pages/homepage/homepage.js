@@ -28,9 +28,9 @@ export function Homepage() {
   }, [authorized, navigate]);
 
   return (
-    <div className="flex  text-white" id="home">
+    <div className="flex border border-opacity-20 text-white" id="home">
       <section className="w-screen  md:w-[70vw] xsm:mr-4 gridbreak:mr-0">
-        <div className="hidden xsm:block sticky top-0 bg-blue h-14  border-b border-l border-r border-opacity-50 ">
+        <div className="hidden xsm:block sticky top-0 bg-blue h-14 ">
           <a
             href="#home"
             className="text-white  text-xl  m-4 font-semibold outline-none "
