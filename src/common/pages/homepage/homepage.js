@@ -28,7 +28,10 @@ export function Homepage() {
   }, [authorized, navigate]);
 
   return (
-    <div className="flex border border-opacity-20 text-white" id="home">
+    <div
+      className="flex border border-b-0 border-opacity-20 text-white"
+      id="home"
+    >
       <section className="w-screen  md:w-[70vw] xsm:mr-4 gridbreak:mr-0">
         <div className="hidden xsm:block sticky top-0 bg-blue h-14 ">
           <a
@@ -40,16 +43,20 @@ export function Homepage() {
         </div>
 
         <CreatePost />
-        {status === "loading" || posts === null ? (
+        {(status === "loading" && posts === null) || posts === null ? (
           <h1 className="text-white">Loading...</h1>
-        ) : (
-          <ul className="   ">
+        ) : posts.length > 0 ? (
+          <ul className="  ">
             {posts.map((post) => (
               <li key={post._id}>
                 <ShowPost post={post} />
               </li>
             ))}
           </ul>
+        ) : (
+          <div className="flex justify-center items-center min-h-[50vh] ">
+            <p className="text-xl">No Posts To Show</p>
+          </div>
         )}
       </section>
     </div>
