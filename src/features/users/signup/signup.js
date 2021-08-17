@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { UserSignUp } from "../../../services/users/users";
+import { startProgressBar, stopProgressBar } from "../../posts/postSlice";
 
 export function Signup() {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState({});
   const [error, setError] = useState({ status: "hidden", message: "" });
   const [buttonText, setButtonText] = useState("Sign Up");
+  const dispatch = useDispatch();
   function PasswordHandler() {
     if (userDetails.password.length < 6) {
       setError({
@@ -42,8 +45,10 @@ export function Signup() {
     e.preventDefault();
     const apiCallStatus = PasswordHandler();
     if (apiCallStatus) {
+      dispatch(startProgressBar());
       setButtonText("Signing You Up...");
       const response = await UserSignUp(userDetails);
+      dispatch(stopProgressBar());
       setButtonText("Sign Up");
       if (response.status) {
         localStorage.setItem("token", response.token);

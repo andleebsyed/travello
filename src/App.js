@@ -8,8 +8,10 @@ import { SinglePost } from "./features/posts/singlePost";
 import { Login } from "./features/users/login/login";
 import { Signup } from "./features/users/signup/signup";
 import { setUpAuthHeaderForServiceCalls } from "./services/users/users";
+import { ProgressBar } from "../src/common/components/Loaders/Progress";
 function App() {
   const { authorized } = useSelector((state) => state.users);
+  const { progressBarStatus } = useSelector((state) => state.posts);
   function PrivateRoute(props) {
     if (authorized) {
       return <Route {...props} />;
@@ -33,6 +35,8 @@ function App() {
     <>
       <div className={authorized ? "flex min-h-screen" : "min-h-screen"}>
         {authorized && <Navbar />}
+        {progressBarStatus && <ProgressBar />}
+
         <Routes>
           <Route path="/" element={authorized ? <Homepage /> : <Landing />} />
           <Redirector
@@ -48,6 +52,7 @@ function App() {
         </Routes>
       </div>
       {/* <footer className="h-16"></footer> */}
+      {/* <ProgressBar /> */}
     </>
   );
 }

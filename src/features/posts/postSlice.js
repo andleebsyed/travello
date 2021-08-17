@@ -6,6 +6,8 @@ const initialState = {
   posts: null,
   username: null,
   name: null,
+  spinnerStatus: false,
+  progressBarStatus: false,
   // commentsData: {
   //   comments: [],
   //   postId: null,
@@ -37,7 +39,20 @@ export const loadPosts = createAsyncThunk("user/posts", async () => {
 export const postSlice = createSlice({
   name: "postSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    startSpinner: (state) => {
+      state.spinnerStatus = true;
+    },
+    stopSpinner: (state) => {
+      state.spinnerStatus = false;
+    },
+    startProgressBar: (state) => {
+      state.progressBarStatus = true;
+    },
+    stopProgressBar: (state) => {
+      state.progressBarStatus = false;
+    },
+  },
   extraReducers: {
     [loadPosts.pending]: (state) => {
       state.status = "loading";
@@ -71,5 +86,6 @@ export const postSlice = createSlice({
     // },
   },
 });
-
+export const { startProgressBar, stopProgressBar, startSpinner, stopSpinner } =
+  postSlice.actions;
 export default postSlice.reducer;
