@@ -22,6 +22,8 @@ export function Login() {
       console.log("coming here");
       setUpAuthHeaderForServiceCalls(response.token);
       localStorage.setItem("token", response.token);
+      localStorage.setItem("userId", response.userId);
+      // console.log(response.token)
       dispatch(setToken());
 
       navigate("/home", { replace: true });
