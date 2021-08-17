@@ -31,7 +31,7 @@ function App() {
   }, []);
   return (
     <>
-      <div className={authorized ? "flex " : ""}>
+      <div className={authorized ? "flex min-h-screen" : "min-h-screen"}>
         {authorized && <Navbar />}
         <Routes>
           <Route path="/" element={authorized ? <Homepage /> : <Landing />} />
