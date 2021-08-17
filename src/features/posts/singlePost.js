@@ -9,16 +9,13 @@ export function SinglePost() {
   const { posts } = useSelector((state) => state.posts);
   const { postId } = useParams();
   const dispatch = useDispatch();
-  //   const { name, username } = useSelector((state) => state.posts);
   useEffect(() => {
     if (posts === null) {
       setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
       dispatch(loadPosts());
     }
   }, [dispatch, posts]);
-  console.log({ postId });
   const post = posts?.find((post) => post._id === postId);
-  console.log(post);
   const navigate = useNavigate();
   return post === undefined ? (
     <div>loading </div>
