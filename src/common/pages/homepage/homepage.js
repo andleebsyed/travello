@@ -1,3 +1,4 @@
+import { Spinner } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -5,6 +6,7 @@ import { CreatePost } from "../../../features/posts/createPost";
 import { loadPosts } from "../../../features/posts/postSlice";
 import { ShowPost } from "../../../features/posts/showPost";
 import { setUpAuthHeaderForServiceCalls } from "../../../services/users/users";
+import { SpinnerLoader } from "../../components/Loaders/Spinner";
 
 export function Homepage() {
   const dispatch = useDispatch();
@@ -29,10 +31,10 @@ export function Homepage() {
 
   return (
     <div
-      className="flex border border-b-0 border-opacity-20 text-white"
+      className="flex border border-b-0 border-opacity-20 text-white min-h-screen"
       id="home"
     >
-      <section className="w-screen  md:w-[70vw] xsm:mr-4 gridbreak:mr-0">
+      <section className="w-screen   md:w-[60vw] xsm:mr-4 gridbreak:mr-0">
         <div className="hidden xsm:block sticky top-0 bg-blue h-14 ">
           <a
             href="#home"
@@ -44,7 +46,7 @@ export function Homepage() {
 
         <CreatePost />
         {(status === "loading" && posts === null) || posts === null ? (
-          <h1 className="text-white">Loading...</h1>
+          <SpinnerLoader />
         ) : posts.length > 0 ? (
           <ul className="  ">
             {posts.map((post) => (

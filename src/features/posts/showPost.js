@@ -21,13 +21,13 @@ export function ShowPost({ post }) {
     postId
       ? {
           singlePost: true,
-          postStyle: "p-2 pl-4 mt-8 border-b border-opacity-20 ",
+          postStyle: "p-2  mt-8 border-b border-opacity-20 ",
           postText: "text-lg",
         }
       : {
           singlePost: false,
           postStyle:
-            "p-2 pl-4   border-b   border-opacity-20 hover:bg-dark-hover cursor-pointer",
+            "p-2    border-b   border-opacity-20 hover:bg-dark-hover cursor-pointer",
           postText: "",
         }
   );
