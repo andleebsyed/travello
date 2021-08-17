@@ -5,6 +5,7 @@ import { setUpAuthHeaderForServiceCalls } from "../../services/users/users";
 import { loadPosts } from "./postSlice";
 import { ShowPost } from "./showPost";
 import { BiArrowBack } from "react-icons/bi";
+import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
 export function SinglePost() {
   const { posts } = useSelector((state) => state.posts);
   const { postId } = useParams();
@@ -17,10 +18,11 @@ export function SinglePost() {
   }, [dispatch, posts]);
   const post = posts?.find((post) => post._id === postId);
   const navigate = useNavigate();
-  return post === undefined ? (
-    <div>loading </div>
-  ) : (
-    <div className="w-screen min-h-screen md:w-[70vw] border border-opacity-20 xsm:mr-4 text-white">
+  return (
+    // post === undefined ? (
+    //   <SpinnerLoader />
+    // ) : (
+    <div className="w-screen min-h-screen md:w-[60vw] border border-opacity-10 xsm:mr-4 text-white">
       <section className="bg-blue  p-2 border-b border-opacity-20  flex">
         <button
           onClick={() => navigate(-1)}
@@ -30,7 +32,7 @@ export function SinglePost() {
         </button>
         <p className="p-2 text-xl">Post</p>
       </section>
-      <ShowPost post={post} />
+      {post === undefined ? <SpinnerLoader /> : <ShowPost post={post} />}
     </div>
   );
 }
