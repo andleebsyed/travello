@@ -16,10 +16,10 @@ export function Homepage() {
       setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
       dispatch(loadPosts());
     }
-    if (status === "idle") {
+    if (status === "idle" && authorized) {
       Run();
     }
-  }, [status, dispatch]);
+  }, [status, dispatch, authorized]);
   useEffect(() => {
     if (authorized === false) {
       navigate("/login", { replace: true });
