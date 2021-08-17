@@ -16,6 +16,7 @@ module.exports = {
         red: {
           DEFAULT: "#DC2626",
         },
+        "dark-hover": "#1C2633",
       },
       screens: {
         xsm: "550px",
