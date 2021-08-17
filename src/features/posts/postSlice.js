@@ -1,11 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { FetchAllPosts } from "../../services/posts/posts";
+import { FetchAllPosts, FetchComments } from "../../services/posts/posts";
 const initialState = {
   status: "idle",
   error: null,
-  posts: [],
+  posts: null,
   username: null,
   name: null,
+  // commentsData: {
+  //   comments: [],
+  //   postId: null,
+  // },
+  // commentsStatus: "idle",
+  // currentCommentPost: null,
 };
 export const loadPosts = createAsyncThunk("user/posts", async () => {
   const response = await FetchAllPosts();
@@ -16,6 +22,18 @@ export const loadPosts = createAsyncThunk("user/posts", async () => {
   console.log("response in thunk ", { response });
   return response.userData;
 });
+// export const loadComments = createAsyncThunk(
+//   "post/comments",
+//   async ({ postId }, thunkAPI) => {
+//     try {
+//       const response = await FetchComments({ postId });
+//       console.log("response in thunk for comments ", response);
+//       return response.commentsData;
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(error.response.data);
+//     }
+//   }
+// );
 export const postSlice = createSlice({
   name: "postSlice",
   initialState,
@@ -36,6 +54,21 @@ export const postSlice = createSlice({
       state.status = "error";
       state.error = action.error.message;
     },
+    // [loadComments.pending]: (state) => {
+    //   state.commentsStatus = "loading";
+    // },
+    // [loadComments.fulfilled]: (state, action) => {
+    //   const commentsData = action.payload;
+    //   console.log({ commentsData }, "in reducers");
+    //   const { comments, postId } = commentsData;
+    //   state.commentsData.comments = comments;
+    //   state.commentsData.postId = postId;
+    //   state.commentsStatus = "success";
+    // },
+    // [loadComments.rejected]: (state, action) => {
+    //   state.commentsStatus = "error";
+    //   state.error = action.payload.message;
+    // },
   },
 });
 
