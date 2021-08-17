@@ -28,7 +28,9 @@ export function Comments({ commentBoxVisibility, postId }) {
     }
   }, [postId, commentBoxVisibility]);
   async function commentBoxSubmitHandler(e) {
+    e.stopPropagation();
     e.preventDefault();
+
     const response = await AddComment({
       content: commentContent.commentText,
       postId,
@@ -53,7 +55,8 @@ export function Comments({ commentBoxVisibility, postId }) {
       }));
     }
   }, [commentContent.commentText]);
-  async function DeleteCommentHandler({ postId, commentId }) {
+  async function DeleteCommentHandler({ event, postId, commentId }) {
+    event.stopPropagation();
     const response = await RemoveComment({ postId, commentId });
     console.log("res in view ", { response });
     if (response.status) {
@@ -66,15 +69,18 @@ export function Comments({ commentBoxVisibility, postId }) {
     <section className={commentBoxVisibility}>
       <form
         className="flex justify-between  mt-4 "
-        onSubmit={commentBoxSubmitHandler}
+        onSubmit={(e) => commentBoxSubmitHandler(e)}
       >
         <input
-          onChange={(e) =>
+          onChange={(e) => {
+            console.log("isit coming here");
+            e.stopPropagation();
+            e.nativeEvent.stopImmediatePropagation();
             setCommentContent({
               ...commentContent,
               commentText: e.target.value,
-            })
-          }
+            });
+          }}
           type="text"
           placeholder="Comment here..."
           className="p-1 mr-4 w-full bg-blue rounded border border-gray-400 outline-none focus:ring-2 focus:ring-blue-light focus:ring-opacity-100 focus:border-blue-light"
@@ -118,8 +124,12 @@ export function Comments({ commentBoxVisibility, postId }) {
                 {localStorage.getItem("userId") === comment.author._id && (
                   // <p className="self-center mr-4">delete</p>
                   <button
-                    onClick={() =>
-                      DeleteCommentHandler({ postId, commentId: comment._id })
+                    onClick={(event) =>
+                      DeleteCommentHandler({
+                        event,
+                        postId,
+                        commentId: comment._id,
+                      })
                     }
                     title="Delete Comment"
                     className="text-gray-50 cursor-pointer hover:text-red hover:bg-red hover:bg-opacity-10 self-center ml-auto rounded-full p-2"
