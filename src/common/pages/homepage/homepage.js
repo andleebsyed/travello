@@ -11,6 +11,7 @@ export function Homepage() {
   const { posts, status } = useSelector((state) => state.posts);
   const { authorized } = useSelector((state) => state.users);
   const navigate = useNavigate();
+  console.log("posts ", { posts });
   useEffect(() => {
     async function Run() {
       setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
@@ -39,7 +40,7 @@ export function Homepage() {
         </div>
 
         <CreatePost />
-        {status === "loading" ? (
+        {status === "loading" || posts === null ? (
           <h1 className="text-white">Loading...</h1>
         ) : (
           <ul className="   ">
