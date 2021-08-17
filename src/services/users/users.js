@@ -27,7 +27,6 @@ export async function UserSignUp({ name, username, password, email }) {
 }
 
 export function setUpAuthHeaderForServiceCalls(token) {
-  console.log("function called");
   if (token) {
     console.log("token attached");
     return (axios.defaults.headers.common["Authorization"] = token);

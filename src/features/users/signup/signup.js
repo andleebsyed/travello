@@ -45,7 +45,6 @@ export function Signup() {
       setButtonText("Signing You Up...");
       const response = await UserSignUp(userDetails);
       setButtonText("Sign Up");
-      // console.log("response on view ", {response})
       if (response.status) {
         localStorage.setItem("token", response.token);
         navigate("/home", {
