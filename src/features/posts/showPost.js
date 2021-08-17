@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { Comments } from "../../common/components/Comments";
 import { LikeInteraction } from "../../services/posts/posts";
 export function ShowPost({ post }) {
   const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
   function commentBoxHandler() {
-    commentBoxVisibility === "hidden"
-      ? setCommentBoxVisibility("block")
-      : setCommentBoxVisibility("hidden");
+    if (commentBoxVisibility === "hidden") {
+      setCommentBoxVisibility("block");
+    } else {
+      setCommentBoxVisibility("hidden");
+    }
   }
   const { name, username } = useSelector((state) => state.posts);
   const date = new Date(post.timestamp);
@@ -77,7 +80,7 @@ export function ShowPost({ post }) {
       ) : (
         ""
       )}
-      <footer className="flex justify-start pt-4">
+      <div className="flex justify-start pt-4">
         <div className="flex mr-32">
           {!buttonTransition.liked ? (
             <button
@@ -136,30 +139,8 @@ export function ShowPost({ post }) {
             />
           </svg>
         </button>
-      </footer>
-      <section className={commentBoxVisibility}>
-        <form className="flex justify-between  mt-4 ">
-          <input
-            type="text"
-            placeholder="Comment here..."
-            className="p-1 w-full bg-blue rounded border border-gray-400 outline-none focus:ring-2 focus:ring-blue-light focus:ring-opacity-100 focus:border-blue-light"
-          />
-          <button className="p-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="24"
-              height="24"
-            >
-              <path fill="none" d="M0 0h24v24H0z" />
-              <path
-                d="M14 22.5L11.2 19H6a1 1 0 0 1-1-1V7.103a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1V18a1 1 0 0 1-1 1h-5.2L14 22.5zm1.839-5.5H21V8.103H7V17H12.161L14 19.298 15.839 17zM2 2h17v2H3v11H1V3a1 1 0 0 1 1-1z"
-                fill="rgba(149,164,166,1)"
-              />
-            </svg>
-          </button>
-        </form>
-      </section>
+      </div>
+      <Comments postId={post._id} commentBoxVisibility={commentBoxVisibility} />
     </main>
   );
 }
