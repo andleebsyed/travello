@@ -28,8 +28,8 @@ export function Homepage() {
   }, [authorized, navigate]);
 
   return (
-    <div className="flex p-4 xsm:p-0  text-white" id="home">
-      <section className="w-[95vw] md:w-[70vw] xsm:mr-4 gridbreak:mr-0">
+    <div className="flex  text-white" id="home">
+      <section className="w-screen  md:w-[70vw] xsm:mr-4 gridbreak:mr-0">
         <div className="hidden xsm:block sticky top-0 bg-blue h-14  border-b border-l border-r border-opacity-50 ">
           <a
             href="#home"
