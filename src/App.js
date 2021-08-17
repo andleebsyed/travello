@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { Homepage } from "./common/pages/homepage/homepage";
 import { Landing } from "./common/pages/landing/landing";
 import { Navbar } from "./common/pages/navbar/navbar";
+import { SinglePost } from "./features/posts/singlePost";
 import { Login } from "./features/users/login/login";
 import { Signup } from "./features/users/signup/signup";
 import { setUpAuthHeaderForServiceCalls } from "./services/users/users";
@@ -43,6 +44,7 @@ function App() {
             element={authorized ? <Homepage /> : <Signup />}
           />
           <PrivateRoute path="/home" element={<Homepage />} />
+          <PrivateRoute path="/post/:postId" element={<SinglePost />} />
         </Routes>
       </div>
       <footer className="h-16"></footer>
