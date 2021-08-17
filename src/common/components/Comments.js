@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AddComment,
   FetchComments,
@@ -18,6 +18,7 @@ export function Comments({ commentBoxVisibility, postId }) {
     disabled: true,
   });
   const [postComments, setPostComments] = useState(null);
+  const commentBoxRef = useRef(null);
   useEffect(() => {
     async function Run() {
       const response = await FetchComments({ postId });
@@ -30,7 +31,10 @@ export function Comments({ commentBoxVisibility, postId }) {
   async function commentBoxSubmitHandler(e) {
     e.stopPropagation();
     e.preventDefault();
-
+    setPostButtonData((postButtonData) => ({
+      ...postButtonData,
+      text: "Posting...",
+    }));
     const response = await AddComment({
       content: commentContent.commentText,
       postId,
@@ -38,6 +42,11 @@ export function Comments({ commentBoxVisibility, postId }) {
     if (response.status) {
       const response = await FetchComments({ postId });
       setPostComments(response.comments);
+      setPostButtonData((postButtonData) => ({
+        ...postButtonData,
+        text: "Post",
+      }));
+      commentBoxRef.current.value = "";
     }
   }
   useEffect(() => {
@@ -81,7 +90,13 @@ export function Comments({ commentBoxVisibility, postId }) {
               commentText: e.target.value,
             });
           }}
+          onKeyPress={(e) =>
+            e.key === "Enter" &&
+            !postButtonData.disabled &&
+            commentBoxSubmitHandler(e)
+          }
           type="text"
+          ref={commentBoxRef}
           placeholder="Comment here..."
           className="p-1 mr-4 w-full bg-blue rounded border border-gray-400 outline-none focus:ring-2 focus:ring-blue-light focus:ring-opacity-100 focus:border-blue-light"
         />
