@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { Comments } from "../../common/components/Comments";
 import { LikeInteraction } from "../../services/posts/posts";
 export function ShowPost({ post }) {
+  console.log("in shiw posty ", post);
   const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
-  function commentBoxHandler() {
+  function commentBoxHandler(event) {
+    event.stopPropagation();
     if (commentBoxVisibility === "hidden") {
       setCommentBoxVisibility("block");
     } else {
@@ -23,7 +26,8 @@ export function ShowPost({ post }) {
     liked: post.liked,
     likes: post.likedBy.length,
   });
-  async function likeButtonHandler({ postId, action }) {
+  async function likeButtonHandler({ event, postId, action }) {
+    event.stopPropagation();
     const data = { postId, action };
     const response = await LikeInteraction(data);
     console.log({ response });
@@ -41,10 +45,16 @@ export function ShowPost({ post }) {
           });
     }
   }
+  const navigate = useNavigate();
   return (
+    // <Link to={`/post/${post._id}`}>
     <main
+      onClick={(e) => {
+        e.stopPropagation();
+        navigate(`/post/${post._id}`);
+      }}
       id={post?._id}
-      className="p-2 pl-4  m-[1px] border-b border-l border-r border-opacity-50  "
+      className="p-2 pl-4  m-[1px] border-b border-l border-r border-opacity-50  hover:bg-dark-hover cursor-pointer"
     >
       <section className="flex justify-between ">
         <div className="flex justify-between">
@@ -84,8 +94,8 @@ export function ShowPost({ post }) {
         <div className="flex mr-32">
           {!buttonTransition.liked ? (
             <button
-              onClick={() =>
-                likeButtonHandler({ postId: post._id, action: "inc" })
+              onClick={(event) =>
+                likeButtonHandler({ event, postId: post._id, action: "inc" })
               }
               className=" w-6 h-6 mr-2 "
             >
@@ -142,5 +152,6 @@ export function ShowPost({ post }) {
       </div>
       <Comments postId={post._id} commentBoxVisibility={commentBoxVisibility} />
     </main>
+    // </Link>
   );
 }
