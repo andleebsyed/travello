@@ -13,12 +13,12 @@
     @apply xsm:flex xsm:rounded-full hover:bg-blue-xlight m-4   gridbreak:p-0  xsm:justify-center xsm:items-center gridbreak:justify-start gridbreak:items-start;
   }
   .active-class {
-    @apply bg-blue text-blue-light xsm:text-white xsm:bg-blue-xlight flex   xsm:rounded-full  xsm:justify-center xsm:items-center gridbreak:justify-start gridbreak:items-start;
+    @apply bg-blue text-blue-light  xsm:bg-blue-xlight flex   xsm:rounded-full  xsm:justify-center xsm:items-center gridbreak:justify-start gridbreak:items-start;
   }
-  /* .active-class {
-    @apply xsm:flex rounded-full bg-blue-xlight m-4 xsm:p-4  gridbreak:p-0 gridbreak:pl-4 xsm:justify-center xsm:items-center gridbreak:justify-start gridbreak:items-start;
-  } */
   .navbar-list-item-name {
-    @apply hidden gridbreak:block self-center text-blue-light font-bold text-xl p-4;
+    @apply hidden gridbreak:block self-center hover:text-blue-light font-bold text-xl p-4;
   }
+}
+.navlink-inactive-class {
+  @apply xsm:flex xsm:p-4 gridbreak:p-0 gridbreak:pl-4 hover:text-blue-light;
 }

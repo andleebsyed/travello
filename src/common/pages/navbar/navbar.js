@@ -1,17 +1,21 @@
 import { NavLink } from "react-router-dom";
-
+import { BiLogOut } from "react-icons/bi";
+import { AiOutlineHome } from "react-icons/ai";
+import { RiSearchLine } from "react-icons/ri";
+import { IoIosNotificationsOutline } from "react-icons/io";
+import { IoPersonOutline } from "react-icons/io5";
 export function Navbar() {
   return (
-    <main className="fixed mt-12 xsm:sticky xsm:self-start w-screen bottom-0 xsm:top-0  xsm:pr-8 gridbreak:pr-0 xsm:w-auto bg-blue text-white  ">
-      <ul className="flex pr-4  justify-around xsm:flex-col xsm:justify-between items-end xsm:items-center gridbreak:items-start ">
+    <main className=" fixed  xsm:sticky xsm:self-start w-screen bottom-0 xsm:top-0  xsm:pr-8 gridbreak:pr-0 xsm:w-auto bg-blue text-white  ">
+      <ul className="flex  pr-4  justify-around xsm:flex-col xsm:justify-between items-end xsm:items-center gridbreak:items-start ">
         <li className="navbar-list-item  ">
           <NavLink
             to="/home"
             activeClassName="active-class"
-            className="xsm:flex xsm:p-4 gridbreak:p-0 gridbreak:pl-4"
+            className="navlink-inactive-class"
             end
           >
-            <i className="ri-home-7-line text-3xl  self-center "></i>
+            <AiOutlineHome size={30} className="self-center " />
             <span className="navbar-list-item-name  ">Home</span>
           </NavLink>
         </li>
@@ -19,22 +23,21 @@ export function Navbar() {
           <NavLink
             to="/explore"
             activeClassName="active-class"
-            className="xsm:flex xsm:p-4 gridbreak:p-0 gridbreak:pl-4"
+            className="navlink-inactive-class"
             end
           >
-            <i className="ri-hashtag text-3xl self-center fill"></i>
-
-            <span className="navbar-list-item-name ">Explore</span>
+            <RiSearchLine size={30} className="self-center" />
+            <span className="navbar-list-item-name ">Search</span>
           </NavLink>
         </li>
         <li className="navbar-list-item">
           <NavLink
             to="/notifications"
             activeClassName="active-class"
-            className="xsm:flex xsm:p-4 gridbreak:p-0 gridbreak:pl-4"
+            className="navlink-inactive-class"
             end
           >
-            <i className="ri-notification-3-line text-3xl self-center"></i>
+            <IoIosNotificationsOutline size={30} className="self-center" />
             <span className="navbar-list-item-name ">Notifications</span>
           </NavLink>
         </li>
@@ -42,12 +45,20 @@ export function Navbar() {
           <NavLink
             to="/profile"
             activeClassName="active-class"
-            className="xsm:flex xsm:p-4 gridbreak:p-0 gridbreak:pl-4"
+            className="navlink-inactive-class"
             end
           >
-            <i className="ri-user-3-line text-3xl self-center"></i>
+            <IoPersonOutline size={30} className="self-center" />
             <span className="navbar-list-item-name ">Profile</span>
           </NavLink>
+        </li>
+        <li className="hidden xsm:block self-center mt-12">
+          <button className=" flex text-lg hover:bg-blue-xlight p-4 rounded-full hover:text-blue-light">
+            <p className="hidden gridbreak:block self-center mr-2">Logout</p>
+            <div className="self-center">
+              <BiLogOut size={24} />
+            </div>
+          </button>
         </li>
       </ul>
     </main>
