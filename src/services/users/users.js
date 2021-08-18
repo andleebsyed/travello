@@ -3,7 +3,7 @@ import { BASE_URL } from "../url";
 
 export async function UserSignIn(userInfo) {
   try {
-    const response = await axios.post(BASE_URL + "users/signin", userInfo);
+    const response = await axios.post(BASE_URL + "user/signin", userInfo);
     if (response.status === 200) {
       console.log(response.data);
       return response.data;
@@ -17,7 +17,7 @@ export async function UserSignUp({ name, username, password, email }) {
   try {
     const userDetails = { userDetails: { name, username, password, email } };
     console.log({ userDetails });
-    const response = await axios.post(BASE_URL + "users/signup", userDetails);
+    const response = await axios.post(BASE_URL + "user/signup", userDetails);
     if (response.status === 200) {
       return response.data;
     }
@@ -51,4 +51,10 @@ export function setupAuthExceptionHandler(dispatch, removeToken, navigate) {
       return Promise.reject(error);
     }
   );
+}
+
+export async function FetchProfile() {
+  const response = await axios.post(BASE_URL + "user");
+  console.log({ response });
+  return response.data;
 }
