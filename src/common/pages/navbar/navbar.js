@@ -6,12 +6,14 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { IoPersonOutline } from "react-icons/io5";
 import { removeToken } from "../../../features/users/userSlice";
 import { useDispatch } from "react-redux";
+import { refreshUserPosts } from "../../../features/posts/postSlice";
 export function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   function logoutHandler() {
     localStorage.clear();
     dispatch(removeToken());
+    dispatch(refreshUserPosts());
     navigate("/login");
   }
   return (

@@ -40,6 +40,10 @@ export const postSlice = createSlice({
   name: "postSlice",
   initialState,
   reducers: {
+    refreshUserPosts: (state) => {
+      state.status = "idle";
+      state.posts = null;
+    },
     startSpinner: (state) => {
       state.spinnerStatus = true;
     },
@@ -66,7 +70,9 @@ export const postSlice = createSlice({
       state.name = name;
     },
     [loadPosts.rejected]: (state, action) => {
-      state.status = "error";
+      action.payload === true
+        ? (state.status = "401 error")
+        : (state.status = "error");
       state.error = action.error.message;
     },
     // [loadComments.pending]: (state) => {
@@ -86,6 +92,11 @@ export const postSlice = createSlice({
     // },
   },
 });
-export const { startProgressBar, stopProgressBar, startSpinner, stopSpinner } =
-  postSlice.actions;
+export const {
+  startProgressBar,
+  stopProgressBar,
+  startSpinner,
+  stopSpinner,
+  refreshUserPosts,
+} = postSlice.actions;
 export default postSlice.reducer;
