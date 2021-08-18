@@ -35,3 +35,20 @@ export function setUpAuthHeaderForServiceCalls(token) {
     delete axios.defaults.headers.common["Authorization"];
   }
 }
+
+export function setupAuthExceptionHandler(dispatch, removeToken, navigate) {
+  console.log("exception handler");
+  const UNAUTHORIZED = 401;
+  axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error?.response?.status === UNAUTHORIZED) {
+        console.log("unauth in auth");
+        localStorage.clear();
+        dispatch(removeToken());
+        navigate("/login");
+      }
+      return Promise.reject(error);
+    }
+  );
+}

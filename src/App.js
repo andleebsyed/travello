@@ -1,17 +1,24 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Route, Routes } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { Homepage } from "./common/pages/homepage/homepage";
 import { Landing } from "./common/pages/landing/landing";
 import { Navbar } from "./common/pages/navbar/navbar";
 import { SinglePost } from "./features/posts/singlePost";
 import { Login } from "./features/users/login/login";
 import { Signup } from "./features/users/signup/signup";
-import { setUpAuthHeaderForServiceCalls } from "./services/users/users";
+import {
+  setupAuthExceptionHandler,
+  setUpAuthHeaderForServiceCalls,
+} from "./services/users/users";
 import { ProgressBar } from "../src/common/components/Loaders/Progress";
+import { removeToken } from "./features/users/userSlice";
 function App() {
   const { authorized } = useSelector((state) => state.users);
   const { progressBarStatus } = useSelector((state) => state.posts);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // dispatch(removeToken())
   function PrivateRoute(props) {
     if (authorized) {
       return <Route {...props} />;
@@ -29,8 +36,10 @@ function App() {
     }
   }
   useEffect(() => {
+    console.log("do i always run");
     setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
-  }, []);
+    setupAuthExceptionHandler(dispatch, removeToken, navigate);
+  }, [dispatch, navigate]);
   return (
     <>
       <div className={authorized ? "flex min-h-screen" : "min-h-screen"}>
