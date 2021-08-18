@@ -2,11 +2,17 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
+  setupAuthExceptionHandler,
   setUpAuthHeaderForServiceCalls,
   UserSignIn,
 } from "../../../services/users/users";
-import { startProgressBar, stopProgressBar } from "../../posts/postSlice";
-import { setToken } from "../userSlice";
+import {
+  refreshUserPosts,
+  restart,
+  startProgressBar,
+  stopProgressBar,
+} from "../../posts/postSlice";
+import { removeToken, setToken } from "../userSlice";
 import { ProgressBar } from "../../../common/components/Loaders/Progress";
 export function Login() {
   const navigate = useNavigate();
@@ -18,19 +24,14 @@ export function Login() {
   // const { startProgressBar, stopProgressBar } = useSelector(state => state.posts)
   async function LoginHandler(e) {
     e.preventDefault();
-
-    dispatch(startProgressBar());
     setButtonText("Logging you in...");
     const response = await UserSignIn(userDetails);
-    dispatch(stopProgressBar());
     setButtonText("Login");
     if (response.status && response.allowUser) {
-      console.log("coming here");
       setUpAuthHeaderForServiceCalls(response.token);
       localStorage.setItem("token", response.token);
       localStorage.setItem("userId", response.userId);
       dispatch(setToken());
-
       navigate("/home", { replace: true });
     }
     if (!response.allowUser) {

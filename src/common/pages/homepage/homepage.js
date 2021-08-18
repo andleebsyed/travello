@@ -12,7 +12,6 @@ export function Homepage() {
   const { posts, status } = useSelector((state) => state.posts);
   const { authorized } = useSelector((state) => state.users);
   const navigate = useNavigate();
-  console.log("posts ", { posts });
   useEffect(() => {
     async function Run() {
       setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
