@@ -17,6 +17,7 @@ module.exports = {
           DEFAULT: "#DC2626",
         },
         "dark-hover": "#1C2633",
+        "grey-outline": "#9CA38F",
       },
       screens: {
         xsm: "550px",

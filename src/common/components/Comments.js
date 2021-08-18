@@ -147,7 +147,7 @@ export function Comments({ commentBoxVisibility, postId }) {
                       })
                     }
                     title="Delete Comment"
-                    className="text-gray-50 cursor-pointer hover:text-red hover:bg-red hover:bg-opacity-10 self-center ml-auto rounded-full p-2"
+                    className="text-grey-outline cursor-pointer hover:text-red hover:bg-red hover:bg-opacity-10 self-center ml-auto rounded-full p-2"
                   >
                     <AiFillDelete size={18} />
                   </button>
