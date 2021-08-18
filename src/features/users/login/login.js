@@ -2,17 +2,11 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  setupAuthExceptionHandler,
   setUpAuthHeaderForServiceCalls,
   UserSignIn,
 } from "../../../services/users/users";
-import {
-  refreshUserPosts,
-  restart,
-  startProgressBar,
-  stopProgressBar,
-} from "../../posts/postSlice";
-import { removeToken, setToken } from "../userSlice";
+
+import { setToken } from "../userSlice";
 import { ProgressBar } from "../../../common/components/Loaders/Progress";
 export function Login() {
   const navigate = useNavigate();
@@ -21,7 +15,6 @@ export function Login() {
   const [buttonText, setButtonText] = useState("Login");
   const dispatch = useDispatch();
   const { progressBarStatus } = useSelector((state) => state.posts);
-  // const { startProgressBar, stopProgressBar } = useSelector(state => state.posts)
   async function LoginHandler(e) {
     e.preventDefault();
     setButtonText("Logging you in...");

@@ -5,11 +5,7 @@ import {
   setUpAuthHeaderForServiceCalls,
   UserSignUp,
 } from "../../../services/users/users";
-import {
-  refreshUserPosts,
-  startProgressBar,
-  stopProgressBar,
-} from "../../posts/postSlice";
+
 import { setToken } from "../userSlice";
 
 export function Signup() {
