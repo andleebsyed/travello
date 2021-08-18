@@ -1,8 +1,16 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { UserSignUp } from "../../../services/users/users";
-import { startProgressBar, stopProgressBar } from "../../posts/postSlice";
+import {
+  setUpAuthHeaderForServiceCalls,
+  UserSignUp,
+} from "../../../services/users/users";
+import {
+  refreshUserPosts,
+  startProgressBar,
+  stopProgressBar,
+} from "../../posts/postSlice";
+import { setToken } from "../userSlice";
 
 export function Signup() {
   const navigate = useNavigate();
@@ -45,13 +53,14 @@ export function Signup() {
     e.preventDefault();
     const apiCallStatus = PasswordHandler();
     if (apiCallStatus) {
-      dispatch(startProgressBar());
       setButtonText("Signing You Up...");
       const response = await UserSignUp(userDetails);
-      dispatch(stopProgressBar());
+      setUpAuthHeaderForServiceCalls(response.token);
       setButtonText("Sign Up");
+      dispatch(setToken());
       if (response.status) {
         localStorage.setItem("token", response.token);
+        localStorage.setItem("userId", response.userId);
         navigate("/home", {
           replace: true,
         });
