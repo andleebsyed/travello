@@ -1,17 +1,17 @@
 import moment from "moment";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 // import { Link, useNavigate } from "react-router-dom";
-import { FcLike } from "react-icons/fc";
+// import { FcLike } from "react-icons/fc";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { GoComment } from "react-icons/go";
 import { Comments } from "../../common/components/Comments";
 import { LikeInteraction } from "../../services/posts/posts";
-import { startProgressBar, stopProgressBar } from "./postSlice";
+// import { startProgressBar, stopProgressBar } from "./postSlice";
+import { useState } from "react";
 export function ShowPost({ post }) {
   const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   function commentBoxHandler(event) {
     event.stopPropagation();
     if (commentBoxVisibility === "hidden") {
@@ -43,9 +43,7 @@ export function ShowPost({ post }) {
   async function likeButtonHandler({ event, postId, action }) {
     event.stopPropagation();
     const data = { postId, action };
-    // dispatch(startProgressBar());
     const response = await LikeInteraction(data);
-    // dispatch(stopProgressBar());
     console.log({ response });
     if (response.status) {
       action === "inc"

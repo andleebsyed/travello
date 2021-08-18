@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { FetchAllPosts, FetchComments } from "../../services/posts/posts";
+import { FetchAllPosts } from "../../services/posts/posts";
 const initialState = {
   status: "idle",
   error: null,
