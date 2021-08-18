@@ -5,10 +5,11 @@ import { useNavigate, useParams } from "react-router-dom";
 // import { FcLike } from "react-icons/fc";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { GoComment } from "react-icons/go";
-import { Comments } from "../../common/components/Comments";
+// import { Comments } from "./Comments";
 import { LikeInteraction } from "../../services/posts/posts";
 // import { startProgressBar, stopProgressBar } from "./postSlice";
 import { useState } from "react";
+import { Comments } from "./Comments";
 export function ShowPost({ post }) {
   const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
   // const dispatch = useDispatch();

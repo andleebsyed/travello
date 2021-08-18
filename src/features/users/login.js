@@ -4,10 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   setUpAuthHeaderForServiceCalls,
   UserSignIn,
-} from "../../../services/users/users";
+} from "../../services/users/users";
 
-import { setToken } from "../userSlice";
-import { ProgressBar } from "../../../common/components/Loaders/Progress";
+import { setToken } from "./userSlice";
+import { ProgressBar } from "../../common/components/Loaders/Progress";
 export function Login() {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState({});

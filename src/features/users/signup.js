@@ -4,9 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   setUpAuthHeaderForServiceCalls,
   UserSignUp,
-} from "../../../services/users/users";
+} from "../../services/users/users";
 
-import { setToken } from "../userSlice";
+import { setToken } from "./userSlice";
 
 export function Signup() {
   const navigate = useNavigate();

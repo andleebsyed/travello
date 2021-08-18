@@ -5,14 +5,15 @@ import { Homepage } from "./common/pages/homepage/homepage";
 import { Landing } from "./common/pages/landing/landing";
 import { Navbar } from "./common/pages/navbar/navbar";
 import { SinglePost } from "./features/posts/singlePost";
-import { Login } from "./features/users/login/login";
-import { Signup } from "./features/users/signup/signup";
+import { Login } from "./features/users/login";
+import { Signup } from "./features/users/signup";
 import {
   setupAuthExceptionHandler,
   setUpAuthHeaderForServiceCalls,
 } from "./services/users/users";
 import { ProgressBar } from "../src/common/components/Loaders/Progress";
 import { removeToken } from "./features/users/userSlice";
+import { Profile } from "./features/users/Profile";
 function App() {
   const { authorized } = useSelector((state) => state.users);
   const { progressBarStatus } = useSelector((state) => state.posts);
@@ -58,10 +59,9 @@ function App() {
           />
           <PrivateRoute path="/home" element={<Homepage />} />
           <PrivateRoute path="/post/:postId" element={<SinglePost />} />
+          <PrivateRoute path="/profile" element={<Profile />} />
         </Routes>
       </div>
-      {/* <footer className="h-16"></footer> */}
-      {/* <ProgressBar /> */}
     </>
   );
 }
