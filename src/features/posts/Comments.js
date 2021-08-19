@@ -6,28 +6,44 @@ import {
   RemoveComment,
 } from "../../services/posts/posts";
 import { AiFillDelete } from "react-icons/ai";
-export function Comments({ commentBoxVisibility, postId }) {
+import { useDispatch } from "react-redux";
+import { reactionAdded } from "./postSlice";
+export function Comments({ commentBoxVisibility, post }) {
+  const postId = post?._id;
   const [postButtonData, setPostButtonData] = useState({
     text: "Post",
     color: "bg-blue-xlight",
     disabled: true,
   });
+  const dispatch = useDispatch();
   const [commentContent, setCommentContent] = useState({
     commentText: "",
     color: "bg-blue-xlight",
     disabled: true,
   });
-  const [postComments, setPostComments] = useState(null);
   const commentBoxRef = useRef(null);
+  let sortedComments = [...post?.comments];
+  sortedComments.sort(
+    (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
+  );
   useEffect(() => {
     async function Run() {
       const response = await FetchComments({ postId });
-      setPostComments(response.comments);
+      console.log({ response });
+      if (response.status) {
+        dispatch(
+          reactionAdded({
+            type: "addComment",
+            payload: { comments: response.comments },
+            postId,
+          })
+        );
+      }
     }
     if (commentBoxVisibility !== "hidden") {
       Run();
     }
-  }, [postId, commentBoxVisibility]);
+  }, []);
   async function commentBoxSubmitHandler(e) {
     e.stopPropagation();
     e.preventDefault();
@@ -40,13 +56,33 @@ export function Comments({ commentBoxVisibility, postId }) {
       postId,
     });
     if (response.status) {
-      const response = await FetchComments({ postId });
-      setPostComments(response.comments);
+      console.log({ response });
+      commentBoxRef.current.value = "";
+      dispatch(
+        reactionAdded({
+          type: "refreshComments",
+          postId,
+          comments: response.comments,
+        })
+      );
       setPostButtonData((postButtonData) => ({
         ...postButtonData,
         text: "Post",
       }));
-      commentBoxRef.current.value = "";
+    }
+  }
+  async function DeleteCommentHandler({ event, postId, commentId }) {
+    event.stopPropagation();
+    const response = await RemoveComment({ postId, commentId });
+    console.log("res in view ", { response });
+    if (response.status) {
+      dispatch(
+        reactionAdded({
+          type: "refreshComments",
+          postId,
+          comments: response.comments,
+        })
+      );
     }
   }
   useEffect(() => {
@@ -64,15 +100,6 @@ export function Comments({ commentBoxVisibility, postId }) {
       }));
     }
   }, [commentContent.commentText]);
-  async function DeleteCommentHandler({ event, postId, commentId }) {
-    event.stopPropagation();
-    const response = await RemoveComment({ postId, commentId });
-    console.log("res in view ", { response });
-    if (response.status) {
-      const response = await FetchComments({ postId });
-      setPostComments(response.comments);
-    }
-  }
 
   return (
     <section className={commentBoxVisibility}>
@@ -82,7 +109,6 @@ export function Comments({ commentBoxVisibility, postId }) {
       >
         <input
           onChange={(e) => {
-            console.log("isit coming here");
             e.stopPropagation();
             e.nativeEvent.stopImmediatePropagation();
             setCommentContent({
@@ -107,54 +133,52 @@ export function Comments({ commentBoxVisibility, postId }) {
           {postButtonData.text}
         </button>
       </form>
-      {postComments && postComments.length > 0 && (
+      {post.comments && post.comments.length > 0 && (
         <ul className="">
-          {postComments
-            ?.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
-            .map((comment) => (
-              <li key={comment._id} className="flex mt-4 mb-4">
-                <img
-                  className="rounded-3xl w-12 h-12 mr-4  "
-                  alt="avatar"
-                  src={
-                    comment.author.avatar
-                      ? comment.author.avatar
-                      : "https://via.placeholder.com/48"
-                  }
-                />
+          {sortedComments.map((comment) => (
+            <li key={comment._id} className="flex mt-4 mb-4">
+              <img
+                className="rounded-3xl w-12 h-12 mr-4  "
+                alt="avatar"
+                src={
+                  comment.author.avatar
+                    ? comment.author.avatar
+                    : "https://via.placeholder.com/48"
+                }
+              />
+              <div className="">
                 <div className="">
-                  <div className="">
-                    <span className="font-bold mr-2 mb-4">
-                      {comment.author.name}
-                    </span>
-                    <span className="mr-2 font-light ">
-                      @{comment.author.username}
-                    </span>
-                    <span className="font-light italic">
-                      {moment(comment.createdAt).fromNow()}
-                    </span>
-                  </div>
-                  <p>{comment.content}</p>
+                  <span className="font-bold mr-2 mb-4">
+                    {comment.author.name}
+                  </span>
+                  <span className="mr-2 font-light ">
+                    @{comment.author.username}
+                  </span>
+                  <span className="font-light italic">
+                    {moment(comment.createdAt).fromNow()}
+                  </span>
                 </div>
-                {localStorage.getItem("userId") === comment.author._id && (
-                  // <p className="self-center mr-4">delete</p>
-                  <button
-                    onClick={(event) =>
-                      DeleteCommentHandler({
-                        event,
-                        postId,
-                        commentId: comment._id,
-                      })
-                    }
-                    title="Delete Comment"
-                    className="text-grey-outline cursor-pointer hover:text-red hover:bg-red hover:bg-opacity-10 self-center ml-auto rounded-full p-2"
-                  >
-                    <AiFillDelete size={18} />
-                  </button>
-                )}
-              </li>
-              // </div>
-            ))}
+                <p>{comment.content}</p>
+              </div>
+              {localStorage.getItem("userId") === comment.author._id && (
+                // <p className="self-center mr-4">delete</p>
+                <button
+                  onClick={(event) =>
+                    DeleteCommentHandler({
+                      event,
+                      postId,
+                      commentId: comment._id,
+                    })
+                  }
+                  title="Delete Comment"
+                  className="text-grey-outline cursor-pointer hover:text-red hover:bg-red hover:bg-opacity-10 self-center ml-auto rounded-full p-2"
+                >
+                  <AiFillDelete size={18} />
+                </button>
+              )}
+            </li>
+            // </div>
+          ))}
         </ul>
       )}
     </section>
