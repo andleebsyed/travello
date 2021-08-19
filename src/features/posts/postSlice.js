@@ -3,11 +3,12 @@ import { FetchAllPosts } from "../../services/posts/posts";
 const initialState = {
   status: "idle",
   error: null,
-  posts: null,
+  posts: [],
   username: null,
   name: null,
   spinnerStatus: false,
   progressBarStatus: false,
+  postComments: [],
   // commentsData: {
   //   comments: [],
   //   postId: null,
@@ -40,6 +41,29 @@ export const postSlice = createSlice({
   name: "postSlice",
   initialState,
   reducers: {
+    reactionAdded: (state, action) => {
+      const { type } = action.payload;
+      console.log(JSON.parse(JSON.stringify({ type })));
+      if (type === "likeAdded") {
+        const { postId } = action.payload;
+        const post = state?.posts?.find((post) => post._id === postId);
+        post?.likedBy.push(localStorage.getItem("userId"));
+        post.liked = true;
+      } else if (type === "likeRemoved") {
+        const { postId } = action.payload;
+        let post = state?.posts?.find((post) => post._id === postId);
+        post.likedBy = post.likedBy.filter((authorId) => {
+          console.log(JSON.parse(JSON.stringify({ authorId })));
+          return authorId !== localStorage.getItem("userId");
+        });
+        post.liked = false;
+      } else if (type === "refreshComments") {
+        const { postId, comments } = action.payload;
+        let post = state?.posts?.find((post) => post._id === postId);
+        // post.comments.push(content);
+        post.comments = comments;
+      }
+    },
     refreshUserPosts: (state) => {
       state.status = "idle";
       state.posts = null;
@@ -62,9 +86,9 @@ export const postSlice = createSlice({
       state.status = "loading";
     },
     [loadPosts.fulfilled]: (state, action) => {
-      const { updatedPosts, username, name } = action.payload;
+      const { finalUserPosts, username, name } = action.payload;
 
-      state.posts = updatedPosts;
+      state.posts = finalUserPosts;
       state.status = "success";
       state.username = username;
       state.name = name;
@@ -98,5 +122,8 @@ export const {
   startSpinner,
   stopSpinner,
   refreshUserPosts,
+  incrementLikes,
+  decrementLikes,
+  reactionAdded,
 } = postSlice.actions;
 export default postSlice.reducer;
