@@ -4,18 +4,21 @@ import { useNavigate } from "react-router";
 import { CreatePost } from "../../../features/posts/createPost";
 import { loadPosts } from "../../../features/posts/postSlice";
 import { ShowPost } from "../../../features/posts/showPost";
+import { getUserProfile } from "../../../features/users/userSlice";
 import { setUpAuthHeaderForServiceCalls } from "../../../services/users/users";
 import { SpinnerLoader } from "../../components/Loaders/Spinner";
 
 export function Homepage() {
   const dispatch = useDispatch();
   const { posts, status } = useSelector((state) => state.posts);
+  const { profile } = useSelector((state) => state.users);
   const { authorized } = useSelector((state) => state.users);
   const navigate = useNavigate();
   useEffect(() => {
     async function Run() {
       setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
       dispatch(loadPosts());
+      dispatch(getUserProfile());
     }
     if (status === "idle" && authorized) {
       Run();
@@ -43,7 +46,10 @@ export function Homepage() {
         </div>
 
         <CreatePost />
-        {(status === "loading" && posts === null) || posts === null ? (
+        {(status === "loading" && posts === null) ||
+        posts === null ||
+        profile === null ||
+        undefined ? (
           <SpinnerLoader />
         ) : posts.length > 0 ? (
           <ul className="  ">
