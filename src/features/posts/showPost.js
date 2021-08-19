@@ -1,11 +1,12 @@
 import moment from "moment";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { GoComment } from "react-icons/go";
 import { LikeInteraction } from "../../services/posts/posts";
 import { useState } from "react";
 import { Comments } from "./Comments";
+import { reactionAdded } from "./postSlice";
 export function ShowPost({ post }) {
   const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
   function commentBoxHandler(event) {
@@ -16,8 +17,23 @@ export function ShowPost({ post }) {
       setCommentBoxVisibility("hidden");
     }
   }
+  let userDetails = {
+    name: null,
+    username: null,
+  };
   const { name, username } = useSelector((state) => state.posts);
+  const { profile } = useSelector((state) => state.users);
+  if (profile?.username) {
+    userDetails = {
+      ...userDetails,
+      name: profile.name,
+      username: profile.username,
+    };
+  } else {
+    userDetails = { ...userDetails, name, username };
+  }
   const { postId } = useParams();
+  const dispatch = useDispatch();
   const [postParameters, setPostParameters] = useState(
     postId
       ? {
@@ -32,10 +48,18 @@ export function ShowPost({ post }) {
           postText: "",
         }
   );
-  const [buttonTransition, setButtonTransition] = useState({
-    liked: post.liked,
-    likes: post.likedBy.length,
-  });
+  // useEffect(() => {
+  //   async function Run() {
+  //     // dispatch()
+  //     const response = await FetchComments({ postId });
+  //     if (response.status) {
+  //       dispatch({ type: "refreshComments", comments: response.comments });
+  //     }
+  //   }
+  //   if (post.comments[0].avatar === null) {
+  //     Run();
+  //   }
+  // }, [dispatch, postId, post.comments]);
   async function likeButtonHandler({ event, postId, action }) {
     event.stopPropagation();
     const data = { postId, action };
@@ -43,16 +67,8 @@ export function ShowPost({ post }) {
     console.log({ response });
     if (response.status) {
       action === "inc"
-        ? setButtonTransition({
-            ...buttonTransition,
-            liked: true,
-            likes: buttonTransition.likes + 1,
-          })
-        : setButtonTransition({
-            ...buttonTransition,
-            liked: false,
-            likes: buttonTransition.likes - 1,
-          });
+        ? dispatch(reactionAdded({ type: "likeAdded", postId }))
+        : dispatch(reactionAdded({ type: "likeRemoved", postId }));
     }
   }
   const navigate = useNavigate();
@@ -72,12 +88,24 @@ export function ShowPost({ post }) {
           <div className="flex justify-between">
             <img
               alt="avatar"
-              src="https://via.placeholder.com/48"
+              src={
+                profile.avatar
+                  ? profile.avatar
+                  : "https://via.placeholder.com/48"
+              }
               className="rounded-3xl w-12 h-12  "
             />
             <div className="pl-1 flex items-center">
-              <span className=" ml-2 font-bold">{name}</span>
-              <span className="ml-2 ">@{username}</span>
+              <span
+                className=" ml-2 font-bold hover:underline hover:cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate("/profile", { replace: true });
+                }}
+              >
+                {profile.name}
+              </span>
+              <span className="ml-2 ">@{profile.username}</span>
             </div>
           </div>
           <span className="self-center ml-auto">
@@ -106,7 +134,7 @@ export function ShowPost({ post }) {
         )}
         <div className="flex justify-start pt-4">
           <div className="flex mr-32 text-grey-outline hover:text-red ">
-            {!buttonTransition.liked ? (
+            {!post.liked ? (
               <button
                 onClick={(event) =>
                   likeButtonHandler({ event, postId: post._id, action: "inc" })
@@ -125,7 +153,7 @@ export function ShowPost({ post }) {
                 <AiFillHeart size={24} />
               </button>
             )}
-            <p className="self-center ml-2">{buttonTransition.likes}</p>
+            <p className="self-center ml-2">{post.likedBy.length}</p>
           </div>
           <section className="flex text-grey-outline hover:text-blue-light">
             <button
@@ -141,10 +169,7 @@ export function ShowPost({ post }) {
       <div
         className={`${commentBoxVisibility}  border-b border-opacity-20  p-2 `}
       >
-        <Comments
-          postId={post._id}
-          commentBoxVisibility={commentBoxVisibility}
-        />
+        <Comments post={post} commentBoxVisibility={commentBoxVisibility} />
       </div>
     </main>
   );
