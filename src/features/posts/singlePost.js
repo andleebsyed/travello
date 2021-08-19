@@ -6,18 +6,22 @@ import { loadPosts } from "./postSlice";
 import { ShowPost } from "./showPost";
 import { BiArrowBack } from "react-icons/bi";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
+import { getUserProfile } from "../users/userSlice";
 export function SinglePost() {
   const { posts } = useSelector((state) => state.posts);
   const { postId } = useParams();
   const dispatch = useDispatch();
   useEffect(() => {
-    if (posts === null) {
+    if (posts === null || posts.length === 0) {
       setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
       dispatch(loadPosts());
+      dispatch(getUserProfile());
     }
   }, [dispatch, posts]);
   const post = posts?.find((post) => post._id === postId);
   const navigate = useNavigate();
+  console.log({ post });
+  // useEffect(() => {});
   return (
     // post === undefined ? (
     //   <SpinnerLoader />
