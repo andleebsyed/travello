@@ -124,7 +124,7 @@ export function Comments({ commentBoxVisibility, post }) {
           type="text"
           ref={commentBoxRef}
           placeholder="Comment here..."
-          className="p-1 mr-4 w-full bg-blue rounded border border-gray-400 outline-none focus:ring-2 focus:ring-blue-light focus:ring-opacity-100 focus:border-blue-light"
+          className="p-1 mr-4 w-screen bg-blue rounded border border-gray-400 outline-none focus:ring-2 focus:ring-blue-light focus:ring-opacity-100 focus:border-blue-light"
         />
         <button
           className={` pl-4 pr-4 rounded-2xl ${postButtonData.color}`}
@@ -158,7 +158,9 @@ export function Comments({ commentBoxVisibility, post }) {
                     {moment(comment.createdAt).fromNow()}
                   </span>
                 </div>
-                <p>{comment.content}</p>
+                <p className=" break-all overflow-hidden whitespace-pre-line">
+                  {comment.content}
+                </p>
               </div>
               {localStorage.getItem("userId") === comment.author._id && (
                 // <p className="self-center mr-4">delete</p>

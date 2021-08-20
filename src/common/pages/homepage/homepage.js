@@ -35,7 +35,7 @@ export function Homepage() {
       className="flex border border-b-0 border-opacity-20 text-white min-h-screen"
       id="home"
     >
-      <section className="w-screen   md:w-[60vw] lg:w-[50vw] xsm:mr-4 gridbreak:mr-0">
+      <section className="w-screen   md:w-[60vw] lg:w-[50vw]  gridbreak:mr-0">
         <div className="hidden xsm:block sticky top-0 bg-blue h-14 ">
           <a
             href="#home"
