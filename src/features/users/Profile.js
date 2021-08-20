@@ -42,23 +42,28 @@ export function Profile() {
         <p className="p-2 text-xl font-bold">{profile.name}</p>
       </section>
       <section className="">
-        <img alt="cover" src={profile.coverPic} className="h-40 w-full" />
+        <img alt="cover" src={profile.coverPic} className="h-40 w-full " />
         <img
           alt="user avatar"
           src={profile?.avatar}
           className="rounded-full w-20 h-20 ml-2 relative bottom-10 "
         />
         <div className="flex flex-col relative bottom-16 ml-2 ">
-          <div className="ml-auto mr-4 self-end border hover:bg-grey-outline hover:bg-opacity-20 rounded-3xl h-8 pl-2 pr-2 mt-2">
-            <EditProfileModal />
-          </div>
+          {/* <div className="ml-auto mr-4 self-end border hover:bg-grey-outline hover:bg-opacity-20 rounded-3xl h-8 pl-2 pr-2 mt-2"> */}
+          <EditProfileModal />
+          {/* </div> */}
           <p className="font-bold">{profile.name}</p>
           <p className="font-light mb-2">@{profile.username}</p>
-          <p>kuch b aayaiga yaha</p>
+          <p>{profile.bio ? profile.bio : "Hey i am a travello User"}</p>
           <div className="flex">
             <p className="mr-2">999 Followers</p>
             <p>999 Following</p>
           </div>
+        </div>
+        <div className="flex  ">
+          <p className="font-bold m-2 border-b-4 border-blue-light mb-0 text-blue-light">
+            Posts
+          </p>
         </div>
       </section>
       <section className="border-t ">
