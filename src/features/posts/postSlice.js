@@ -60,7 +60,6 @@ export const postSlice = createSlice({
       } else if (type === "refreshComments") {
         const { postId, comments } = action.payload;
         let post = state?.posts?.find((post) => post._id === postId);
-        // post.comments.push(content);
         post.comments = comments;
       }
     },
@@ -99,21 +98,6 @@ export const postSlice = createSlice({
         : (state.status = "error");
       state.error = action.error.message;
     },
-    // [loadComments.pending]: (state) => {
-    //   state.commentsStatus = "loading";
-    // },
-    // [loadComments.fulfilled]: (state, action) => {
-    //   const commentsData = action.payload;
-    //   console.log({ commentsData }, "in reducers");
-    //   const { comments, postId } = commentsData;
-    //   state.commentsData.comments = comments;
-    //   state.commentsData.postId = postId;
-    //   state.commentsStatus = "success";
-    // },
-    // [loadComments.rejected]: (state, action) => {
-    //   state.commentsStatus = "error";
-    //   state.error = action.payload.message;
-    // },
   },
 });
 export const {

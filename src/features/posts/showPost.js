@@ -17,20 +17,20 @@ export function ShowPost({ post }) {
       setCommentBoxVisibility("hidden");
     }
   }
-  let userDetails = {
-    name: null,
-    username: null,
-  };
-  const { name, username } = useSelector((state) => state.posts);
+  // let userDetails = {
+  //   name: null,
+  //   username: null,
+  // };
+  // const { name, username } = useSelector((state) => state.posts);
   const { profile } = useSelector((state) => state.users);
   if (profile?.username) {
-    userDetails = {
-      ...userDetails,
-      name: profile.name,
-      username: profile.username,
-    };
+    // userDetails = {
+    //   ...userDetails,
+    //   name: profile.name,
+    //   username: profile.username,
+    // };
   } else {
-    userDetails = { ...userDetails, name, username };
+    // userDetails = { ...userDetails, name, username };
   }
   const { postId } = useParams();
   const dispatch = useDispatch();
