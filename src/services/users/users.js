@@ -1,3 +1,4 @@
+import { responsiveFontSizes } from "@material-ui/core";
 import axios from "axios";
 import { BASE_URL } from "../url";
 
@@ -57,4 +58,23 @@ export async function FetchProfile() {
   const response = await axios.post(BASE_URL + "user");
   console.log({ response });
   return response.data;
+}
+
+export async function UpdateUser({ avatar, coverPic, bio, name }) {
+  // console.log({ updateData });
+  let formData = new FormData();
+  formData.append("avatar", avatar);
+  formData.append("coverPic", coverPic);
+  formData.append("bio", bio);
+  formData.append("name", name);
+  console.log({ formData });
+  const response = await axios.post(BASE_URL + "user/update", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  console.log({ response });
+  if (response.status === 200) {
+    return response.data;
+  }
 }
