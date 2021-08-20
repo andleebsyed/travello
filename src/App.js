@@ -12,14 +12,15 @@ import {
   setUpAuthHeaderForServiceCalls,
 } from "./services/users/users";
 import { ProgressBar } from "../src/common/components/Loaders/Progress";
-import { removeToken } from "./features/users/userSlice";
+import { getUserProfile, removeToken } from "./features/users/userSlice";
 import { Profile } from "./features/users/Profile";
+import { loadPosts } from "./features/posts/postSlice";
 function App() {
   const { authorized } = useSelector((state) => state.users);
   const { progressBarStatus } = useSelector((state) => state.posts);
+  const { profile } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // dispatch(removeToken())
   function PrivateRoute(props) {
     if (authorized) {
       return <Route {...props} />;
@@ -29,10 +30,8 @@ function App() {
   }
   function Redirector(props) {
     if (authorized) {
-      console.log("go to homeoage");
       return <Route element={<Homepage />} {...props} />;
     } else {
-      console.log("lets  be in logins");
       return <Route {...props} />;
     }
   }
@@ -41,6 +40,13 @@ function App() {
     setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
     setupAuthExceptionHandler(dispatch, removeToken, navigate);
   }, [dispatch, navigate]);
+  useEffect(() => {
+    if (authorized || profile === null) {
+      dispatch(loadPosts());
+      console.log("in pursuit of data ");
+      dispatch(getUserProfile());
+    }
+  }, []);
   return (
     <>
       <div className={authorized ? "flex min-h-screen" : "min-h-screen"}>
