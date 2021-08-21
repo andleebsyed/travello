@@ -1,28 +1,32 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
 // import { setUpAuthHeaderForServiceCalls } from "../../services/users/users";
 // import { loadPosts } from "../posts/postSlice";
 import { ShowPost } from "../posts/showPost";
 import { EditProfileModal } from "./editProfile";
+import { getUserProfile } from "./userSlice";
 // import { getUserProfile } from "./userSlice";
 
 export function Profile() {
   const { profileStatus, profile } = useSelector((state) => state.users);
+  const { status } = useSelector((state) => state.posts);
   const { posts } = useSelector((state) => state.posts);
   // const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   console.log({ profile }, { profileStatus });
   useEffect(() => {
-    // setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
-    // console.log("mai chalai jaaraha hu");
-    // if (profileStatus === "idle" || profile === null) {
-    // dispatch(loadPosts());
-    // dispatch(getUserProfile());
+    console.log("internakl runs first or not");
+    if (profileStatus === "idle" && status !== "idle") {
+      console.log("let's fetch profile");
+      dispatch(getUserProfile());
+    }
+
     // }
-  }, [posts?.length]);
+  }, [posts?.length, status, dispatch, profileStatus]);
 
   return profile === null ? (
     // profileStatus !== "success" ||
@@ -72,9 +76,9 @@ export function Profile() {
             <p>Oops!!Your feed is empty</p>
           </div>
         ) : posts?.length > 0 ? (
-          posts.map((post) => <ShowPost post={post} />)
+          posts.map((post) => <ShowPost post={post} user={profile} />)
         ) : (
-          profile.posts.map((post) => <ShowPost post={post} />)
+          profile.posts.map((post) => <ShowPost post={post} user={profile} />)
         )}
       </section>
       {/* <EditProfileModal /> */}
