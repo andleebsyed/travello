@@ -32,7 +32,7 @@ export function Navbar() {
         </li>
         <li className="navbar-list-item">
           <NavLink
-            to="/explore"
+            to="/search"
             activeClassName="active-class"
             className="navlink-inactive-class"
             end

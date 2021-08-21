@@ -15,6 +15,7 @@ import { ProgressBar } from "../src/common/components/Loaders/Progress";
 import { getUserProfile, removeToken } from "./features/users/userSlice";
 import { Profile } from "./features/users/Profile";
 import { loadPosts } from "./features/posts/postSlice";
+import { Search } from "./features/users/searchUser";
 function App() {
   const { authorized } = useSelector((state) => state.users);
   const { progressBarStatus } = useSelector((state) => state.posts);
@@ -66,6 +67,7 @@ function App() {
           <PrivateRoute path="/home" element={<Homepage />} />
           <PrivateRoute path="/post/:postId" element={<SinglePost />} />
           <PrivateRoute path="/profile" element={<Profile />} />
+          <PrivateRoute path="/search" element={<Search />} />
         </Routes>
       </div>
     </>
