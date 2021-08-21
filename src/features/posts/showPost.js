@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { GoComment } from "react-icons/go";
@@ -7,7 +7,8 @@ import { LikeInteraction } from "../../services/posts/posts";
 import { useState } from "react";
 import { Comments } from "./Comments";
 import { reactionAdded } from "./postSlice";
-export function ShowPost({ post }) {
+// import { SinglePost } from "/singlePost";
+export function ShowPost({ post, user }) {
   const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
   function commentBoxHandler(event) {
     event.stopPropagation();
@@ -22,16 +23,16 @@ export function ShowPost({ post }) {
   //   username: null,
   // };
   // const { name, username } = useSelector((state) => state.posts);
-  const { profile } = useSelector((state) => state.users);
-  if (profile?.username) {
-    // userDetails = {
-    //   ...userDetails,
-    //   name: profile.name,
-    //   username: profile.username,
-    // };
-  } else {
-    // userDetails = { ...userDetails, name, username };
-  }
+  // const { user } = useSelector((state) => state.users);
+  // if (user?.username) {
+  //   // userDetails = {
+  //   //   ...userDetails,
+  //   //   name: user.name,
+  //   //   username: user.username,
+  //   // };
+  // } else {
+  //   // userDetails = { ...userDetails, name, username };
+  // }
   const { postId } = useParams();
   const dispatch = useDispatch();
   const [postParameters, setPostParameters] = useState(
@@ -78,6 +79,7 @@ export function ShowPost({ post }) {
         onClick={(event) => {
           if (!postParameters.singlePost) {
             event.stopPropagation();
+            // <SinglePost post = {post} user = {user} />
             navigate(`/post/${post._id}`);
           }
         }}
@@ -88,11 +90,7 @@ export function ShowPost({ post }) {
           <div className="flex justify-between">
             <img
               alt="avatar"
-              src={
-                profile.avatar
-                  ? profile.avatar
-                  : "https://via.placeholder.com/48"
-              }
+              src={user.avatar ? user.avatar : "https://via.placeholder.com/48"}
               className="rounded-3xl w-12 h-12  "
             />
             <div className="pl-1 flex items-center">
@@ -103,9 +101,9 @@ export function ShowPost({ post }) {
                   navigate("/profile", { replace: true });
                 }}
               >
-                {profile.name}
+                {user.name}
               </span>
-              <span className="ml-2 ">@{profile.username}</span>
+              <span className="ml-2 ">@{user.username}</span>
             </div>
           </div>
           <span className="self-center ml-auto">
