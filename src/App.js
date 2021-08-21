@@ -12,14 +12,16 @@ import {
   setUpAuthHeaderForServiceCalls,
 } from "./services/users/users";
 import { ProgressBar } from "../src/common/components/Loaders/Progress";
-import { getUserProfile, removeToken } from "./features/users/userSlice";
+import { removeToken } from "./features/users/userSlice";
 import { Profile } from "./features/users/Profile";
 import { loadPosts } from "./features/posts/postSlice";
 import { Search } from "./features/users/searchUser";
+import { UserPage } from "./features/users/userPage";
+
 function App() {
   const { authorized } = useSelector((state) => state.users);
-  const { progressBarStatus } = useSelector((state) => state.posts);
-  const { profile } = useSelector((state) => state.users);
+  const { progressBarStatus, status } = useSelector((state) => state.posts);
+  // const { profile } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   function PrivateRoute(props) {
@@ -36,18 +38,19 @@ function App() {
       return <Route {...props} />;
     }
   }
+
   useEffect(() => {
     console.log("do i always run");
     setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
     setupAuthExceptionHandler(dispatch, removeToken, navigate);
   }, [dispatch, navigate]);
+
   useEffect(() => {
-    if (authorized || profile === null) {
+    if (status === "idle") {
       dispatch(loadPosts());
       console.log("in pursuit of data ");
-      dispatch(getUserProfile());
     }
-  }, []);
+  }, [dispatch, status]);
   return (
     <>
       <div className={authorized ? "flex min-h-screen" : "min-h-screen"}>
@@ -68,6 +71,7 @@ function App() {
           <PrivateRoute path="/post/:postId" element={<SinglePost />} />
           <PrivateRoute path="/profile" element={<Profile />} />
           <PrivateRoute path="/search" element={<Search />} />
+          <PrivateRoute path="/user/:getUserId" element={<UserPage />} />
         </Routes>
       </div>
     </>

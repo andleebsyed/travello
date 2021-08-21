@@ -11,24 +11,14 @@ import { SpinnerLoader } from "../../components/Loaders/Spinner";
 export function Homepage() {
   const dispatch = useDispatch();
   const { posts, status } = useSelector((state) => state.posts);
-  const { profile } = useSelector((state) => state.users);
-  const { authorized } = useSelector((state) => state.users);
-  const navigate = useNavigate();
+  const { profileStatus, profile } = useSelector((state) => state.users);
+  // const { authorized } = useSelector((state) => state.users);
+  // const navigate = useNavigate();
   useEffect(() => {
-    async function Run() {
-      setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
-      dispatch(loadPosts());
+    if (profileStatus === "idle" && status !== "idle") {
       dispatch(getUserProfile());
     }
-    if (status === "idle" && authorized) {
-      Run();
-    }
-  }, [status, dispatch, authorized]);
-  useEffect(() => {
-    if (authorized === false) {
-      navigate("/login", { replace: true });
-    }
-  }, [authorized, navigate]);
+  }, [status, profileStatus, dispatch]);
 
   return (
     <div
@@ -48,14 +38,13 @@ export function Homepage() {
         <CreatePost />
         {(status === "loading" && posts === null) ||
         posts === null ||
-        profile === null ||
-        undefined ? (
+        profile === null ? (
           <SpinnerLoader />
         ) : posts.length > 0 ? (
           <ul className="  ">
             {posts.map((post) => (
               <li key={post._id}>
-                <ShowPost post={post} />
+                <ShowPost post={post} user={profile} />
               </li>
             ))}
           </ul>
