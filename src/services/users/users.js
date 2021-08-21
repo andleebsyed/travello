@@ -78,3 +78,31 @@ export async function UpdateUser({ avatar, coverPic, bio, name }) {
     return response.data;
   }
 }
+
+export async function LoadUsers() {
+  try {
+    // setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
+    const response = await axios.post(BASE_URL + "user/allusers");
+    console.log({ response });
+    // if (response.status === 200) {
+    // console.log("users fetched successfully", { response });
+    return response.data;
+    // }
+  } catch (error) {
+    console.log(
+      "error occurred while fetching users from server ",
+      error?.message
+    );
+    return error.response;
+  }
+}
+
+export async function GetUser({ getUserId }) {
+  try {
+    const response = await axios.post(BASE_URL + "user/getuser", { getUserId });
+    console.log({ response });
+    return response.data;
+  } catch (error) {
+    console.log("failed to fetch the user ", error?.message);
+  }
+}

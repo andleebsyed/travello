@@ -44,19 +44,40 @@ export async function FetchComments({ postId }) {
 }
 
 export async function AddComment({ postId, content }) {
-  const response = await axios.post(BASE_URL + "posts/addcomment", {
-    postId,
-    content,
-  });
-  console.log("comment added or not ", { response });
-  return response.data;
+  try {
+    const response = await axios.post(BASE_URL + "posts/addcomment", {
+      postId,
+      content,
+    });
+    console.log("comment added or not ", { response });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error occurred while sending request to api ",
+      error?.message
+    );
+  }
 }
 
 export async function RemoveComment({ postId, commentId }) {
-  const response = await axios.post(BASE_URL + "posts/removecomment", {
-    postId,
-    commentId,
-  });
-  console.log("api response ", { response });
-  return response.data;
+  try {
+    const response = await axios.post(BASE_URL + "posts/removecomment", {
+      postId,
+      commentId,
+    });
+    console.log("api response ", { response });
+    return response.data;
+  } catch (error) {
+    console.error("Couldn't remove comment from post ", error);
+  }
+}
+
+export async function GetPost({ postId }) {
+  try {
+    const response = await axios.post(BASE_URL + "posts/getpost", { postId });
+    console.log({ response }, "post fetch ");
+    return response.data;
+  } catch (error) {
+    console.error("couldn't fetch post", error?.message);
+  }
 }
