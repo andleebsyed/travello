@@ -6,10 +6,11 @@ import {
   RemoveComment,
 } from "../../services/posts/posts";
 import { AiFillDelete } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { reactionAdded } from "./postSlice";
 export function Comments({ commentBoxVisibility, post }) {
   const postId = post?._id;
+  console.log("post id", { postId });
   const [postButtonData, setPostButtonData] = useState({
     text: "Post",
     color: "bg-blue-xlight",
@@ -21,6 +22,7 @@ export function Comments({ commentBoxVisibility, post }) {
     color: "bg-blue-xlight",
     disabled: true,
   });
+  const { profile } = useSelector((state) => state.users);
   const commentBoxRef = useRef(null);
   let sortedComments = [...post?.comments];
   sortedComments.sort(
@@ -28,6 +30,7 @@ export function Comments({ commentBoxVisibility, post }) {
   );
   useEffect(() => {
     async function Run() {
+      // if (profile !== null) {
       const response = await FetchComments({ postId });
       console.log({ response });
       if (response.status) {
@@ -39,6 +42,7 @@ export function Comments({ commentBoxVisibility, post }) {
           })
         );
       }
+      // }
     }
     if (commentBoxVisibility !== "hidden") {
       Run();
