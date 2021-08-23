@@ -17,9 +17,14 @@ export function Homepage() {
   useEffect(() => {
     if (profileStatus === "idle" && status !== "idle") {
       dispatch(getUserProfile());
+      // dispatch(loadPosts())
     }
   }, [status, profileStatus, dispatch]);
-
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(loadPosts());
+    }
+  }, [dispatch, status]);
   return (
     <div
       className="flex border border-b-0 border-opacity-20 text-white min-h-screen"
