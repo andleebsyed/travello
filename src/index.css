@@ -18,7 +18,11 @@
   .navbar-list-item-name {
     @apply hidden gridbreak:block self-center hover:text-blue-light font-bold text-xl p-4;
   }
-}
-.navlink-inactive-class {
-  @apply xsm:flex xsm:p-4 gridbreak:p-0 gridbreak:pl-4 hover:text-blue-light;
+  .navlink-inactive-class {
+    @apply xsm:flex xsm:p-4 gridbreak:p-0 gridbreak:pl-4 hover:text-blue-light;
+  }
+
+  .followToggle {
+    @apply text-center  flex justify-center  w-[50%] h-[53px] hover:bg-grey-outline hover:bg-opacity-20 cursor-pointer;
+  }
 }
