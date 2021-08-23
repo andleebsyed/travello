@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
 import { ShowPost } from "../posts/showPost";
-import { getUser, getUserProfile } from "./userSlice";
+import {
+  followNewUser,
+  getUser,
+  getUserProfile,
+  unFollowUser,
+} from "./userSlice";
 export function UserPage() {
   const { fetchUserProfileStatus, fetchedUserProfile, profile, profileStatus } =
     useSelector((state) => state.users);
@@ -74,11 +79,23 @@ export function UserPage() {
         <div className="flex flex-col relative bottom-16 ml-2 ">
           <div className="ml-auto">
             {userInFollowing ? (
-              <button className="bg-blue-light rounded-3xl pl-2 pr-2 mr-2 pb-1">
+              <button
+                className="bg-blue-light rounded-3xl pl-2 pr-2 mr-2 pb-1"
+                onClick={() =>
+                  dispatch(
+                    unFollowUser({ userToUnfollowId: fetchedUserProfile._id })
+                  )
+                }
+              >
                 Following
               </button>
             ) : (
-              <button className="border  border-blue-light hover:bg-blue-light hover:bg-opacity-20 rounded-3xl pl-2 pr-2 pb-1 mr-2">
+              <button
+                className="border  border-blue-light hover:bg-blue-light hover:bg-opacity-20 rounded-3xl pl-2 pr-2 pb-1 mr-2"
+                onClick={() =>
+                  dispatch(followNewUser({ newUserId: fetchedUserProfile }))
+                }
+              >
                 Follow
               </button>
             )}
