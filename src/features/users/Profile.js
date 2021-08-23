@@ -48,12 +48,12 @@ export function Profile() {
           <p className="font-light mb-2">@{profile.username}</p>
           <p>{profile.bio ? profile.bio : "Hey i am a travello User"}</p>
           <div className="flex">
-            <Link to="/followers">
+            <Link to={`/user/${profile._id}/followers`}>
               <p className="mr-2 hover:underline">
                 {profile.followers.length} Followers
               </p>
             </Link>
-            <Link to="/following">
+            <Link to={`/user/${profile._id}/following`}>
               <p className="hover:underline">
                 {profile.following.length} Following
               </p>
