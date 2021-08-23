@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { FetchProfile, GetUser, LoadUsers } from "../../services/users/users";
+import {
+  FetchProfile,
+  FollowNewUser,
+  GetUser,
+  LoadUsers,
+  UnFollowUser,
+} from "../../services/users/users";
 export const getUserProfile = createAsyncThunk("user", async (thunkAPI) => {
   try {
     const response = await FetchProfile();
@@ -25,6 +31,36 @@ export const getUser = createAsyncThunk(
       const response = await GetUser({ getUserId });
       console.log({ response }, "user in thunk");
       return response.user;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+export const followNewUser = createAsyncThunk(
+  "user/follow",
+  async (newUserId, thunkAPI) => {
+    try {
+      console.log("step 2:: came in thunk to make api request");
+      const response = await FollowNewUser(newUserId);
+      console.log("step 3 :: came from api with response ", response);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
+export const unFollowUser = createAsyncThunk(
+  "user/unfollow",
+  async (userToUnfollowId, thunkAPI) => {
+    try {
+      console.log(
+        "step 2:: came in thunk to make api request to unfollow user",
+        userToUnfollowId
+      );
+      const response = await UnFollowUser(userToUnfollowId);
+      console.log("after unfollow data ", response);
+      return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
     }
@@ -85,6 +121,41 @@ export const userSlice = createSlice({
     [getUser.fulfilled]: (state, action) => {
       state.fetchedUserProfile = action.payload;
       state.fetchUserProfileStatus = "success";
+    },
+    [followNewUser.fulfilled]: (state, action) => {
+      const { followerUser, followingUser } = action.payload.data;
+      console.log(
+        "step 4:: request got fulfilled and data is updated",
+        JSON.parse(JSON.stringify(followerUser, followingUser))
+      );
+      const loggedInUserIndex = state.users.findIndex(
+        (user) => user._id === followerUser._id
+      );
+      const updatedUserIndex = state.users.findIndex(
+        (user) => user._id === followingUser._id
+      );
+      state.users[loggedInUserIndex] = followerUser;
+      state.users[updatedUserIndex] = followingUser;
+      state.profile.following = [...state.profile.following, followingUser._id];
+    },
+    [unFollowUser.fulfilled]: (state, action) => {
+      const { updatedLoggedInUser, updatedUnfollowedUser } =
+        action.payload.data;
+      console.log(
+        "hello posts",
+        JSON.parse(JSON.stringify(updatedLoggedInUser))
+      );
+      const loggedInUserIndex = state.users.findIndex(
+        (user) => user._id === updatedLoggedInUser._id
+      );
+      const updatedUserIndex = state.users.findIndex(
+        (user) => user._id === updatedUnfollowedUser._id
+      );
+      // state.users[loggedInUserIndex] = followerUser;
+      // state.users[updatedUserIndex] = followingUser;
+      state.profile.following = state.profile.following.filter(
+        (followingUserId) => followingUserId !== updatedUnfollowedUser._id
+      );
     },
   },
 });
