@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
 // import { setUpAuthHeaderForServiceCalls } from "../../services/users/users";
 // import { loadPosts } from "../posts/postSlice";
@@ -60,8 +60,16 @@ export function Profile() {
           <p className="font-light mb-2">@{profile.username}</p>
           <p>{profile.bio ? profile.bio : "Hey i am a travello User"}</p>
           <div className="flex">
-            <p className="mr-2">999 Followers</p>
-            <p>999 Following</p>
+            <Link to="/followers">
+              <p className="mr-2 hover:underline">
+                {profile.followers.length} Followers
+              </p>
+            </Link>
+            <Link to="/following">
+              <p className="hover:underline">
+                {profile.following.length} Following
+              </p>
+            </Link>
           </div>
         </div>
         <div className="flex  ">
