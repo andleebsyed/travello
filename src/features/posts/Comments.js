@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { reactionAdded } from "./postSlice";
 export function Comments({ commentBoxVisibility, post }) {
   const postId = post?._id;
-  console.log("post id", { postId });
+  console.log("post id", { postId }, commentBoxVisibility);
   const [postButtonData, setPostButtonData] = useState({
     text: "Post",
     color: "bg-blue-xlight",
@@ -41,10 +41,10 @@ export function Comments({ commentBoxVisibility, post }) {
         );
       }
     }
-    if (commentBoxVisibility !== "hidden") {
+    if (commentBoxVisibility === "block") {
       Run();
     }
-  }, [commentBoxVisibility, dispatch, postId]);
+  }, [commentBoxVisibility, dispatch, postId, post]);
   async function commentBoxSubmitHandler(e) {
     e.stopPropagation();
     e.preventDefault();
