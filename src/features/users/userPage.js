@@ -1,39 +1,44 @@
 import { useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
 import { ShowPost } from "../posts/showPost";
 import { getUser, getUserProfile } from "./userSlice";
 export function UserPage() {
   const { fetchUserProfileStatus, fetchedUserProfile, profile, profileStatus } =
     useSelector((state) => state.users);
-  const { status } = useSelector((state) => state.posts);
-  const { posts } = useSelector((state) => state.posts);
+  const { status, users } = useSelector((state) => state.posts);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [userInFollowers, setUserInFollowers] = useState(null);
+  const [userInFollowing, setUserInFollowing] = useState(null);
   const { getUserId } = useParams();
   console.log({ getUserId });
   useEffect(() => {
+    if (profile !== null) {
+      console.log(profile.following, "profile following");
+      setUserInFollowing(
+        profile.following.find((following) => following === getUserId)
+      );
+    }
+  }, [getUserId, profile]);
+  useEffect(() => {
     if (
       (profileStatus === "idle" || fetchUserProfileStatus === "idle") &&
-      status !== "idle"
+      status !== "idle" &&
+      users === null
     ) {
       dispatch(getUserProfile());
-      //   dispatch(getUser({ getUserId }));
-      //   dispatch(getUser({ getUserId }));
     }
-  }, [dispatch, status, fetchUserProfileStatus, getUserId, profileStatus]);
+  }, [
+    dispatch,
+    status,
+    fetchUserProfileStatus,
+    getUserId,
+    profileStatus,
+    users,
+  ]);
   useEffect(() => {
-    // let isMounted = true;
-
-    // if (
-    //   getUserId !== fetchedUserProfile?._id ||
-    //   fetchUserProfileStatus === "idle"
-    // ) {
-    //   dispatch(getUser({ getUserId }));
-    //   }
     if (fetchedUserProfile) {
       if (getUserId !== fetchedUserProfile._id) {
         dispatch(getUser({ getUserId }));
@@ -41,19 +46,7 @@ export function UserPage() {
     } else if (fetchUserProfileStatus === "idle") {
       dispatch(getUser({ getUserId }));
     }
-    // return () => (isMounted = false);
-  }, [getUserId, dispatch, fetchedUserProfile, fetchUserProfileStatus]);
-  if (fetchedUserProfile && profile !== null) {
-    const userInFollowersCheck = profile.followers.find(
-      (follower) => follower._id === fetchedUserProfile._id
-    );
-    if (userInFollowersCheck) {
-      setUserInFollowers(true);
-    }
-    // else {
-    //   setUserInFollowers(false);
-    // }
-  }
+  }, []);
   return fetchedUserProfile === null || fetchedUserProfile === undefined ? (
     <SpinnerLoader />
   ) : (
@@ -79,12 +72,15 @@ export function UserPage() {
           className="rounded-full w-20 h-20 ml-2 relative bottom-10 "
         />
         <div className="flex flex-col relative bottom-16 ml-2 ">
-          <div className="ml-auto mr-4 self-end border hover:bg-grey-outline hover:bg-opacity-20 rounded-3xl h-8 pl-2 pr-2 mt-2">
-            {/* <EditfetchedUserProfileModal /> */}
-            {userInFollowers ? (
-              <button>Following</button>
+          <div className="ml-auto">
+            {userInFollowing ? (
+              <button className="bg-blue-light rounded-3xl pl-2 pr-2 mr-2 pb-1">
+                Following
+              </button>
             ) : (
-              <button>Follow</button>
+              <button className="border  border-blue-light hover:bg-blue-light hover:bg-opacity-20 rounded-3xl pl-2 pr-2 pb-1 mr-2">
+                Follow
+              </button>
             )}
           </div>
           <p className="font-bold">{fetchedUserProfile.name}</p>
@@ -95,8 +91,14 @@ export function UserPage() {
               : "Hey i am a travello User"}
           </p>
           <div className="flex">
-            <p className="mr-2">999 Followers</p>
-            <p>999 Following</p>
+            <Link to={`/user/${fetchedUserProfile._id}/followers`}>
+              <p className="mr-2">
+                {fetchedUserProfile.followers.length} Followers
+              </p>
+            </Link>
+            <Link to={`/user/${fetchedUserProfile._id}/following`}>
+              <p>{fetchedUserProfile.following.length} Following</p>
+            </Link>
           </div>
         </div>
         <div className="flex  ">
@@ -112,17 +114,11 @@ export function UserPage() {
             <p>Oops!!Your feed is empty</p>
           </div>
         ) : (
-          // ) : fetchedUserProfile?.length > 0 ? (
-          fetchedUserProfile.posts.map(
-            (post) => <ShowPost post={post} user={fetchedUserProfile} />
-            // ) : (
-            //   fetchedUserProfile.fetchedUserProfile.posts.map((post) => (
-            //     <ShowPost post={post} user={fetchedUserProfile} />
-            //   ))
-          )
+          fetchedUserProfile.posts.map((post) => (
+            <ShowPost post={post} user={fetchedUserProfile} />
+          ))
         )}
       </section>
-      {/* <EdituserProfileModal /> */}
     </div>
   );
 }
