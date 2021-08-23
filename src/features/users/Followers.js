@@ -18,6 +18,7 @@ export function Followers() {
   const { fetchedUserProfile, fetchUserProfileStatus } = useSelector(
     (state) => state.users
   );
+  const { status } = useSelector((state) => state.posts);
   const [showFollowers, setShowFollowers] = useState(
     followersOrFollowing === "followers" ? true : false
   );
@@ -25,18 +26,25 @@ export function Followers() {
   useEffect(() => {
     console.log("useeffect of followers running");
     //   this handles async call to api via thunk
-    if (fetchedUserProfile) {
-      if (getUserId !== fetchedUserProfile._id) {
+    if (status !== "idle") {
+      if (fetchedUserProfile) {
+        if (getUserId !== fetchedUserProfile._id) {
+          dispatch(getUser({ getUserId }));
+        }
+      } else if (fetchUserProfileStatus === "idle") {
         dispatch(getUser({ getUserId }));
       }
-    } else if (fetchUserProfileStatus === "idle") {
-      dispatch(getUser({ getUserId }));
     }
   }, [dispatch, fetchUserProfileStatus, fetchedUserProfile, getUserId]);
   let renderList;
+
   if (fetchedUserProfile) {
     if (showFollowers) {
       renderList = fetchedUserProfile.followers;
+      //   .map((follower) => ({
+      //   ...follower,
+      //   followingStatus: true,
+      // }));
     } else {
       renderList = fetchedUserProfile.following;
     }
