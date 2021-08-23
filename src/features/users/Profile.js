@@ -6,7 +6,7 @@ import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
 import { ShowPost } from "../posts/showPost";
 import { EditProfileModal } from "./editProfile";
 import { getUserProfile } from "./userSlice";
-
+import nodata from "../../assets/images/nodata.svg";
 export function Profile() {
   const { profileStatus, profile } = useSelector((state) => state.users);
   const { status } = useSelector((state) => state.posts);
@@ -68,8 +68,9 @@ export function Profile() {
       </section>
       <section className="border-t ">
         {profile?.posts?.length <= 0 && posts?.length <= 0 ? (
-          <div className="flex justify-center items-center min-h-[50vh] font-bold text-lg">
-            <p>Oops!!Your feed is empty</p>
+          <div className="flex flex-col justify-center items-center min-h-[50vh] font-bold text-lg">
+            <img src={nodata} alt="empty wall" className="h-[50%] w-[50%]" />
+            <p className="text-xl font-bold">Your feed is empty</p>
           </div>
         ) : posts?.length > 0 ? (
           posts.map((post) => <ShowPost post={post} user={profile} />)

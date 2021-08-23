@@ -4,7 +4,7 @@ import { CreatePost } from "../../../features/posts/createPost";
 import { ShowPost } from "../../../features/posts/showPost";
 import { getUserProfile } from "../../../features/users/userSlice";
 import { SpinnerLoader } from "../../components/Loaders/Spinner";
-
+import nodata from "../../../assets/images/nodata.svg";
 export function Homepage() {
   const dispatch = useDispatch();
   const { posts, status } = useSelector((state) => state.posts);
@@ -43,8 +43,10 @@ export function Homepage() {
             ))}
           </ul>
         ) : (
-          <div className="flex justify-center items-center min-h-[50vh] ">
-            <p className="text-xl">No Posts To Show</p>
+          <div className="flex flex-col justify-center items-center min-h-[50vh] ">
+            {/* <p className="text-xl">No Posts To Show</p> */}
+            <img src={nodata} alt="data empty" className="h-[50%] w-[50%]" />
+            <p className="text-xl ">Empty</p>
           </div>
         )}
       </section>
