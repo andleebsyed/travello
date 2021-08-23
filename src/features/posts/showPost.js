@@ -7,7 +7,6 @@ import { LikeInteraction } from "../../services/posts/posts";
 import { useState } from "react";
 import { Comments } from "./Comments";
 import { reactionAdded } from "./postSlice";
-// import { SinglePost } from "/singlePost";
 export function ShowPost({ post, user }) {
   const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
   function commentBoxHandler(event) {
@@ -18,37 +17,21 @@ export function ShowPost({ post, user }) {
       setCommentBoxVisibility("hidden");
     }
   }
-  // let userDetails = {
-  //   name: null,
-  //   username: null,
-  // };
-  // const { name, username } = useSelector((state) => state.posts);
-  // const { user } = useSelector((state) => state.users);
-  // if (user?.username) {
-  //   // userDetails = {
-  //   //   ...userDetails,
-  //   //   name: user.name,
-  //   //   username: user.username,
-  //   // };
-  // } else {
-  //   // userDetails = { ...userDetails, name, username };
-  // }
   const { postId } = useParams();
   const dispatch = useDispatch();
-  const [postParameters, setPostParameters] = useState(
-    postId
-      ? {
-          singlePost: true,
-          postStyle: "p-2  mt-8 border-b border-opacity-20 ",
-          postText: "text-lg",
-        }
-      : {
-          singlePost: false,
-          postStyle:
-            "p-2    border-b   border-opacity-20 hover:bg-dark-hover cursor-pointer",
-          postText: "",
-        }
-  );
+  let postParameters = postId
+    ? {
+        singlePost: true,
+        postStyle: "p-2  mt-8 border-b border-opacity-20 ",
+        postText: "text-lg",
+      }
+    : {
+        singlePost: false,
+        postStyle:
+          "p-2    border-b   border-opacity-20 hover:bg-dark-hover cursor-pointer",
+        postText: "",
+      };
+  // );
   // useEffect(() => {
   //   async function Run() {
   //     // dispatch()

@@ -1,23 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 import { CreatePost } from "../../../features/posts/createPost";
 import { loadPosts } from "../../../features/posts/postSlice";
 import { ShowPost } from "../../../features/posts/showPost";
 import { getUserProfile } from "../../../features/users/userSlice";
-import { setUpAuthHeaderForServiceCalls } from "../../../services/users/users";
 import { SpinnerLoader } from "../../components/Loaders/Spinner";
 
 export function Homepage() {
   const dispatch = useDispatch();
   const { posts, status } = useSelector((state) => state.posts);
   const { profileStatus, profile } = useSelector((state) => state.users);
-  // const { authorized } = useSelector((state) => state.users);
-  // const navigate = useNavigate();
   useEffect(() => {
     if (profileStatus === "idle" && status !== "idle") {
       dispatch(getUserProfile());
-      // dispatch(loadPosts())
     }
   }, [status, profileStatus, dispatch]);
   useEffect(() => {

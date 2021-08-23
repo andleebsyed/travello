@@ -46,7 +46,7 @@ export function UserPage() {
     } else if (fetchUserProfileStatus === "idle") {
       dispatch(getUser({ getUserId }));
     }
-  }, []);
+  }, [dispatch, fetchUserProfileStatus, fetchedUserProfile, getUserId]);
   return fetchedUserProfile === null || fetchedUserProfile === undefined ? (
     <SpinnerLoader />
   ) : (

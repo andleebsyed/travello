@@ -1,20 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
-// import { setUpAuthHeaderForServiceCalls } from "../../services/users/users";
-// import { loadPosts } from "../posts/postSlice";
 import { ShowPost } from "../posts/showPost";
 import { EditProfileModal } from "./editProfile";
 import { getUserProfile } from "./userSlice";
-// import { getUserProfile } from "./userSlice";
 
 export function Profile() {
   const { profileStatus, profile } = useSelector((state) => state.users);
   const { status } = useSelector((state) => state.posts);
   const { posts } = useSelector((state) => state.posts);
-  // const dispatch = useDispatch();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   console.log({ profile }, { profileStatus });
@@ -24,15 +20,9 @@ export function Profile() {
       console.log("let's fetch profile");
       dispatch(getUserProfile());
     }
-
-    // }
   }, [posts?.length, status, dispatch, profileStatus]);
 
   return profile === null ? (
-    // profileStatus !== "success" ||
-    //   profile === null ||
-    //   profile.avatar === undefined ||
-    //   null
     <SpinnerLoader />
   ) : (
     <div className="border  border-opacity-20 mr-0 w-screen  md:w-[60vw] lg:w-[50vw] min-h-screen text-white">
@@ -53,9 +43,7 @@ export function Profile() {
           className="rounded-full w-20 h-20 ml-2 relative bottom-10 "
         />
         <div className="flex flex-col relative bottom-16 ml-2 ">
-          {/* <div className="ml-auto mr-4 self-end border hover:bg-grey-outline hover:bg-opacity-20 rounded-3xl h-8 pl-2 pr-2 mt-2"> */}
           <EditProfileModal />
-          {/* </div> */}
           <p className="font-bold">{profile.name}</p>
           <p className="font-light mb-2">@{profile.username}</p>
           <p>{profile.bio ? profile.bio : "Hey i am a travello User"}</p>
@@ -89,7 +77,6 @@ export function Profile() {
           profile.posts.map((post) => <ShowPost post={post} user={profile} />)
         )}
       </section>
-      {/* <EditProfileModal /> */}
     </div>
   );
 }

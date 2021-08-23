@@ -3,7 +3,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
-import { getUser, getUserProfile } from "./userSlice";
+import { getUser } from "./userSlice";
 import { UsersList } from "./UsersList";
 
 export function Followers() {
@@ -22,34 +22,22 @@ export function Followers() {
     followersOrFollowing === "followers" ? true : false
   );
   console.log({ fetchedUserProfile });
-  //   useEffect(() => {
-  //     console.log("useeffect of followers running");
-  //     //   this handles async call to api via thunk
-  //     if (fetchedUserProfile) {
-  //       if (getUserId !== fetchedUserProfile._id) {
-  //         dispatch(getUser({ getUserId }));
-  //       }
-  //     } else if (fetchUserProfileStatus === "idle") {
-  //       dispatch(getUser({ getUserId }));
-  //     }
-  //   }, []);
+  useEffect(() => {
+    console.log("useeffect of followers running");
+    //   this handles async call to api via thunk
+    if (fetchedUserProfile) {
+      if (getUserId !== fetchedUserProfile._id) {
+        dispatch(getUser({ getUserId }));
+      }
+    } else if (fetchUserProfileStatus === "idle") {
+      dispatch(getUser({ getUserId }));
+    }
+  }, [dispatch, fetchUserProfileStatus, fetchedUserProfile, getUserId]);
   let renderList;
   if (fetchedUserProfile) {
     if (showFollowers) {
-      //   renderList = fetchedUserProfile.followers.map((follower) => (
-      //     <div>
-      //       <h1 className="text-red font-bold">{follower.name}</h1>
-      //     </div>
-      //   ));
-      //   <UsersList users={fetchedUserProfile.followers} />;
       renderList = fetchedUserProfile.followers;
     } else {
-      //   renderList = fetchedUserProfile.following.map((following) => (
-      //     <div>
-      //       <h1 className="text-red font-bold">{following.name}</h1>
-      //     </div>
-      //   ));
-      //   <UsersList users={fetchedUserProfile.following} />;
       renderList = fetchedUserProfile.following;
     }
   }
@@ -77,13 +65,11 @@ export function Followers() {
             >
               <div className="flex flex-col  items-center justify-end">
                 <p className="p-2">Followers</p>
-                {/* {showFollowers && ( */}
                 <div
                   className={`${
                     showFollowers ? "visible" : "invisible"
                   } bg-blue-light h-1 w-[5rem] text-blue-light rounded`}
                 ></div>
-                {/* )} */}
               </div>
             </div>
             <div
@@ -101,17 +87,11 @@ export function Followers() {
             </div>
           </section>
 
-          {/* <section>{renderList}</section> */}
           <UsersList users={renderList} />
         </div>
       ) : (
         <SpinnerLoader />
       )}
     </div>
-    // <div>
-    //   <button onClick={() => setShowFollowers(true)}>Followers</button>
-    //   <button onClick={() => setShowFollowers(false)}>Following</button>
-    //   <section>{renderList}</section>
-    // </div>
   );
 }

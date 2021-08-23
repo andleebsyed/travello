@@ -145,12 +145,12 @@ export const userSlice = createSlice({
         "hello posts",
         JSON.parse(JSON.stringify(updatedLoggedInUser))
       );
-      const loggedInUserIndex = state.users.findIndex(
-        (user) => user._id === updatedLoggedInUser._id
-      );
-      const updatedUserIndex = state.users.findIndex(
-        (user) => user._id === updatedUnfollowedUser._id
-      );
+      // const loggedInUserIndex = state.users.findIndex(
+      //   (user) => user._id === updatedLoggedInUser._id
+      // );
+      // const updatedUserIndex = state.users.findIndex(
+      //   (user) => user._id === updatedUnfollowedUser._id
+      // );
       // state.users[loggedInUserIndex] = followerUser;
       // state.users[updatedUserIndex] = followingUser;
       state.profile.following = state.profile.following.filter(
