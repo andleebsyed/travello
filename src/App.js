@@ -12,11 +12,12 @@ import {
   setUpAuthHeaderForServiceCalls,
 } from "./services/users/users";
 import { ProgressBar } from "../src/common/components/Loaders/Progress";
-import { removeToken } from "./features/users/userSlice";
+import { getUserProfile, removeToken } from "./features/users/userSlice";
 import { Profile } from "./features/users/Profile";
 import { loadPosts } from "./features/posts/postSlice";
 import { Search } from "./features/users/searchUser";
 import { UserPage } from "./features/users/userPage";
+import { Followers } from "./features/users/Followers";
 
 function App() {
   const { authorized } = useSelector((state) => state.users);
@@ -46,11 +47,12 @@ function App() {
   }, [dispatch, navigate]);
 
   useEffect(() => {
-    if (status === "idle") {
+    if (status === "idle" && authorized) {
       dispatch(loadPosts());
+      dispatch(getUserProfile());
       console.log("in pursuit of data ");
     }
-  }, [dispatch, status]);
+  }, [dispatch, status, authorized]);
   return (
     <>
       <div className={authorized ? "flex min-h-screen" : "min-h-screen"}>
@@ -72,6 +74,10 @@ function App() {
           <PrivateRoute path="/profile" element={<Profile />} />
           <PrivateRoute path="/search" element={<Search />} />
           <PrivateRoute path="/user/:getUserId" element={<UserPage />} />
+          <PrivateRoute
+            path="/user/:getUserId/:followersOrFollowing"
+            element={<Followers />}
+          />
         </Routes>
       </div>
     </>
