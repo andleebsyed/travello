@@ -106,3 +106,26 @@ export async function GetUser({ getUserId }) {
     console.log("failed to fetch the user ", error?.message);
   }
 }
+
+export async function FollowNewUser(newUserId) {
+  try {
+    const response = await axios.post(BASE_URL + "user/follow", newUserId);
+    console.log({ response });
+    return response.data;
+  } catch (error) {
+    console.log("following user failed ", error?.message);
+  }
+}
+export async function UnFollowUser(userToUnfollowId) {
+  try {
+    console.log({ userToUnfollowId }, "in api call");
+    const response = await axios.post(
+      BASE_URL + "user/unfollow",
+      userToUnfollowId
+    );
+    console.log({ response });
+    return response.data;
+  } catch (error) {
+    console.log("unfollowing user failed ", error?.message);
+  }
+}
