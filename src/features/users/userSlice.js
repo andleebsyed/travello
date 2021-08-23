@@ -128,32 +128,19 @@ export const userSlice = createSlice({
         "step 4:: request got fulfilled and data is updated",
         JSON.parse(JSON.stringify(followerUser, followingUser))
       );
-      const loggedInUserIndex = state.users.findIndex(
-        (user) => user._id === followerUser._id
-      );
-      const updatedUserIndex = state.users.findIndex(
-        (user) => user._id === followingUser._id
-      );
-      state.users[loggedInUserIndex] = followerUser;
-      state.users[updatedUserIndex] = followingUser;
       state.profile.following = [...state.profile.following, followingUser._id];
+      state.fetchedUserProfile.following = [
+        ...state.fetchedUserProfile.following,
+        followingUser,
+      ];
     },
     [unFollowUser.fulfilled]: (state, action) => {
       const { updatedLoggedInUser, updatedUnfollowedUser } =
         action.payload.data;
-      console.log(
-        "hello posts",
-        JSON.parse(JSON.stringify(updatedLoggedInUser))
-      );
-      // const loggedInUserIndex = state.users.findIndex(
-      //   (user) => user._id === updatedLoggedInUser._id
-      // );
-      // const updatedUserIndex = state.users.findIndex(
-      //   (user) => user._id === updatedUnfollowedUser._id
-      // );
-      // state.users[loggedInUserIndex] = followerUser;
-      // state.users[updatedUserIndex] = followingUser;
       state.profile.following = state.profile.following.filter(
+        (followingUserId) => followingUserId !== updatedUnfollowedUser._id
+      );
+      state.fetchedUserProfile.following = state.profile.following.filter(
         (followingUserId) => followingUserId !== updatedUnfollowedUser._id
       );
     },
