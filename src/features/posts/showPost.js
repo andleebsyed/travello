@@ -17,6 +17,7 @@ export function ShowPost({ post, user }) {
       setCommentBoxVisibility("hidden");
     }
   }
+  console.log({ commentBoxVisibility }, "in shwo post component");
   const { postId } = useParams();
   const dispatch = useDispatch();
   let postParameters = postId
@@ -150,7 +151,9 @@ export function ShowPost({ post, user }) {
       <div
         className={`${commentBoxVisibility}  border-b border-opacity-20  p-2 `}
       >
-        <Comments post={post} commentBoxVisibility={commentBoxVisibility} />
+        {commentBoxVisibility === "block" && (
+          <Comments post={post} commentBoxVisibility={commentBoxVisibility} />
+        )}
       </div>
     </main>
   );
