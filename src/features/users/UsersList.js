@@ -1,8 +1,10 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { followNewUser, unFollowUser } from "./userSlice";
 import nodata from "../../assets/images/nodata.svg";
+import { Profile } from "./Profile";
 export function UsersList({ users, searchResultsVisibility }) {
+  const { profile } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   function followUserHandler(newUserId) {
     console.log("step 1:: came in handler");
@@ -42,7 +44,7 @@ export function UsersList({ users, searchResultsVisibility }) {
                   </h1>
                   <h1>{user?.username}</h1>
                 </section>
-                {user.followingStatus ? (
+                {profile?.following.includes(user._id) ? (
                   <button
                     onClick={() => unfollowUserHandler(user._id)}
                     className="self-center ml-auto rounded-3xl p-2  pb-3 border border-opacity-20 bg-blue-light text-white "
