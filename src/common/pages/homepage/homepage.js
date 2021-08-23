@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CreatePost } from "../../../features/posts/createPost";
-import { loadPosts } from "../../../features/posts/postSlice";
 import { ShowPost } from "../../../features/posts/showPost";
 import { getUserProfile } from "../../../features/users/userSlice";
 import { SpinnerLoader } from "../../components/Loaders/Spinner";
@@ -15,11 +14,6 @@ export function Homepage() {
       dispatch(getUserProfile());
     }
   }, [status, profileStatus, dispatch]);
-  useEffect(() => {
-    if (status === "idle") {
-      dispatch(loadPosts());
-    }
-  }, [dispatch, status]);
   return (
     <div
       className="flex border border-b-0 border-opacity-20 text-white min-h-screen"
