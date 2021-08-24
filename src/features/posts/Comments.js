@@ -8,8 +8,12 @@ import {
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { reactionAdded } from "./postSlice";
+import { useNavigate } from "react-router-dom";
 export function Comments({ commentBoxVisibility, post }) {
   const postId = post?._id;
+  if (post) {
+    console.log({ post });
+  }
   console.log("post id", { postId }, commentBoxVisibility);
   const [postButtonData, setPostButtonData] = useState({
     text: "Post",
@@ -17,6 +21,7 @@ export function Comments({ commentBoxVisibility, post }) {
     disabled: true,
   });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [commentContent, setCommentContent] = useState({
     commentText: "",
     color: "bg-blue-xlight",
@@ -139,7 +144,10 @@ export function Comments({ commentBoxVisibility, post }) {
           {sortedComments.map((comment) => (
             <li key={comment._id} className="flex mt-4 mb-4">
               <img
-                className="rounded-3xl w-12 h-12 mr-4  "
+                onClick={() =>
+                  navigate(`/user/${comment.author._id}`, { replace: true })
+                }
+                className="rounded-3xl w-12 h-12 mr-4 cursor-pointer  "
                 alt="avatar"
                 src={
                   comment.author.avatar
@@ -149,7 +157,12 @@ export function Comments({ commentBoxVisibility, post }) {
               />
               <div className="">
                 <div className="">
-                  <span className="font-bold mr-2 mb-4">
+                  <span
+                    className="font-bold mr-2 mb-4 hover:underline cursor-pointer"
+                    onClick={() =>
+                      navigate(`/user/${comment.author._id}`, { replace: true })
+                    }
+                  >
                     {comment.author.name}
                   </span>
                   <span className="mr-2 font-light ">

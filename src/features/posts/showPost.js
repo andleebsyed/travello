@@ -8,6 +8,10 @@ import { useState } from "react";
 import { Comments } from "./Comments";
 import { reactionAdded } from "./postSlice";
 export function ShowPost({ post, user }) {
+  // let name, username, avatar;
+  // if (post) {
+  const { name, username, avatar } = post ? post?.author : null;
+  // }
   const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
   function commentBoxHandler(event) {
     event.stopPropagation();
@@ -73,8 +77,14 @@ export function ShowPost({ post, user }) {
         <section className="flex justify-between ">
           <div className="flex justify-between">
             <img
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/user/${post.author._id}`, {
+                  replace: true,
+                });
+              }}
               alt="avatar"
-              src={user.avatar ? user.avatar : "https://via.placeholder.com/48"}
+              src={avatar ? avatar : "https://via.placeholder.com/48"}
               className="rounded-3xl w-12 h-12  "
             />
             <div className="pl-1 flex items-center">
@@ -82,12 +92,12 @@ export function ShowPost({ post, user }) {
                 className=" ml-2 font-bold hover:underline hover:cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  navigate("/profile", { replace: true });
+                  navigate(`/user/${post.author._id}`, { replace: true });
                 }}
               >
-                {user.name}
+                {name}
               </span>
-              <span className="ml-2 ">@{user.username}</span>
+              <span className="ml-2 ">@{username}</span>
             </div>
           </div>
           <span className="self-center ml-auto">
@@ -116,7 +126,7 @@ export function ShowPost({ post, user }) {
         )}
         <div className="flex justify-start pt-4">
           <div className="flex mr-32 text-grey-outline hover:text-red ">
-            {!post.liked ? (
+            {!post.likedBy.includes(localStorage.getItem("userId")) ? (
               <button
                 onClick={(event) =>
                   likeButtonHandler({ event, postId: post._id, action: "inc" })
