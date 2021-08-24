@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
-import { loadUsers } from "./userSlice";
+import { getUser, getUserProfile, loadUsers } from "./userSlice";
 import { UsersList } from "./UsersList";
 export function Search() {
   console.log("i am here ");
   const dispatch = useDispatch();
-  const { users, usersStatus, profile } = useSelector((state) => state.users);
+  const { users, usersStatus, profile, fetchUserProfileStatus } = useSelector(
+    (state) => state.users
+  );
   const { status } = useSelector((state) => state.posts);
   if (users) {
     console.log("last step to see wether our thing is working or not ", {
@@ -19,8 +21,14 @@ export function Search() {
   useEffect(() => {
     if (usersStatus === "idle" && status !== "idle") {
       dispatch(loadUsers());
+      // dispatch(getUserProfile());
     }
   }, [usersStatus, dispatch, status]);
+  useEffect(() => {
+    if (fetchUserProfileStatus === "idle" && status !== "idle") {
+      dispatch(getUser());
+    }
+  }, []);
   useEffect(() => {
     if (profile && users) {
       const followersCheckUsers = users.map((user) =>
@@ -31,6 +39,7 @@ export function Search() {
       setFinalUsers(followersCheckUsers);
     }
   }, [profile, users]);
+
   const [searchResultsVisibility, setSearchResultsVisibility] =
     useState("hidden");
   const [searchData, setSearchData] = useState(null);
