@@ -1,20 +1,27 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
-import { getUser, getUserProfile, loadUsers } from "./userSlice";
+import { getUser, loadUsers } from "./userSlice";
 import { UsersList } from "./UsersList";
 export function Search() {
   console.log("i am here ");
   const dispatch = useDispatch();
-  const { users, usersStatus, profile, fetchUserProfileStatus } = useSelector(
-    (state) => state.users
-  );
+  const {
+    users,
+    usersStatus,
+    profile,
+    fetchUserProfileStatus,
+    fetchedUserProfile,
+  } = useSelector((state) => state.users);
   const { status } = useSelector((state) => state.posts);
   if (users) {
     console.log("last step to see wether our thing is working or not ", {
       users,
     });
   }
+  // if (fetchedUserProfile) {
+  console.log("fetcheded uiser profile ", fetchedUserProfile);
+  // }
   console.log("in serach component ", { users });
   const [matchedUsers, setMatchedUsers] = useState([]);
   const [finalUsers, setFinalUsers] = useState(null);
@@ -25,8 +32,9 @@ export function Search() {
     }
   }, [usersStatus, dispatch, status]);
   useEffect(() => {
-    if (fetchUserProfileStatus === "idle" && status !== "idle") {
-      dispatch(getUser());
+    if (fetchUserProfileStatus === "idle" && status !== "idle" && profile) {
+      console.log("i am running in bloom");
+      dispatch(getUser({ getUserId: profile._id }));
     }
   }, []);
   useEffect(() => {
