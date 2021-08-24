@@ -18,6 +18,7 @@ import { loadPosts } from "./features/posts/postSlice";
 import { Search } from "./features/users/searchUser";
 import { UserPage } from "./features/users/userPage";
 import { Followers } from "./features/users/Followers";
+import { Notifications } from "./features/users/Notifications";
 
 function App() {
   const { authorized } = useSelector((state) => state.users);
@@ -78,6 +79,7 @@ function App() {
             path="/user/:getUserId/:followersOrFollowing"
             element={<Followers />}
           />
+          <PrivateRoute path="/notifications" element={<Notifications />} />
         </Routes>
       </div>
     </>
