@@ -67,14 +67,14 @@ export function Profile() {
         </div>
       </section>
       <section className="border-t ">
-        {profile?.posts?.length <= 0 && posts?.length <= 0 ? (
+        {profile?.posts?.length <= 0 ? (
           <div className="flex flex-col justify-center items-center min-h-[50vh] font-bold text-lg">
             <img src={nodata} alt="empty wall" className="h-[50%] w-[50%]" />
             <p className="text-xl font-bold">Your feed is empty</p>
           </div>
-        ) : posts?.length > 0 ? (
-          posts.map((post) => <ShowPost post={post} user={profile} />)
         ) : (
+          // ) : posts?.length > 0 ? (
+          //   posts.map((post) => <ShowPost post={post} user={profile} />)
           profile.posts.map((post) => <ShowPost post={post} user={profile} />)
         )}
       </section>
