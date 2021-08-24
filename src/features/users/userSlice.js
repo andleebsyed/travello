@@ -27,6 +27,7 @@ export const getUser = createAsyncThunk(
   async ({ getUserId }, thunkAPI) => {
     try {
       const response = await GetUser({ getUserId });
+      console.log("thunk is working as expected ", response);
       return response.user;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
@@ -113,7 +114,7 @@ export const userSlice = createSlice({
       state.fetchUserProfileStatus = "success";
     },
     [followNewUser.fulfilled]: (state, action) => {
-      const { followerUser, followingUser } = action.payload.data;
+      const { followingUser } = action.payload.data;
       state.profile.following = [...state.profile.following, followingUser._id];
       if (state.fetchedUserProfile._id === localStorage.getItem("userId")) {
         state.fetchedUserProfile.following = [
@@ -123,8 +124,7 @@ export const userSlice = createSlice({
       }
     },
     [unFollowUser.fulfilled]: (state, action) => {
-      const { updatedLoggedInUser, updatedUnfollowedUser } =
-        action.payload.data;
+      const { updatedUnfollowedUser } = action.payload.data;
       state.profile.following = state.profile.following.filter(
         (followingUserId) => followingUserId !== updatedUnfollowedUser._id
       );
