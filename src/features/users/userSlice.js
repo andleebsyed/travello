@@ -115,10 +115,12 @@ export const userSlice = createSlice({
     [followNewUser.fulfilled]: (state, action) => {
       const { followerUser, followingUser } = action.payload.data;
       state.profile.following = [...state.profile.following, followingUser._id];
-      // state.fetchedUserProfile.following = [
-      //   ...state.fetchedUserProfile.following,
-      //   followingUser,
-      // ];
+      if (state.fetchedUserProfile._id === localStorage.getItem("userId")) {
+        state.fetchedUserProfile.following = [
+          ...state.fetchedUserProfile.following,
+          followingUser,
+        ];
+      }
     },
     [unFollowUser.fulfilled]: (state, action) => {
       const { updatedLoggedInUser, updatedUnfollowedUser } =
@@ -126,10 +128,13 @@ export const userSlice = createSlice({
       state.profile.following = state.profile.following.filter(
         (followingUserId) => followingUserId !== updatedUnfollowedUser._id
       );
-      // state.fetchedUserProfile.following =
-      //   state.fetchedUserProfile.following.filter(
-      //     (followingUserId) => followingUserId._id !== updatedUnfollowedUser._id
-      //   );
+      if (state.fetchedUserProfile._id === localStorage.getItem("userId")) {
+        state.fetchedUserProfile.following =
+          state.fetchedUserProfile.following.filter(
+            (followingUserId) =>
+              followingUserId._id !== updatedUnfollowedUser._id
+          );
+      }
     },
   },
 });
