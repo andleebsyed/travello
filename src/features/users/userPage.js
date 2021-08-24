@@ -10,6 +10,7 @@ import {
   getUserProfile,
   unFollowUser,
 } from "./userSlice";
+import nodata from "../../assets/images/nodata.svg";
 export function UserPage() {
   const { fetchUserProfileStatus, fetchedUserProfile, profile, profileStatus } =
     useSelector((state) => state.users);
@@ -44,14 +45,14 @@ export function UserPage() {
     users,
   ]);
   useEffect(() => {
-    if (fetchedUserProfile) {
+    if (fetchedUserProfile && status !== "idle") {
       if (getUserId !== fetchedUserProfile._id) {
         dispatch(getUser({ getUserId }));
       }
     } else if (fetchUserProfileStatus === "idle") {
       dispatch(getUser({ getUserId }));
     }
-  }, [dispatch, fetchUserProfileStatus, fetchedUserProfile, getUserId]);
+  }, [dispatch, fetchUserProfileStatus, fetchedUserProfile, getUserId, status]);
   return fetchedUserProfile === null || fetchedUserProfile === undefined ? (
     <SpinnerLoader />
   ) : (
@@ -109,12 +110,14 @@ export function UserPage() {
           </p>
           <div className="flex">
             <Link to={`/user/${fetchedUserProfile._id}/followers`}>
-              <p className="mr-2">
+              <p className="mr-2 hover:underline">
                 {fetchedUserProfile.followers.length} Followers
               </p>
             </Link>
             <Link to={`/user/${fetchedUserProfile._id}/following`}>
-              <p>{fetchedUserProfile.following.length} Following</p>
+              <p className="hover:underline">
+                {fetchedUserProfile.following.length} Following
+              </p>
             </Link>
           </div>
         </div>
@@ -127,8 +130,10 @@ export function UserPage() {
       <section className="border-t ">
         {fetchedUserProfile?.posts?.length === 0 ||
         fetchedUserProfile === null ? (
-          <div className="flex justify-center items-center min-h-[50vh] font-bold text-lg">
-            <p>Oops!!Your feed is empty</p>
+          <div className="flex flex-col justify-center items-center min-h-[50vh] ">
+            {/* <p className="text-xl">No Posts To Show</p> */}
+            <img src={nodata} alt="data empty" className="h-[50%] w-[50%]" />
+            <p className="text-xl ">Feed is Empty</p>
           </div>
         ) : (
           fetchedUserProfile.posts.map((post) => (
