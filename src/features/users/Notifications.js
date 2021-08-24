@@ -2,7 +2,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
-
+import nodata from "../../assets/images/nodata.svg";
 export function Notifications() {
   const { profile } = useSelector((state) => state.users);
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export function Notifications() {
   return !profile ? (
     <SpinnerLoader />
   ) : (
-    profile.notifications && (
+    profile?.notifications && (
       <div className="border  border-opacity-20 mr-0 w-screen  md:w-[60vw] lg:w-[50vw] min-h-screen text-white">
         <section className="bg-blue  p-2  flex">
           <button
@@ -23,27 +23,34 @@ export function Notifications() {
           </button>
           <p className="p-2 text-xl font-bold">Notifications</p>
         </section>
-        <ul className="m-4">
-          {profile?.notifications.map((notification) => (
-            <li className="border border-opacity-20 flex  m-2 p-2">
-              <Link to={`/user/${notification._id}`}>
-                <img
-                  alt="user avatar"
-                  src={notification?.avatar}
-                  className="rounded-full w-12 h-12 cursor-pointer mr-4"
-                />
-              </Link>
-              <p className="flex justify-center items-center">
+        {profile.notifications.length < 1 ? (
+          <div className="mt-12 flex flex-col justify-center items-center">
+            <img src={nodata} alt="data empty" className="h-[50%] w-[50%]" />
+            <p className="font-bold">No notifications</p>
+          </div>
+        ) : (
+          <ul className="m-4">
+            {profile?.notifications.map((notification) => (
+              <li className="border border-opacity-20 flex  m-2 p-2">
                 <Link to={`/user/${notification._id}`}>
-                  <span className="hover:underline font-bold mr-2">
-                    {notification.name}
-                  </span>
+                  <img
+                    alt="user avatar"
+                    src={notification?.avatar}
+                    className="rounded-full w-12 h-12 cursor-pointer mr-4"
+                  />
                 </Link>
-                followed you
-              </p>
-            </li>
-          ))}
-        </ul>
+                <p className="flex justify-center items-center">
+                  <Link to={`/user/${notification._id}`}>
+                    <span className="hover:underline font-bold mr-2">
+                      {notification.name}
+                    </span>
+                  </Link>
+                  followed you
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     )
   );
