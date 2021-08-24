@@ -8,11 +8,6 @@ import { UsersList } from "./UsersList";
 
 export function Followers() {
   const { getUserId, followersOrFollowing } = useParams();
-  console.log(
-    "i am in followers component ",
-    { getUserId },
-    { followersOrFollowing }
-  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { fetchedUserProfile, fetchUserProfileStatus } = useSelector(
@@ -22,10 +17,7 @@ export function Followers() {
   const [showFollowers, setShowFollowers] = useState(
     followersOrFollowing === "followers" ? true : false
   );
-  console.log({ fetchedUserProfile });
   useEffect(() => {
-    console.log("useeffect of followers running");
-    //   this handles async call to api via thunk
     if (status !== "idle") {
       if (fetchedUserProfile) {
         if (getUserId !== fetchedUserProfile._id) {
@@ -35,16 +27,12 @@ export function Followers() {
         dispatch(getUser({ getUserId }));
       }
     }
-  }, [dispatch, fetchUserProfileStatus, fetchedUserProfile, getUserId]);
+  }, [dispatch, fetchUserProfileStatus, fetchedUserProfile, getUserId, status]);
   let renderList;
 
   if (fetchedUserProfile) {
     if (showFollowers) {
       renderList = fetchedUserProfile.followers;
-      //   .map((follower) => ({
-      //   ...follower,
-      //   followingStatus: true,
-      // }));
     } else {
       renderList = fetchedUserProfile.following;
     }

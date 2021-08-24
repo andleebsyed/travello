@@ -9,7 +9,6 @@ import {
 export const getUserProfile = createAsyncThunk("user", async (thunkAPI) => {
   try {
     const response = await FetchProfile();
-    console.log("thunk resposne", { response });
     return response;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response);
@@ -18,7 +17,6 @@ export const getUserProfile = createAsyncThunk("user", async (thunkAPI) => {
 export const loadUsers = createAsyncThunk("/users/all", async (thunkAPI) => {
   try {
     const response = await LoadUsers();
-    console.log("thunk with all users ", { response });
     return response;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response);
@@ -29,7 +27,6 @@ export const getUser = createAsyncThunk(
   async ({ getUserId }, thunkAPI) => {
     try {
       const response = await GetUser({ getUserId });
-      console.log({ response }, "user in thunk");
       return response.user;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
@@ -40,9 +37,7 @@ export const followNewUser = createAsyncThunk(
   "user/follow",
   async (newUserId, thunkAPI) => {
     try {
-      console.log("step 2:: came in thunk to make api request");
       const response = await FollowNewUser(newUserId);
-      console.log("step 3 :: came from api with response ", response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
@@ -54,12 +49,7 @@ export const unFollowUser = createAsyncThunk(
   "user/unfollow",
   async (userToUnfollowId, thunkAPI) => {
     try {
-      console.log(
-        "step 2:: came in thunk to make api request to unfollow user",
-        userToUnfollowId
-      );
       const response = await UnFollowUser(userToUnfollowId);
-      console.log("after unfollow data ", response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
@@ -124,15 +114,11 @@ export const userSlice = createSlice({
     },
     [followNewUser.fulfilled]: (state, action) => {
       const { followerUser, followingUser } = action.payload.data;
-      console.log(
-        "step 4:: request got fulfilled and data is updated",
-        JSON.parse(JSON.stringify(followerUser, followingUser))
-      );
       state.profile.following = [...state.profile.following, followingUser._id];
-      state.fetchedUserProfile.following = [
-        ...state.fetchedUserProfile.following,
-        followingUser,
-      ];
+      // state.fetchedUserProfile.following = [
+      //   ...state.fetchedUserProfile.following,
+      //   followingUser,
+      // ];
     },
     [unFollowUser.fulfilled]: (state, action) => {
       const { updatedLoggedInUser, updatedUnfollowedUser } =
@@ -140,9 +126,10 @@ export const userSlice = createSlice({
       state.profile.following = state.profile.following.filter(
         (followingUserId) => followingUserId !== updatedUnfollowedUser._id
       );
-      state.fetchedUserProfile.following = state.profile.following.filter(
-        (followingUserId) => followingUserId !== updatedUnfollowedUser._id
-      );
+      // state.fetchedUserProfile.following =
+      //   state.fetchedUserProfile.following.filter(
+      //     (followingUserId) => followingUserId._id !== updatedUnfollowedUser._id
+      //   );
     },
   },
 });

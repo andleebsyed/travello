@@ -2,19 +2,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { followNewUser, unFollowUser } from "./userSlice";
 import nodata from "../../assets/images/nodata.svg";
-import { Profile } from "./Profile";
 export function UsersList({ users, searchResultsVisibility }) {
-  const { profile } = useSelector((state) => state.users);
+  const { profile, fetchedUserProfile } = useSelector((state) => state.users);
   const dispatch = useDispatch();
+  if (fetchedUserProfile) {
+    console.log({ fetchedUserProfile }, "fetchedUserProfile");
+  }
   function followUserHandler(newUserId) {
-    console.log("step 1:: came in handler");
     dispatch(followNewUser({ newUserId }));
   }
   function unfollowUserHandler(userToUnfollowId) {
-    console.log("step 1:: hit unfollow user handler");
     dispatch(unFollowUser({ userToUnfollowId }));
   }
-  console.log("userList is accessed ", users);
   return (
     <div
       className={`${

@@ -60,7 +60,6 @@ export async function FetchProfile() {
 }
 
 export async function UpdateUser({ avatar, coverPic, bio, name }) {
-  // console.log({ updateData });
   let formData = new FormData();
   formData.append("avatar", avatar);
   formData.append("coverPic", coverPic);
