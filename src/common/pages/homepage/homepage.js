@@ -8,12 +8,18 @@ import nodata from "../../../assets/images/nodata.svg";
 export function Homepage() {
   const dispatch = useDispatch();
   const { posts, status } = useSelector((state) => state.posts);
-  const { profileStatus, profile } = useSelector((state) => state.users);
+  const { profileStatus, profile, authSetupStatus } = useSelector(
+    (state) => state.users
+  );
   useEffect(() => {
-    if (profileStatus === "idle" && status !== "idle") {
+    if (
+      profileStatus === "idle" &&
+      status !== "idle" &&
+      authSetupStatus === "success"
+    ) {
       dispatch(getUserProfile());
     }
-  }, [status, profileStatus, dispatch]);
+  }, [status, profileStatus, dispatch, authSetupStatus]);
   return (
     <div
       className="flex border border-b-0 border-opacity-20 text-white min-h-screen"
@@ -44,7 +50,6 @@ export function Homepage() {
           </ul>
         ) : (
           <div className="flex flex-col justify-center items-center min-h-[50vh] ">
-            {/* <p className="text-xl">No Posts To Show</p> */}
             <img src={nodata} alt="data empty" className="h-[50%] w-[50%]" />
             <p className="text-xl ">Empty</p>
           </div>
