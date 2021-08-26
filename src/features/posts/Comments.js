@@ -1,19 +1,13 @@
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
-import {
-  AddComment,
-  FetchComments,
-  RemoveComment,
-} from "../../services/posts/posts";
+import { AddComment, RemoveComment } from "../../services/posts/posts";
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { reactionAdded } from "./postSlice";
 import { useNavigate } from "react-router-dom";
 export function Comments({ commentBoxVisibility, post }) {
   const postId = post?._id;
-  if (post) {
-    console.log({ post });
-  }
+
   console.log("post id", { postId }, commentBoxVisibility);
   const [postButtonData, setPostButtonData] = useState({
     text: "Post",
@@ -32,24 +26,6 @@ export function Comments({ commentBoxVisibility, post }) {
   sortedComments.sort(
     (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
   );
-  useEffect(() => {
-    async function Run() {
-      const response = await FetchComments({ postId });
-      console.log({ response });
-      if (response.status) {
-        dispatch(
-          reactionAdded({
-            type: "addComment",
-            payload: { comments: response.comments },
-            postId,
-          })
-        );
-      }
-    }
-    if (commentBoxVisibility === "block") {
-      Run();
-    }
-  }, [commentBoxVisibility, dispatch, postId, post]);
   async function commentBoxSubmitHandler(e) {
     e.stopPropagation();
     e.preventDefault();
@@ -108,7 +84,7 @@ export function Comments({ commentBoxVisibility, post }) {
   }, [commentContent.commentText]);
 
   return (
-    <section className={commentBoxVisibility}>
+    <section>
       <form
         className="flex justify-between  mt-4 "
         onSubmit={(e) => commentBoxSubmitHandler(e)}
@@ -177,7 +153,6 @@ export function Comments({ commentBoxVisibility, post }) {
                 </p>
               </div>
               {localStorage.getItem("userId") === comment.author._id && (
-                // <p className="self-center mr-4">delete</p>
                 <button
                   onClick={(event) =>
                     DeleteCommentHandler({
@@ -193,7 +168,6 @@ export function Comments({ commentBoxVisibility, post }) {
                 </button>
               )}
             </li>
-            // </div>
           ))}
         </ul>
       )}
