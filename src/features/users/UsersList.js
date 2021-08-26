@@ -3,11 +3,8 @@ import { Link } from "react-router-dom";
 import { followNewUser, unFollowUser } from "./userSlice";
 import nodata from "../../assets/images/nodata.svg";
 export function UsersList({ users, searchResultsVisibility }) {
-  const { profile, fetchedUserProfile } = useSelector((state) => state.users);
+  const { profile } = useSelector((state) => state.users);
   const dispatch = useDispatch();
-  if (fetchedUserProfile) {
-    console.log({ fetchedUserProfile }, "fetchedUserProfile");
-  }
   function followUserHandler(newUserId) {
     dispatch(followNewUser({ newUserId }));
   }
