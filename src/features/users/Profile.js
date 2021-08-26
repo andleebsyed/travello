@@ -13,6 +13,7 @@ export function Profile() {
   const { posts } = useSelector((state) => state.posts);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let filteredPosts = [];
   console.log({ profile }, { profileStatus });
   useEffect(() => {
     console.log("internakl runs first or not");
@@ -21,8 +22,15 @@ export function Profile() {
       dispatch(getUserProfile());
     }
   }, [posts?.length, status, dispatch, profileStatus]);
-
-  return profile === null ? (
+  if (posts && posts.length !== 0) {
+    posts.forEach((post) =>
+      profile.posts.filter((profilePost) =>
+        post._id === profilePost._id ? filteredPosts.push(post) : "nothing"
+      )
+    );
+  }
+  console.log({ filteredPosts });
+  return profile === null || posts.length === 0 ? (
     <SpinnerLoader />
   ) : (
     <div className="border  border-opacity-20 mr-0 w-screen  md:w-[60vw] lg:w-[50vw] min-h-screen text-white">
@@ -75,7 +83,7 @@ export function Profile() {
         ) : (
           // ) : posts?.length > 0 ? (
           //   posts.map((post) => <ShowPost post={post} user={profile} />)
-          profile.posts.map((post) => <ShowPost post={post} user={profile} />)
+          filteredPosts.map((post) => <ShowPost post={post} user={profile} />)
         )}
       </section>
     </div>
