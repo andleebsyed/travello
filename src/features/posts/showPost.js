@@ -11,7 +11,6 @@ export function ShowPost({ post, user }) {
   const { name, username, avatar } = post ? post?.author : null;
   const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
   function commentBoxHandler(event) {
-    // event.stopPropagation();
     if (commentBoxVisibility === "hidden") {
       setCommentBoxVisibility("block");
     } else {
@@ -32,25 +31,10 @@ export function ShowPost({ post, user }) {
           "p-2    border-b   border-opacity-20 hover:bg-dark-hover cursor-pointer",
         postText: "",
       };
-  // );
-  // useEffect(() => {
-  //   async function Run() {
-  //     // dispatch()
-  //     const response = await FetchComments({ postId });
-  //     if (response.status) {
-  //       dispatch({ type: "refreshComments", comments: response.comments });
-  //     }
-  //   }
-  //   if (post.comments[0].avatar === null) {
-  //     Run();
-  //   }
-  // }, [dispatch, postId, post.comments]);
   async function likeButtonHandler({ event, postId, action }) {
     event.stopPropagation();
     const data = { postId, action };
     const response = await LikeInteraction(data);
-    console.log({ response });
-    console.log({ postId });
     if (response.status) {
       action === "inc"
         ? dispatch(
@@ -74,7 +58,6 @@ export function ShowPost({ post, user }) {
         onClick={(event) => {
           if (!postParameters.singlePost) {
             event.stopPropagation();
-            // <SinglePost post = {post} user = {user} />
             navigate(`/post/${post._id}`);
           }
         }}
@@ -110,20 +93,6 @@ export function ShowPost({ post, user }) {
           <span className="self-center ml-auto">
             {moment(post.createdAt).fromNow(true)}
           </span>
-          {/* <button className="self-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="24"
-              height="24"
-            >
-              <path fill="none" d="M0 0h24v24H0z" />
-              <path
-                d="M7 6V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5zm2-2v2h6V4H9z"
-                fill="rgba(149,164,166,1)"
-              />
-            </svg>
-          </button> */}
         </section>
         <p className={postParameters.postText}>{post?.postText}</p>
         {post?.postImage ? (

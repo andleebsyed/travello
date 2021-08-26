@@ -16,11 +16,8 @@ export function Profile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let filteredPosts = [];
-  console.log({ profile }, { profileStatus });
   useEffect(() => {
-    console.log("internakl runs first or not");
     if (profileStatus === "idle" && authSetupStatus === "success") {
-      console.log("let's fetch profile");
       dispatch(getUserProfile());
     }
   }, [posts?.length, status, dispatch, profileStatus, authSetupStatus]);
@@ -31,7 +28,6 @@ export function Profile() {
       )
     );
   }
-  console.log({ filteredPosts });
   return profile === null || posts === undefined ? (
     <SpinnerLoader />
   ) : (

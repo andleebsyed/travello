@@ -12,7 +12,6 @@ export function EditProfileModal() {
   const handleOpen = () => {
     setOpen(true);
   };
-  console.log({ profile });
   const handleClose = () => {
     setOpen(false);
     setEditTextVisibility((editTextVisibility) => ({
@@ -38,7 +37,6 @@ export function EditProfileModal() {
       cover: "block",
     }));
     if (e.target.files && e.target.files[0]) {
-      console.log("cover ", e.target.files[0]);
       setUpdateData({ ...updateData, coverPic: e.target.files[0] });
     }
   }
@@ -48,16 +46,13 @@ export function EditProfileModal() {
       avatar: "block",
     }));
     if (e.target.files && e.target.files[0]) {
-      console.log("avatar ", e.target.files[0]);
       setUpdateData({ ...updateData, avatar: e.target.files[0] });
     }
   }
   async function profileUpdateHandler() {
-    console.log({ updateData });
     setSaveButtonText("Saving...");
     const response = await UpdateUser(updateData);
     if (response.status) {
-      console.log("aagayaa ", response);
       dispatch(updateProfile({ profile: response.updatedUser }));
     }
     setSaveButtonText("Save");

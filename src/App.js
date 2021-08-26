@@ -27,7 +27,6 @@ import { Notifications } from "./features/users/Notifications";
 function App() {
   const { authorized } = useSelector((state) => state.users);
   const { progressBarStatus, status } = useSelector((state) => state.posts);
-  // const { profile } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   console.log({ authorized }, { status });

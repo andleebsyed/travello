@@ -29,7 +29,6 @@ export const getUser = createAsyncThunk(
     try {
       setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
       const response = await GetUser({ getUserId });
-      console.log("thunk is working as expected ", response);
       return response.user;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);

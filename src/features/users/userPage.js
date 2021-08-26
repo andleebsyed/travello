@@ -16,7 +16,6 @@ export function UserPage() {
   const dispatch = useDispatch();
   const [userInFollowing, setUserInFollowing] = useState(null);
   const { getUserId } = useParams();
-  const [userProfile, setUserProfile] = useState(fetchedUserProfile);
   useEffect(() => {
     if (profile !== null) {
       setUserInFollowing(
@@ -41,11 +40,6 @@ export function UserPage() {
     orderedPosts = singleUserPosts
       .slice()
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-  }
-  function followOnUserPage({ newUserId }) {
-    // dispatch(updateUserProfileFollowers(type: "addFollower"))
-    dispatch(followNewUser({ newUserId }));
-    // setUserProfile({...userProfile, followers: [...userProfile.followers, ]})
   }
   return fetchedUserProfile === null ||
     fetchedUserProfile === undefined ||

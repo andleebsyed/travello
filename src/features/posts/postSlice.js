@@ -20,10 +20,8 @@ const initialState = {
 export const loadPosts = createAsyncThunk("user/posts", async () => {
   const response = await FetchAllPosts();
   if (response.status === 401) {
-    console.log("unauthorixed access in thunk");
     return true;
   }
-  console.log("response in thunk ", { response });
   return response;
 });
 export const addComment = createAsyncThunk(
@@ -64,9 +62,7 @@ export const fetchPostsByUser = createAsyncThunk(
   "/posts/fetchpostsbyuser",
   async ({ getUserId }, thunkAPI) => {
     try {
-      console.log(getUserId);
       const response = await FetchPostsByUser(getUserId);
-      console.log({ response }, "d=singleUserPosts");
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
@@ -79,7 +75,6 @@ export const postSlice = createSlice({
   reducers: {
     reactionAdded: (state, action) => {
       const { type } = action.payload;
-      console.log(JSON.parse(JSON.stringify({ type })));
       if (type === "likeAdded") {
         const { postId } = action.payload;
         const post = state?.posts?.find((post) => post._id === postId);
@@ -99,7 +94,6 @@ export const postSlice = createSlice({
             (post) => post._id === postId
           );
           if (post) {
-            console.log("post located ", post._id);
             post?.likedBy.push(localStorage.getItem("userId"));
             post = { ...post, liked: true };
           }
@@ -109,7 +103,6 @@ export const postSlice = createSlice({
         let post = state?.posts?.find((post) => post._id === postId);
         if (post) {
           post.likedBy = post.likedBy.filter((authorId) => {
-            console.log(JSON.parse(JSON.stringify({ authorId })));
             return authorId !== localStorage.getItem("userId");
           });
           post.liked = false;
@@ -119,7 +112,6 @@ export const postSlice = createSlice({
           const { post } = state.postData;
           if (post._id === postId) {
             post.likedBy = post.likedBy.filter((authorId) => {
-              console.log(JSON.parse(JSON.stringify({ authorId })));
               return authorId !== localStorage.getItem("userId");
             });
             post.liked = false;
@@ -131,7 +123,6 @@ export const postSlice = createSlice({
           );
           if (post) {
             post.likedBy = post.likedBy.filter((authorId) => {
-              console.log(JSON.parse(JSON.stringify({ authorId })));
               return authorId !== localStorage.getItem("userId");
             });
             post.liked = false;
@@ -165,23 +156,6 @@ export const postSlice = createSlice({
       state.singleUserPosts = action.payload.fethchedUserProfilePosts;
       state.singleUserPostsStatus = "success";
     },
-    // singlePostFetched: (state) => {
-    //   console.log(JSON.parse(JSON.stringify("status set")));
-    //   state.singlePostStatus = "success";
-    //   state.singlePost =
-    // },
-    // startSpinner: (state) => {
-    //   state.spinnerStatus = true;
-    // },
-    // stopSpinner: (state) => {
-    //   state.spinnerStatus = false;
-    // },
-    // startProgressBar: (state) => {
-    //   state.progressBarStatus = true;
-    // },
-    // stopProgressBar: (state) => {
-    //   state.progressBarStatus = false;
-    // },
   },
   extraReducers: {
     [loadPosts.pending]: (state) => {
@@ -190,13 +164,11 @@ export const postSlice = createSlice({
     [loadPosts.fulfilled]: (state, action) => {
       const { finalUserPosts, username, name } = action.payload.userData;
       const { allPosts } = action.payload;
-
       state.posts = finalUserPosts;
       state.status = "success";
       state.username = username;
       state.name = name;
       state.allPosts = allPosts;
-      // state
     },
     [loadPosts.rejected]: (state, action) => {
       action.payload === true

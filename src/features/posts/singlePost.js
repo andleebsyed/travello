@@ -6,19 +6,16 @@ import { BiArrowBack } from "react-icons/bi";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
 import { GetPost } from "../../services/posts/posts";
 import { fetchSinglePost } from "./postSlice";
-export function SinglePost({ post, user }) {
+export function SinglePost() {
   const { status, singlePostStatus, postData } = useSelector(
     (state) => state.posts
   );
   const { postId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log({ postData });
   useEffect(() => {
     async function Run() {
-      console.log("useeffect ran");
       const response = await GetPost({ postId });
-      console.log({ response });
       if (response.status) {
         dispatch(fetchSinglePost({ postId }));
       }
@@ -30,7 +27,6 @@ export function SinglePost({ post, user }) {
       Run();
     }
   }, [postId, status, singlePostStatus, dispatch, postData]);
-  console.log("singlepost status ");
   return (
     <div className="w-screen min-h-screen md:w-[60vw] lg:w-[50vw]  border border-opacity-10 xsm:mr-4 text-white">
       <section className="bg-blue  p-2 border-b border-opacity-20  flex">

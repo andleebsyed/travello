@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 export function Comments({ commentBoxVisibility, post }) {
   const postId = post?._id;
 
-  console.log("post id", { postId }, commentBoxVisibility);
   const [postButtonData, setPostButtonData] = useState({
     text: "Post",
     color: "bg-blue-xlight",
@@ -38,7 +37,6 @@ export function Comments({ commentBoxVisibility, post }) {
       postId,
     });
     if (response.status) {
-      console.log({ response });
       commentBoxRef.current.value = "";
       dispatch(
         reactionAdded({
@@ -56,7 +54,6 @@ export function Comments({ commentBoxVisibility, post }) {
   async function DeleteCommentHandler({ event, postId, commentId }) {
     event.stopPropagation();
     const response = await RemoveComment({ postId, commentId });
-    console.log("res in view ", { response });
     if (response.status) {
       dispatch(
         reactionAdded({
