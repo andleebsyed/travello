@@ -1,27 +1,42 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { ShowPost } from "./showPost";
 import { BiArrowBack } from "react-icons/bi";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
 import { GetPost } from "../../services/posts/posts";
+import { fetchSinglePost, singlePostFetched } from "./postSlice";
 export function SinglePost({ post, user }) {
-  const { status } = useSelector((state) => state.posts);
+  const { status, singlePostStatus, postData } = useSelector(
+    (state) => state.posts
+  );
   const { postId } = useParams();
-  const [postData, setPostData] = useState(null);
+  // const [postData, setPostData] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  console.log({ postData });
   useEffect(() => {
     async function Run() {
-      if (status !== "idle") {
-        console.log("useeffect ran");
-        const response = await GetPost({ postId });
-        console.log({ response });
-        const postDetails = { user: response.post.author, post: response.post };
-        setPostData(postDetails);
+      console.log("useeffect ran");
+      const response = await GetPost({ postId });
+      console.log({ response });
+      if (response.status) {
+        // const postDetails = {
+        //   user: response.post.author,
+        //   post: response.post,
+        // };
+        // setPostData(postDetails);
+        dispatch(fetchSinglePost({ postId }));
       }
     }
-    Run();
-  }, [postId, status]);
+    if (
+      status !== "idle" &&
+      (singlePostStatus === "idle" || postData?.post?._id !== postId)
+    ) {
+      Run();
+    }
+  }, [postId, status, singlePostStatus, dispatch]);
+  console.log("singlepost status ");
   return (
     <div className="w-screen min-h-screen md:w-[60vw] border border-opacity-10 xsm:mr-4 text-white">
       <section className="bg-blue  p-2 border-b border-opacity-20  flex">
@@ -33,7 +48,7 @@ export function SinglePost({ post, user }) {
         </button>
         <p className="p-2 text-xl">Post</p>
       </section>
-      {postData === null ? (
+      {postData === null || postData.post._id !== postId ? (
         <SpinnerLoader />
       ) : (
         <ShowPost post={postData.post} user={postData.user} />

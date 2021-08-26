@@ -8,10 +8,7 @@ import { useState } from "react";
 import { Comments } from "./Comments";
 import { reactionAdded } from "./postSlice";
 export function ShowPost({ post, user }) {
-  // let name, username, avatar;
-  // if (post) {
   const { name, username, avatar } = post ? post?.author : null;
-  // }
   const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
   function commentBoxHandler(event) {
     event.stopPropagation();
@@ -54,10 +51,21 @@ export function ShowPost({ post, user }) {
     const data = { postId, action };
     const response = await LikeInteraction(data);
     console.log({ response });
+    console.log({ postId });
     if (response.status) {
       action === "inc"
-        ? dispatch(reactionAdded({ type: "likeAdded", postId }))
-        : dispatch(reactionAdded({ type: "likeRemoved", postId }));
+        ? dispatch(
+            reactionAdded({
+              type: "likeAdded",
+              postId,
+            })
+          )
+        : dispatch(
+            reactionAdded({
+              type: "likeRemoved",
+              postId,
+            })
+          );
     }
   }
   const navigate = useNavigate();
@@ -158,12 +166,8 @@ export function ShowPost({ post, user }) {
           </section>
         </div>
       </div>
-      <div
-        className={`${commentBoxVisibility}  border-b border-opacity-20  p-2 `}
-      >
-        {commentBoxVisibility === "block" && (
-          <Comments post={post} commentBoxVisibility={commentBoxVisibility} />
-        )}
+      <div className={`  border-b border-opacity-20  p-2 `}>
+        <Comments post={post} commentBoxVisibility={commentBoxVisibility} />
       </div>
     </main>
   );
