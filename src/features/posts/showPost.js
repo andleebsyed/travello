@@ -11,14 +11,13 @@ export function ShowPost({ post, user }) {
   const { name, username, avatar } = post ? post?.author : null;
   const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
   function commentBoxHandler(event) {
-    event.stopPropagation();
+    // event.stopPropagation();
     if (commentBoxVisibility === "hidden") {
       setCommentBoxVisibility("block");
     } else {
       setCommentBoxVisibility("hidden");
     }
   }
-  console.log({ commentBoxVisibility }, "in shwo post component");
   const { postId } = useParams();
   const dispatch = useDispatch();
   let postParameters = postId
@@ -166,9 +165,11 @@ export function ShowPost({ post, user }) {
           </section>
         </div>
       </div>
-      <div className={`  border-b border-opacity-20  p-2 `}>
-        <Comments post={post} commentBoxVisibility={commentBoxVisibility} />
-      </div>
+      {postId && (
+        <div className={`  border-b border-opacity-20  p-2 `}>
+          <Comments post={post} />
+        </div>
+      )}
     </main>
   );
 }
