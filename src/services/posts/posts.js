@@ -81,3 +81,15 @@ export async function GetPost({ postId }) {
     console.error("couldn't fetch post", error?.message);
   }
 }
+
+export async function FetchPostsByUser(getUserId) {
+  try {
+    const response = await axios.post(BASE_URL + "posts/fetchpostsbyuser", {
+      getUserId,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("couldn't fetch posts of user", error?.message);
+  }
+}

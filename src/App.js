@@ -12,7 +12,11 @@ import {
   setUpAuthHeaderForServiceCalls,
 } from "./services/users/users";
 import { ProgressBar } from "../src/common/components/Loaders/Progress";
-import { getUserProfile, removeToken } from "./features/users/userSlice";
+import {
+  authSetup,
+  getUserProfile,
+  removeToken,
+} from "./features/users/userSlice";
 import { Profile } from "./features/users/Profile";
 import { loadPosts } from "./features/posts/postSlice";
 import { Search } from "./features/users/searchUser";
@@ -26,6 +30,7 @@ function App() {
   // const { profile } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  console.log({ authorized }, { status });
   function PrivateRoute(props) {
     if (authorized) {
       return <Route {...props} />;
@@ -43,8 +48,9 @@ function App() {
 
   useEffect(() => {
     console.log("do i always run");
-    setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
     setupAuthExceptionHandler(dispatch, removeToken, navigate);
+    setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
+    dispatch(authSetup());
   }, [dispatch, navigate]);
 
   useEffect(() => {
