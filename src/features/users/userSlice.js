@@ -4,6 +4,7 @@ import {
   FollowNewUser,
   GetUser,
   LoadUsers,
+  setUpAuthHeaderForServiceCalls,
   UnFollowUser,
 } from "../../services/users/users";
 export const getUserProfile = createAsyncThunk("user", async (thunkAPI) => {
@@ -26,6 +27,7 @@ export const getUser = createAsyncThunk(
   "/user/getuser",
   async ({ getUserId }, thunkAPI) => {
     try {
+      setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
       const response = await GetUser({ getUserId });
       console.log("thunk is working as expected ", response);
       return response.user;
@@ -69,8 +71,12 @@ export const userSlice = createSlice({
     usersStatus: "idle",
     users: null,
     authorized: localStorage.getItem("token") ? true : false,
+    authSetupStatus: "idle",
   },
   reducers: {
+    authSetup: (state) => {
+      state.authSetupStatus = "success";
+    },
     setToken: (state) => {
       state.authorized = true;
     },
@@ -114,8 +120,15 @@ export const userSlice = createSlice({
       state.fetchUserProfileStatus = "success";
     },
     [followNewUser.fulfilled]: (state, action) => {
-      const { followingUser } = action.payload.data;
+      const { followingUser, followerUser } = action.payload.data;
       state.profile.following = [...state.profile.following, followingUser._id];
+      if (state.fetchedUserProfile._id === followingUser._id) {
+        state.fetchedUserProfile.followers =
+          state.fetchedUserProfile.followers = [
+            ...state.fetchedUserProfile.followers,
+            followerUser,
+          ];
+      }
       if (state.fetchedUserProfile._id === localStorage.getItem("userId")) {
         state.fetchedUserProfile.following = [
           ...state.fetchedUserProfile.following,
@@ -124,10 +137,18 @@ export const userSlice = createSlice({
       }
     },
     [unFollowUser.fulfilled]: (state, action) => {
-      const { updatedUnfollowedUser } = action.payload.data;
+      const { updatedUnfollowedUser, updatedLoggedInUser } =
+        action.payload.data;
       state.profile.following = state.profile.following.filter(
         (followingUserId) => followingUserId !== updatedUnfollowedUser._id
       );
+      if (state.fetchedUserProfile._id === updatedUnfollowedUser._id) {
+        state.fetchedUserProfile.followers =
+          state.fetchedUserProfile.followers =
+            state.fetchedUserProfile.followers.filter(
+              (followerUser) => followerUser._id !== updatedLoggedInUser._id
+            );
+      }
       if (state.fetchedUserProfile._id === localStorage.getItem("userId")) {
         state.fetchedUserProfile.following =
           state.fetchedUserProfile.following.filter(
@@ -138,6 +159,6 @@ export const userSlice = createSlice({
     },
   },
 });
-export const { userAuth, setToken, removeToken, updateProfile } =
+export const { userAuth, setToken, removeToken, updateProfile, authSetup } =
   userSlice.actions;
 export default userSlice.reducer;
