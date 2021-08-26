@@ -6,40 +6,33 @@ import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
 import { getUser, loadUsers } from "./userSlice";
 import { UsersList } from "./UsersList";
 export function Search() {
-  console.log("i am here ");
   const dispatch = useDispatch();
   const {
     users,
     usersStatus,
     profile,
     fetchUserProfileStatus,
-    fetchedUserProfile,
+    authSetupStatus,
   } = useSelector((state) => state.users);
   const { status } = useSelector((state) => state.posts);
   const navigate = useNavigate();
-  if (users) {
-    console.log("last step to see wether our thing is working or not ", {
-      users,
-    });
-  }
-  // if (fetchedUserProfile) {
-  console.log("fetcheded uiser profile ", fetchedUserProfile);
-  // }
-  console.log("in serach component ", { users });
   const [matchedUsers, setMatchedUsers] = useState([]);
   const [finalUsers, setFinalUsers] = useState(null);
   useEffect(() => {
-    if (usersStatus === "idle" && status !== "idle") {
+    if (usersStatus === "idle" && authSetupStatus === "success") {
       dispatch(loadUsers());
-      // dispatch(getUserProfile());
     }
-  }, [usersStatus, dispatch, status]);
+  }, [usersStatus, dispatch, status, authSetupStatus]);
   useEffect(() => {
-    if (fetchUserProfileStatus === "idle" && status !== "idle" && profile) {
-      console.log("i am running in bloom");
+    if (
+      fetchUserProfileStatus === "idle" &&
+      profile &&
+      authSetupStatus === "success" &&
+      status !== "idle"
+    ) {
       dispatch(getUser({ getUserId: profile._id }));
     }
-  }, [dispatch, fetchUserProfileStatus, profile, status]);
+  }, [dispatch, fetchUserProfileStatus, profile, status, authSetupStatus]);
   useEffect(() => {
     if (profile && users) {
       const followersCheckUsers = users.map((user) =>
@@ -56,13 +49,10 @@ export function Search() {
   const [searchData, setSearchData] = useState(null);
   let filteredUsers;
   function textAreaHandler(e) {
-    console.log(profile.followers, profile.following);
     setSearchData(e.target.value);
-    console.log({ users }, "users in serrchc box context");
     filteredUsers = finalUsers.filter((user) =>
       user.username.includes(e.target.value)
     );
-    console.log("filtered users ", filteredUsers.length, matchedUsers.length);
 
     setMatchedUsers(filteredUsers);
   }
