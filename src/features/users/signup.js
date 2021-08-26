@@ -55,11 +55,11 @@ export function Signup() {
       setButtonText("Sign Up");
       dispatch(setToken());
       if (response.status) {
+        setUpAuthHeaderForServiceCalls(response.token);
         localStorage.setItem("token", response.token);
         localStorage.setItem("userId", response.userId);
-        navigate("/home", {
-          replace: true,
-        });
+        dispatch(setToken());
+        navigate("/home", { replace: true });
       } else if ("existingField" in response) {
         setError({
           ...error,
