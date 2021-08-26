@@ -5,7 +5,6 @@ export async function UserSignIn(userInfo) {
   try {
     const response = await axios.post(BASE_URL + "user/signin", userInfo);
     if (response.status === 200) {
-      console.log(response.data);
       return response.data;
     }
   } catch (error) {
@@ -16,7 +15,6 @@ export async function UserSignIn(userInfo) {
 export async function UserSignUp({ name, username, password, email }) {
   try {
     const userDetails = { userDetails: { name, username, password, email } };
-    console.log({ userDetails });
     const response = await axios.post(BASE_URL + "user/signup", userDetails);
     if (response.status === 200) {
       return response.data;
@@ -54,38 +52,39 @@ export function setupAuthExceptionHandler(dispatch, removeToken, navigate) {
 }
 
 export async function FetchProfile() {
-  const response = await axios.post(BASE_URL + "user");
-  console.log({ response });
-  return response.data;
+  try {
+    const response = await axios.post(BASE_URL + "user");
+    return response.data;
+  } catch (error) {
+    console.log("Failed to fetch user profile ", error?.message);
+  }
 }
 
 export async function UpdateUser({ avatar, coverPic, bio, name }) {
-  let formData = new FormData();
-  formData.append("avatar", avatar);
-  formData.append("coverPic", coverPic);
-  formData.append("bio", bio);
-  formData.append("name", name);
-  console.log({ formData });
-  const response = await axios.post(BASE_URL + "user/update", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-  console.log({ response });
-  if (response.status === 200) {
-    return response.data;
+  try {
+    let formData = new FormData();
+    formData.append("avatar", avatar);
+    formData.append("coverPic", coverPic);
+    formData.append("bio", bio);
+    formData.append("name", name);
+    console.log({ formData });
+    const response = await axios.post(BASE_URL + "user/update", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log("Failed to update the user ", error?.message);
   }
 }
 
 export async function LoadUsers() {
   try {
-    // setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
     const response = await axios.post(BASE_URL + "user/allusers");
-    console.log({ response });
-    // if (response.status === 200) {
-    // console.log("users fetched successfully", { response });
     return response.data;
-    // }
   } catch (error) {
     console.log(
       "error occurred while fetching users from server ",
@@ -98,7 +97,6 @@ export async function LoadUsers() {
 export async function GetUser({ getUserId }) {
   try {
     const response = await axios.post(BASE_URL + "user/getuser", { getUserId });
-    console.log({ response });
     return response.data;
   } catch (error) {
     console.log("failed to fetch the user ", error?.message);
@@ -108,7 +106,6 @@ export async function GetUser({ getUserId }) {
 export async function FollowNewUser(newUserId) {
   try {
     const response = await axios.post(BASE_URL + "user/follow", newUserId);
-    console.log({ response });
     return response.data;
   } catch (error) {
     console.log("following user failed ", error?.message);
@@ -116,12 +113,10 @@ export async function FollowNewUser(newUserId) {
 }
 export async function UnFollowUser(userToUnfollowId) {
   try {
-    console.log({ userToUnfollowId }, "in api call");
     const response = await axios.post(
       BASE_URL + "user/unfollow",
       userToUnfollowId
     );
-    console.log({ response });
     return response.data;
   } catch (error) {
     console.log("unfollowing user failed ", error?.message);

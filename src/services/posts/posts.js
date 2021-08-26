@@ -10,7 +10,6 @@ export async function PostCreation(newPostContent) {
       "Content-Type": "multipart/form-data",
     },
   });
-  console.log({ response });
   return response.data;
 }
 
@@ -26,20 +25,24 @@ export async function FetchAllPosts() {
 }
 
 export async function LikeInteraction(data) {
-  const response = await axios.post(BASE_URL + "posts/likeinteraction", data);
-  console.log({ response });
-  return response.data;
+  try {
+    const response = await axios.post(BASE_URL + "posts/likeinteraction", data);
+    return response.data;
+  } catch (error) {
+    console.error("Like interaction failed ", error);
+  }
 }
 
 export async function FetchComments({ postId }) {
-  console.log("coming in api call ", postId);
-  const response = await axios.post(BASE_URL + "posts/fetchcomments", {
-    postId,
-  });
-  if (response.status === 200) {
-    console.log("good response");
-    console.log(response.data);
-    return response.data;
+  try {
+    const response = await axios.post(BASE_URL + "posts/fetchcomments", {
+      postId,
+    });
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error("Failed to fetch comments ", error?.message);
   }
 }
 
@@ -49,7 +52,6 @@ export async function AddComment({ postId, content }) {
       postId,
       content,
     });
-    console.log("comment added or not ", { response });
     return response.data;
   } catch (error) {
     console.error(
@@ -65,7 +67,6 @@ export async function RemoveComment({ postId, commentId }) {
       postId,
       commentId,
     });
-    console.log("api response ", { response });
     return response.data;
   } catch (error) {
     console.error("Couldn't remove comment from post ", error);
@@ -75,7 +76,6 @@ export async function RemoveComment({ postId, commentId }) {
 export async function GetPost({ postId }) {
   try {
     const response = await axios.post(BASE_URL + "posts/getpost", { postId });
-    console.log({ response }, "post fetch ");
     return response.data;
   } catch (error) {
     console.error("couldn't fetch post", error?.message);
