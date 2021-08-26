@@ -8,7 +8,9 @@ import { EditProfileModal } from "./editProfile";
 import { getUserProfile } from "./userSlice";
 import nodata from "../../assets/images/nodata.svg";
 export function Profile() {
-  const { profileStatus, profile } = useSelector((state) => state.users);
+  const { profileStatus, profile, authSetupStatus } = useSelector(
+    (state) => state.users
+  );
   const { status } = useSelector((state) => state.posts);
   const { posts } = useSelector((state) => state.posts);
   const navigate = useNavigate();
@@ -17,11 +19,11 @@ export function Profile() {
   console.log({ profile }, { profileStatus });
   useEffect(() => {
     console.log("internakl runs first or not");
-    if (profileStatus === "idle" && status !== "idle") {
+    if (profileStatus === "idle" && authSetupStatus === "success") {
       console.log("let's fetch profile");
       dispatch(getUserProfile());
     }
-  }, [posts?.length, status, dispatch, profileStatus]);
+  }, [posts?.length, status, dispatch, profileStatus, authSetupStatus]);
   if (posts && posts.length !== 0) {
     posts.forEach((post) =>
       profile.posts.filter((profilePost) =>
@@ -30,7 +32,7 @@ export function Profile() {
     );
   }
   console.log({ filteredPosts });
-  return profile === null || posts.length === 0 ? (
+  return profile === null || posts === undefined ? (
     <SpinnerLoader />
   ) : (
     <div className="border  border-opacity-20 mr-0 w-screen  md:w-[60vw] lg:w-[50vw] min-h-screen text-white">
