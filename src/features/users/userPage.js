@@ -131,7 +131,6 @@ export function UserPage() {
         {fetchedUserProfile?.posts?.length === 0 ||
         fetchedUserProfile === null ? (
           <div className="flex flex-col justify-center items-center min-h-[50vh] ">
-            {/* <p className="text-xl">No Posts To Show</p> */}
             <img src={nodata} alt="data empty" className="h-[50%] w-[50%]" />
             <p className="text-xl ">Feed is Empty</p>
           </div>

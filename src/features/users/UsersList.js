@@ -16,7 +16,7 @@ export function UsersList({ users, searchResultsVisibility }) {
   }
   return (
     <div
-      className={`${
+      className={` ${
         searchResultsVisibility ? searchResultsVisibility : "visible"
       } `}
     >
@@ -25,9 +25,9 @@ export function UsersList({ users, searchResultsVisibility }) {
           <img src={nodata} alt="data empty" className="h-[50%] w-[50%]" />
         </div>
       ) : (
-        <ul className="p-2  xsm:p-4 border border-blue-light m-2  md:m-4 rounded">
+        <ul className="p-2  xsm:p-4 border border-blue-light m-1  md:m-4 rounded">
           {users?.map((user) => (
-            <li className="flex flex-col">
+            <li className="flex flex-col mt-4 mb-4" key={user._id}>
               <section className="flex">
                 <Link
                   to={
@@ -37,7 +37,7 @@ export function UsersList({ users, searchResultsVisibility }) {
                   <img
                     alt="user avatar"
                     src={user?.avatar}
-                    className="rounded-full w-12 h-12 cursor-pointer"
+                    className="rounded-full w-12 h-12 cursor-pointer hover:opacity-80"
                   />
                 </Link>
 
