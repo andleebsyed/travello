@@ -8,7 +8,7 @@ const useStyles = makeStyles({
 export function SpinnerLoader() {
   const classes = useStyles();
   return (
-    <div className="flex justify-center items-center mt-4  ">
+    <div className="flex justify-center items-center  min-h-screen w-[100vw]  md:w-[60vw] lg:w-[50vw] ">
       <CircularProgress classes={{ root: classes.custom }} />
     </div>
   );
