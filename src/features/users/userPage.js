@@ -4,56 +4,52 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
 import { ShowPost } from "../posts/showPost";
-import {
-  followNewUser,
-  getUser,
-  getUserProfile,
-  unFollowUser,
-} from "./userSlice";
+import { followNewUser, getUser, unFollowUser } from "./userSlice";
 import nodata from "../../assets/images/nodata.svg";
+import { fetchPostsByUser } from "../posts/postSlice";
 export function UserPage() {
-  const { fetchUserProfileStatus, fetchedUserProfile, profile, profileStatus } =
-    useSelector((state) => state.users);
-  const { status, users } = useSelector((state) => state.posts);
+  const { fetchUserProfileStatus, fetchedUserProfile, profile } = useSelector(
+    (state) => state.users
+  );
+  const { status, singleUserPosts } = useSelector((state) => state.posts);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userInFollowing, setUserInFollowing] = useState(null);
   const { getUserId } = useParams();
-  console.log({ getUserId });
+  const [userProfile, setUserProfile] = useState(fetchedUserProfile);
   useEffect(() => {
     if (profile !== null) {
-      console.log(profile.following, "profile following");
       setUserInFollowing(
         profile.following.find((following) => following === getUserId)
       );
     }
   }, [getUserId, profile]);
-  useEffect(() => {
-    if (
-      (profileStatus === "idle" || fetchUserProfileStatus === "idle") &&
-      status !== "idle" &&
-      users === null
-    ) {
-      dispatch(getUserProfile());
-    }
-  }, [
-    dispatch,
-    status,
-    fetchUserProfileStatus,
-    getUserId,
-    profileStatus,
-    users,
-  ]);
+
   useEffect(() => {
     if (fetchedUserProfile && status !== "idle") {
       if (getUserId !== fetchedUserProfile._id) {
         dispatch(getUser({ getUserId }));
+        dispatch(fetchPostsByUser({ getUserId }));
       }
     } else if (fetchUserProfileStatus === "idle") {
       dispatch(getUser({ getUserId }));
+      dispatch(fetchPostsByUser({ getUserId }));
     }
   }, [dispatch, fetchUserProfileStatus, fetchedUserProfile, getUserId, status]);
-  return fetchedUserProfile === null || fetchedUserProfile === undefined ? (
+  let orderedPosts;
+  if (singleUserPosts) {
+    orderedPosts = singleUserPosts
+      .slice()
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  }
+  function followOnUserPage({ newUserId }) {
+    // dispatch(updateUserProfileFollowers(type: "addFollower"))
+    dispatch(followNewUser({ newUserId }));
+    // setUserProfile({...userProfile, followers: [...userProfile.followers, ]})
+  }
+  return fetchedUserProfile === null ||
+    fetchedUserProfile === undefined ||
+    singleUserPosts === null ? (
     <SpinnerLoader />
   ) : (
     <div className="border  border-opacity-20 mr-0 w-screen  md:w-[60vw] lg:w-[50vw] min-h-screen text-white">
@@ -129,13 +125,14 @@ export function UserPage() {
       </section>
       <section className="border-t ">
         {fetchedUserProfile?.posts?.length === 0 ||
-        fetchedUserProfile === null ? (
+        fetchedUserProfile === null ||
+        singleUserPosts === null ? (
           <div className="flex flex-col justify-center items-center min-h-[50vh] ">
             <img src={nodata} alt="data empty" className="h-[50%] w-[50%]" />
             <p className="text-xl ">Feed is Empty</p>
           </div>
         ) : (
-          fetchedUserProfile.posts.map((post) => (
+          orderedPosts.map((post) => (
             <ShowPost post={post} user={fetchedUserProfile} />
           ))
         )}
