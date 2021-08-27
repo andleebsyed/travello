@@ -18,6 +18,7 @@ import { Search } from "./features/users/searchUser";
 import { UserPage } from "./features/users/userPage";
 import { Followers } from "./features/users/Followers";
 import { Notifications } from "./features/users/Notifications";
+import { NotFound } from "./common/components/NotFound";
 
 function App() {
   const { authorized } = useSelector((state) => state.users);
@@ -49,8 +50,6 @@ function App() {
     <>
       <div className={authorized ? "flex min-h-screen" : "min-h-screen"}>
         {authorized && <Navbar />}
-        {progressBarStatus && <ProgressBar />}
-
         <Routes>
           <Route path="/" element={authorized ? <Homepage /> : <Landing />} />
           <Redirector
@@ -71,6 +70,7 @@ function App() {
             element={<Followers />}
           />
           <PrivateRoute path="/notifications" element={<Notifications />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </div>
     </>
