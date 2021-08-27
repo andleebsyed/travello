@@ -2,7 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { followNewUser, unFollowUser } from "./userSlice";
 import nodata from "../../assets/images/nodata.svg";
-export function UsersList({ users, searchResultsVisibility }) {
+import { useEffect } from "react";
+export function UsersList({ users }) {
   const { profile } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   function followUserHandler(newUserId) {
@@ -11,12 +12,21 @@ export function UsersList({ users, searchResultsVisibility }) {
   function unfollowUserHandler(userToUnfollowId) {
     dispatch(unFollowUser({ userToUnfollowId }));
   }
+  // useEffect(() => {
+  //   if (profile && users) {
+  //     const followersCheckUsers = users.map((user) =>
+  //       profile.following.includes(user._id)
+  //         ? { ...user, followingStatus: true }
+  //         : { ...user, followingStatus: false }
+  //     );
+  //     setFinalUsers(followersCheckUsers);
+  //     setusers(followersCheckUsers);
+  //   }
+  // }, [profile, users]);
+
+  // const usersToMap = users.length > 0 ? users : allUsers;
   return (
-    <div
-      className={` ${
-        searchResultsVisibility ? searchResultsVisibility : "visible"
-      } `}
-    >
+    <div>
       {users.length < 1 ? (
         <div className="mt-12 flex justify-center">
           <img src={nodata} alt="data empty" className="h-[50%] w-[50%]" />

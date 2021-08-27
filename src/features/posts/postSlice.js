@@ -1,10 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import {
   AddComment,
   FetchAllPosts,
   FetchPostsByUser,
   GetPost,
 } from "../../services/posts/posts";
+import {
+  ADD_COMMENT,
+  BASE_URL,
+  FETCH_POSTS_BY_USER,
+  GET_USER,
+  LOAD_POSTS,
+  SINGLE_POST,
+} from "../../services/url";
 const initialState = {
   status: "idle",
   error: null,
@@ -17,23 +26,27 @@ const initialState = {
   singleUserPosts: null,
   singleUserPostsStatus: "idle",
 };
-export const loadPosts = createAsyncThunk("user/posts", async () => {
-  const response = await FetchAllPosts();
-  if (response.status === 401) {
-    return true;
+export const loadPosts = createAsyncThunk("user/posts", async (thunkAPI) => {
+  try {
+    const response = await axios.post(LOAD_POSTS);
+    console.log({ response }, "all posts");
+    return response.data;
+  } catch (error) {
+    console.log("error of posts is caught");
+    return thunkAPI.rejectWithValue(error.response);
   }
-  return response;
 });
 export const addComment = createAsyncThunk(
   "post/comments",
   async ({ content, postId }, thunkAPI) => {
     try {
-      const response = await AddComment({
-        content,
-        postId,
-      });
-      if (response.status) {
-        return { comments: response.comments, postId };
+      const response = await axios.post(ADD_COMMENT, { content, postId });
+      //   AddComment({
+      //   content,
+      //   postId,
+      // });
+      if (response.data.status) {
+        return { comments: response.data.comments, postId };
       }
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
@@ -44,13 +57,14 @@ export const fetchSinglePost = createAsyncThunk(
   "posts/post",
   async ({ postId }, thunkAPI) => {
     try {
-      const response = await GetPost({
-        postId,
-      });
-      if (response.status) {
+      // const response = await GetPost({
+      //   postId,
+      // });
+      const response = await axios.post(SINGLE_POST, { postId });
+      if (response.data.status) {
         return {
-          user: response.post.author,
-          post: response.post,
+          user: response.data.post.author,
+          post: response.data.post,
         };
       }
     } catch (error) {
@@ -62,8 +76,9 @@ export const fetchPostsByUser = createAsyncThunk(
   "/posts/fetchpostsbyuser",
   async ({ getUserId }, thunkAPI) => {
     try {
-      const response = await FetchPostsByUser(getUserId);
-      return response;
+      // const response = await FetchPostsByUser(getUserId);
+      const response = await axios.post(FETCH_POSTS_BY_USER, { getUserId });
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
     }
@@ -130,8 +145,10 @@ export const postSlice = createSlice({
         }
       } else if (type === "refreshComments") {
         const { postId, comments } = action.payload;
-        let post = state?.allPosts?.find((post) => post._id === postId);
-        post.comments = comments;
+        let post = state?.posts?.find((post) => post._id === postId);
+        if (post) {
+          post.comments = comments;
+        }
         if (state.postData) {
           const { post } = state.postData;
           if (post._id === postId) {
@@ -171,10 +188,11 @@ export const postSlice = createSlice({
       state.allPosts = allPosts;
     },
     [loadPosts.rejected]: (state, action) => {
-      action.payload === true
-        ? (state.status = "401 error")
-        : (state.status = "error");
+      // action.payload === true
+      //   ? (state.status = "401 error")
+      //   : (state.status = "error");
       state.error = action.error.message;
+      state.status = "error";
     },
     [addComment.fulfilled]: (state, action) => {
       const { comments, postId } = action.payload;

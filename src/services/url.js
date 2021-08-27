@@ -1,1 +1,10 @@
-export const BASE_URL = "http://localhost:9000/"
+export const BASE_URL = "http://localhost:9000";
+export const GET_USER = `${BASE_URL}/user/getuser`;
+export const LOAD_POSTS = `${BASE_URL}/posts/read`;
+export const ADD_COMMENT = `${BASE_URL}/posts/addcomment`;
+export const SINGLE_POST = `${BASE_URL}/posts/getpost`;
+export const FETCH_POSTS_BY_USER = `${BASE_URL}/posts/fetchpostsbyuser`;
+export const FETCH_PROFILE = `${BASE_URL}/user`;
+export const LOAD_USERS = `${BASE_URL}/user/allusers`;
+export const FOLLOW_USER = `${BASE_URL}/user/follow`;
+export const UNFOLLOW_USER = `${BASE_URL}/user/unfollow`;
