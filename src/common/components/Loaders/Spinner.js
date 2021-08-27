@@ -13,3 +13,12 @@ export function SpinnerLoader() {
     </div>
   );
 }
+
+export function SpinnerLoaderTop() {
+  const classes = useStyles();
+  return (
+    <div className="flex justify-center items-center w-[100vw]  md:w-[60vw] lg:w-[50vw] ">
+      <CircularProgress classes={{ root: classes.custom }} />
+    </div>
+  );
+}
