@@ -64,8 +64,8 @@ export function ShowPost({ post, user }) {
         id={post?._id}
         className={`${postParameters.postStyle}`}
       >
-        <section className="flex justify-between ">
-          <div className="flex justify-between">
+        <section className="flex flex-col gridbreak:flex-row  justify-start  gridbreak:justify-between ">
+          <div className="flex justify-start  gridbreak:justify-between">
             <img
               onClick={(e) => {
                 e.stopPropagation();
@@ -90,8 +90,8 @@ export function ShowPost({ post, user }) {
               <span className="ml-2 ">@{username}</span>
             </div>
           </div>
-          <span className="self-center ml-auto">
-            {moment(post.createdAt).fromNow(true)}
+          <span className="gridbreak:self-center font-serif  gridbreak:ml-auto">
+            {moment(post.createdAt).fromNow()}
           </span>
         </section>
         <p className={postParameters.postText}>{post?.postText}</p>
