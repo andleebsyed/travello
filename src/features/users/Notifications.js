@@ -1,13 +1,23 @@
 import { BiArrowBack } from "react-icons/bi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
 import nodata from "../../assets/images/nodata.svg";
+import { useEffect } from "react";
+import { getUserProfile } from "./userSlice";
 export function Notifications() {
-  const { profile } = useSelector((state) => state.users);
+  const { profile, profileStatus, authSetupStatus } = useSelector(
+    (state) => state.users
+  );
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (profileStatus === "idle" && authSetupStatus === "success") {
+      dispatch(getUserProfile());
+    }
+  });
   if (profile) {
-    console.log(profile.notifications);
+    console.log(profile.notifications, "my notifications");
   }
   return !profile ? (
     <SpinnerLoader />
@@ -31,11 +41,14 @@ export function Notifications() {
         ) : (
           <ul className="m-4">
             {profile?.notifications.map((notification) => (
-              <li className="border border-opacity-20 flex  m-2 p-2">
+              <li
+                key={notification._id}
+                className="border border-opacity-20 flex  m-2 p-2"
+              >
                 <Link to={`/user/${notification._id}`}>
                   <img
                     alt="user avatar"
-                    src={notification?.avatar}
+                    src={notification.avatar}
                     className="rounded-full w-12 h-12 cursor-pointer mr-4"
                   />
                 </Link>

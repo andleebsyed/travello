@@ -2,11 +2,18 @@ import { useEffect } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
+import {
+  SpinnerLoader,
+  SpinnerLoaderTop,
+} from "../../common/components/Loaders/Spinner";
+
 import { ShowPost } from "../posts/showPost";
 import { EditProfileModal } from "./editProfile";
 import { getUserProfile } from "./userSlice";
 import nodata from "../../assets/images/nodata.svg";
+import { loadPosts } from "../posts/postSlice";
+import { LinearProgress } from "@material-ui/core";
+import { ProgressBar } from "../../common/components/Loaders/Progress";
 export function Profile() {
   const { profileStatus, profile, authSetupStatus } = useSelector(
     (state) => state.users
@@ -21,6 +28,11 @@ export function Profile() {
       dispatch(getUserProfile());
     }
   }, [posts?.length, status, dispatch, profileStatus, authSetupStatus]);
+  useEffect(() => {
+    if (status === "idle" && authSetupStatus === "success") {
+      dispatch(loadPosts());
+    }
+  });
   if (posts && posts.length !== 0) {
     posts.forEach((post) =>
       profile.posts.filter((profilePost) =>
@@ -28,7 +40,7 @@ export function Profile() {
       )
     );
   }
-  return profile === null || posts === undefined ? (
+  return profile === null ? (
     <SpinnerLoader />
   ) : (
     <div className="border  border-opacity-20 mr-0 w-screen  md:w-[60vw] lg:w-[50vw] min-h-screen text-white">
@@ -78,10 +90,14 @@ export function Profile() {
             <img src={nodata} alt="empty wall" className="h-[50%] w-[50%]" />
             <p className="text-xl font-bold">Your feed is empty</p>
           </div>
+        ) : filteredPosts.length === 0 ? (
+          <SpinnerLoaderTop />
         ) : (
-          // ) : posts?.length > 0 ? (
-          //   posts.map((post) => <ShowPost post={post} user={profile} />)
-          filteredPosts.map((post) => <ShowPost post={post} user={profile} />)
+          filteredPosts.map((post) => (
+            <div key={post._id}>
+              <ShowPost post={post} user={profile} />
+            </div>
+          ))
         )}
       </section>
     </div>

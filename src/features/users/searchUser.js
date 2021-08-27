@@ -3,7 +3,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
-import { getUser, loadUsers } from "./userSlice";
+import { getUser, loadUsers, getUserProfile } from "./userSlice";
 import { UsersList } from "./UsersList";
 export function Search() {
   const dispatch = useDispatch();
@@ -14,61 +14,70 @@ export function Search() {
     fetchUserProfileStatus,
     authSetupStatus,
   } = useSelector((state) => state.users);
+  console.log({ users });
+  const ourUsers = users;
   const { status } = useSelector((state) => state.posts);
   const navigate = useNavigate();
-  const [matchedUsers, setMatchedUsers] = useState([]);
+  const [matchedUsers, setMatchedUsers] = useState(
+    users?.map((user) =>
+      profile?.following.includes(user._id)
+        ? { ...user, followingStatus: true }
+        : { ...user, followingStatus: false }
+    )
+  );
   const [finalUsers, setFinalUsers] = useState(null);
   useEffect(() => {
     if (usersStatus === "idle" && authSetupStatus === "success") {
       dispatch(loadUsers());
+      dispatch(getUserProfile());
     }
   }, [usersStatus, dispatch, status, authSetupStatus]);
   useEffect(() => {
     if (
       fetchUserProfileStatus === "idle" &&
       profile &&
-      authSetupStatus === "success" &&
-      status !== "idle"
+      authSetupStatus === "success"
     ) {
       dispatch(getUser({ getUserId: profile._id }));
     }
   }, [dispatch, fetchUserProfileStatus, profile, status, authSetupStatus]);
-  useEffect(() => {
-    if (profile && users) {
-      const followersCheckUsers = users.map((user) =>
-        profile.following.includes(user._id)
-          ? { ...user, followingStatus: true }
-          : { ...user, followingStatus: false }
-      );
-      setFinalUsers(followersCheckUsers);
-    }
-  }, [profile, users]);
+  // useEffect(() => {
+  //   if (profile && ourUsers) {
+  //     const followersCheckUsers = ourUsers.map((user) =>
+  //       profile.following.includes(user._id)
+  //         ? { ...user, followingStatus: true }
+  //         : { ...user, followingStatus: false }
+  //     );
+  //     // setFinalUsers(followersCheckUsers);
+  //     setMatchedUsers(followersCheckUsers);
+  //   }
+  // }, [profile, ourUsers]);
 
-  const [searchResultsVisibility, setSearchResultsVisibility] =
-    useState("hidden");
-  const [searchData, setSearchData] = useState(null);
-  let filteredUsers;
+  // const [searchResultsVisibility, setSearchResultsVisibility] =
+  //   useState("block");
+  // const [searchData, setSearchData] = useState(null);
+  // let filteredUsers = finalUsers;
   function textAreaHandler(e) {
-    setSearchData(e.target.value);
-    filteredUsers = finalUsers.filter((user) =>
+    // setSearchData(e.target.value);
+    const filteredUsers = matchedUsers.filter((user) =>
       user.username.includes(e.target.value)
     );
 
     setMatchedUsers(filteredUsers);
   }
-  useEffect(() => {
-    if (searchData && searchData.length > 0) {
-      setSearchResultsVisibility("block");
-    } else if (
-      !searchData ||
-      searchData.length < 1 ||
-      matchedUsers.length < 1
-    ) {
-      setSearchResultsVisibility("hidden");
-    }
-  }, [searchData, matchedUsers.length]);
+  // useEffect(() => {
+  //   if (searchData && searchData.length > 0) {
+  //     setSearchResultsVisibility("block");
+  //   } else if (
+  //     !searchData ||
+  //     searchData.length < 1 ||
+  //     matchedUsers.length < 1
+  //   ) {
+  //     setSearchResultsVisibility("block");
+  //   }
+  // }, [searchData, matchedUsers.length]);
 
-  return users === null ? (
+  return users === null || matchedUsers === null ? (
     <SpinnerLoader />
   ) : (
     <div className="text-white min-h-screen border border-opacity-2">
@@ -88,10 +97,13 @@ export function Search() {
           className="rounded-lg mt-8 bg-grey-outline bg-opacity-10 border border-blue-light h-12 "
           onChange={textAreaHandler}
         />
-        <UsersList
-          users={matchedUsers}
-          searchResultsVisibility={searchResultsVisibility}
-        />
+        {matchedUsers.length !== 0 && profile !== null && (
+          <UsersList
+            users={matchedUsers}
+            // allUsers={finalUsers}
+            // searchResultsVisibility={searchResultsVisibility}
+          />
+        )}
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ export function UserPage() {
     (state) => state.users
   );
   const { status, singleUserPosts } = useSelector((state) => state.posts);
+  const { authSetupStatus } = useSelector((state) => state.users);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { getUserId } = useParams();
@@ -20,16 +21,22 @@ export function UserPage() {
   );
 
   useEffect(() => {
-    if (fetchedUserProfile && status !== "idle") {
-      if (getUserId !== fetchedUserProfile._id) {
-        dispatch(getUser({ getUserId }));
-        dispatch(fetchPostsByUser({ getUserId }));
-      }
-    } else if (fetchUserProfileStatus === "idle") {
+    if (
+      authSetupStatus === "success" &&
+      (fetchUserProfileStatus === "idle" ||
+        getUserId !== fetchedUserProfile?._id)
+    ) {
       dispatch(getUser({ getUserId }));
       dispatch(fetchPostsByUser({ getUserId }));
     }
-  }, [dispatch, fetchUserProfileStatus, fetchedUserProfile, getUserId, status]);
+  }, [
+    dispatch,
+    fetchUserProfileStatus,
+    fetchedUserProfile,
+    getUserId,
+    status,
+    authSetupStatus,
+  ]);
   let orderedPosts;
   if (singleUserPosts) {
     orderedPosts = singleUserPosts
@@ -38,7 +45,8 @@ export function UserPage() {
   }
   return fetchedUserProfile === null ||
     fetchedUserProfile === undefined ||
-    singleUserPosts === null ? (
+    singleUserPosts === null ||
+    getUserId !== fetchedUserProfile?._id ? (
     <SpinnerLoader />
   ) : (
     <div className="border  border-opacity-20 mr-0 w-screen  md:w-[60vw] lg:w-[50vw] min-h-screen text-white">

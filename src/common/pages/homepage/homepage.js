@@ -5,21 +5,41 @@ import { ShowPost } from "../../../features/posts/showPost";
 import { getUserProfile } from "../../../features/users/userSlice";
 import { SpinnerLoader } from "../../components/Loaders/Spinner";
 import nodata from "../../../assets/images/nodata.svg";
+import { loadPosts } from "../../../features/posts/postSlice";
 export function Homepage() {
   const dispatch = useDispatch();
   const { posts, status } = useSelector((state) => state.posts);
   const { profileStatus, profile, authSetupStatus } = useSelector(
     (state) => state.users
   );
+  console.log({ status }, { profileStatus });
+  // useEffect(() => {
+  //   if (
+  //     profileStatus === "idle" &&
+  //     authSetupStatus === "success" &&
+  //     status !== "idle"
+  //   ) {
+  //     console.log("we are fetching the user");
+  //     dispatch(getUserProfile());
+  //   }
+  // }, [status, profileStatus, dispatch, authSetupStatus]);
   useEffect(() => {
-    if (
-      profileStatus === "idle" &&
-      status !== "idle" &&
-      authSetupStatus === "success"
-    ) {
+    if (authSetupStatus === "success" && profileStatus === "idle") {
+      console.log("load user on home firing");
+
       dispatch(getUserProfile());
     }
-  }, [status, profileStatus, dispatch, authSetupStatus]);
+  });
+  useEffect(() => {
+    if (
+      authSetupStatus === "success" &&
+      //  profileStatus === "idle" &&
+      status === "idle"
+    ) {
+      console.log("load posts on home firing");
+      dispatch(loadPosts());
+    }
+  });
   return (
     <div
       className="flex border border-b-0 border-opacity-20 text-white min-h-screen"
@@ -36,9 +56,10 @@ export function Homepage() {
         </div>
 
         <CreatePost />
-        {(status === "loading" && posts === null) ||
-        posts === null ||
-        profile === null ? (
+        {(status === "idle" && posts === null) ||
+        posts.length === 0 ||
+        profile === null ||
+        status === "idle" ? (
           <SpinnerLoader />
         ) : posts.length > 0 ? (
           <ul className="  ">
