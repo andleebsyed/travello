@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -14,15 +14,10 @@ export function UserPage() {
   const { status, singleUserPosts } = useSelector((state) => state.posts);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [userInFollowing, setUserInFollowing] = useState(null);
   const { getUserId } = useParams();
-  useEffect(() => {
-    if (profile !== null) {
-      setUserInFollowing(
-        profile.following.find((following) => following === getUserId)
-      );
-    }
-  }, [getUserId, profile]);
+  const userInFollowing = profile?.following?.find(
+    (following) => following === getUserId
+  );
 
   useEffect(() => {
     if (fetchedUserProfile && status !== "idle") {
@@ -127,7 +122,7 @@ export function UserPage() {
           </div>
         ) : (
           orderedPosts.map((post) => (
-            <ShowPost post={post} user={fetchedUserProfile} />
+            <ShowPost post={post} user={fetchedUserProfile} key={post._id} />
           ))
         )}
       </section>
