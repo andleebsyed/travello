@@ -12,13 +12,8 @@ import {
   setUpAuthHeaderForServiceCalls,
 } from "./services/users/users";
 import { ProgressBar } from "../src/common/components/Loaders/Progress";
-import {
-  authSetup,
-  getUserProfile,
-  removeToken,
-} from "./features/users/userSlice";
+import { authSetup, removeToken } from "./features/users/userSlice";
 import { Profile } from "./features/users/Profile";
-import { loadPosts } from "./features/posts/postSlice";
 import { Search } from "./features/users/searchUser";
 import { UserPage } from "./features/users/userPage";
 import { Followers } from "./features/users/Followers";
@@ -26,10 +21,9 @@ import { Notifications } from "./features/users/Notifications";
 
 function App() {
   const { authorized } = useSelector((state) => state.users);
-  const { progressBarStatus, status } = useSelector((state) => state.posts);
+  const { progressBarStatus } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log({ authorized }, { status });
   function PrivateRoute(props) {
     if (authorized) {
       return <Route {...props} />;
@@ -46,19 +40,11 @@ function App() {
   }
 
   useEffect(() => {
-    console.log("do i always run");
     setupAuthExceptionHandler(dispatch, removeToken, navigate);
     setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
     dispatch(authSetup());
   }, [dispatch, navigate]);
 
-  useEffect(() => {
-    if (status === "idle" && authorized) {
-      dispatch(loadPosts());
-      dispatch(getUserProfile());
-      console.log("in pursuit of data ");
-    }
-  }, [dispatch, status, authorized]);
   return (
     <>
       <div className={authorized ? "flex min-h-screen" : "min-h-screen"}>
