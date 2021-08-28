@@ -39,7 +39,7 @@ export function Search() {
     }
   }, [dispatch, fetchUserProfileStatus, profile, status, authSetupStatus]);
   function textAreaHandler(e) {
-    const filteredUsers = matchedUsers.filter((user) =>
+    const filteredUsers = users.filter((user) =>
       user.username.includes(e.target.value)
     );
 
@@ -49,7 +49,7 @@ export function Search() {
   return users === null || matchedUsers === null ? (
     <SpinnerLoader />
   ) : (
-    <div className="text-white min-h-screen border border-opacity-2">
+    <div className="text-white min-h-screen border border-opacity-2 mb-14 xsm:mb-0">
       <section className="bg-blue  p-2 border-b border-opacity-20  flex">
         <button
           onClick={() => navigate(-1)}
