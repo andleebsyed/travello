@@ -18,7 +18,10 @@ export function Homepage() {
     }
   });
   useEffect(() => {
-    if (authSetupStatus === "success" && status === "idle") {
+    if (
+      authSetupStatus === "success" &&
+      (status === "idle" || status === "error")
+    ) {
       dispatch(loadPosts());
     }
   });
