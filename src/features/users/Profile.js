@@ -32,10 +32,10 @@ export function Profile() {
       dispatch(loadPosts());
     }
   });
-  if (posts && posts.length !== 0) {
+  if (posts !== null) {
     filteredPosts = [];
-    posts.forEach((post) =>
-      post.author._id === profile._id ? filteredPosts?.push(post) : "nothing"
+    posts?.forEach((post) =>
+      post?.author._id === profile._id ? filteredPosts?.push(post) : "nothing"
     );
   }
   const orderedPosts = filteredPosts
@@ -93,9 +93,9 @@ export function Profile() {
           //   <p className="text-xl font-bold">Your feed is empty</p>
           // </div>
           //   )
-          status === "idle" || !orderedPosts ? (
+          status === "idle" || orderedPosts === undefined ? (
             <SpinnerLoaderTop />
-          ) : orderedPosts.length === 0 ? (
+          ) : orderedPosts?.length === 0 ? (
             <div className="flex flex-col justify-center items-center min-h-[50vh] font-bold text-lg">
               <img src={nodata} alt="empty wall" className="h-[50%] w-[50%]" />
               <p className="text-xl font-bold">Your feed is empty</p>
