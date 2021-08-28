@@ -55,6 +55,7 @@ export function Login() {
                   type="text"
                   name="username"
                   className="input-box"
+                  required
                   onChange={(e) =>
                     setUserDetails({ ...userDetails, username: e.target.value })
                   }
@@ -63,6 +64,7 @@ export function Login() {
               <div className="flex flex-col">
                 <label>Password</label>
                 <input
+                  required
                   type="password"
                   name="password"
                   className="input-box"
@@ -80,7 +82,7 @@ export function Login() {
             </form>
             <section className="flex text-blue-light justify-center mt-4">
               <Link to="#">
-                <button>Forgot Password?</button>
+                <button>New Here?</button>
               </Link>
 
               <span className="pl-1 pr-1">.</span>
