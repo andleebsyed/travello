@@ -44,7 +44,7 @@ export function Profile() {
   return profile === null ? (
     <SpinnerLoader />
   ) : (
-    <div className="border  border-opacity-20 mr-0 w-screen  md:w-[60vw] lg:w-[50vw] min-h-screen text-white">
+    <div className="border mb-14 xsm:mb-0  border-opacity-20 mr-0 w-screen  md:w-[60vw] lg:w-[50vw] min-h-screen text-white">
       <section className="bg-blue  p-2  flex">
         <button
           onClick={() => navigate(-1)}

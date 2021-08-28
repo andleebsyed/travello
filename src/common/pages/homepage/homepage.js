@@ -53,7 +53,7 @@ export function Homepage() {
             <p className="text-xl ">Empty</p>
           </div>
         ) : (
-          <ul className="  ">
+          <ul className=" mb-14 xsm:mb-0 ">
             {orderedPosts.map((post) => (
               <li key={post._id}>
                 <ShowPost post={post} user={profile} />
