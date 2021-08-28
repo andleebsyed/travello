@@ -14,8 +14,6 @@ export function Search() {
     fetchUserProfileStatus,
     authSetupStatus,
   } = useSelector((state) => state.users);
-  console.log({ users });
-  const ourUsers = users;
   const { status } = useSelector((state) => state.posts);
   const navigate = useNavigate();
   const [matchedUsers, setMatchedUsers] = useState(
@@ -25,7 +23,6 @@ export function Search() {
         : { ...user, followingStatus: false }
     )
   );
-  const [finalUsers, setFinalUsers] = useState(null);
   useEffect(() => {
     if (usersStatus === "idle" && authSetupStatus === "success") {
       dispatch(loadUsers());
@@ -41,41 +38,13 @@ export function Search() {
       dispatch(getUser({ getUserId: profile._id }));
     }
   }, [dispatch, fetchUserProfileStatus, profile, status, authSetupStatus]);
-  // useEffect(() => {
-  //   if (profile && ourUsers) {
-  //     const followersCheckUsers = ourUsers.map((user) =>
-  //       profile.following.includes(user._id)
-  //         ? { ...user, followingStatus: true }
-  //         : { ...user, followingStatus: false }
-  //     );
-  //     // setFinalUsers(followersCheckUsers);
-  //     setMatchedUsers(followersCheckUsers);
-  //   }
-  // }, [profile, ourUsers]);
-
-  // const [searchResultsVisibility, setSearchResultsVisibility] =
-  //   useState("block");
-  // const [searchData, setSearchData] = useState(null);
-  // let filteredUsers = finalUsers;
   function textAreaHandler(e) {
-    // setSearchData(e.target.value);
     const filteredUsers = matchedUsers.filter((user) =>
       user.username.includes(e.target.value)
     );
 
     setMatchedUsers(filteredUsers);
   }
-  // useEffect(() => {
-  //   if (searchData && searchData.length > 0) {
-  //     setSearchResultsVisibility("block");
-  //   } else if (
-  //     !searchData ||
-  //     searchData.length < 1 ||
-  //     matchedUsers.length < 1
-  //   ) {
-  //     setSearchResultsVisibility("block");
-  //   }
-  // }, [searchData, matchedUsers.length]);
 
   return users === null || matchedUsers === null ? (
     <SpinnerLoader />
@@ -98,11 +67,7 @@ export function Search() {
           onChange={textAreaHandler}
         />
         {matchedUsers.length !== 0 && profile !== null && (
-          <UsersList
-            users={matchedUsers}
-            // allUsers={finalUsers}
-            // searchResultsVisibility={searchResultsVisibility}
-          />
+          <UsersList users={matchedUsers} />
         )}
       </div>
     </div>

@@ -1,16 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import {
-  AddComment,
-  FetchAllPosts,
-  FetchPostsByUser,
-  GetPost,
-} from "../../services/posts/posts";
-import {
   ADD_COMMENT,
-  BASE_URL,
+  CREATE_POST,
   FETCH_POSTS_BY_USER,
-  GET_USER,
   LOAD_POSTS,
   SINGLE_POST,
 } from "../../services/url";
@@ -29,7 +22,6 @@ const initialState = {
 export const loadPosts = createAsyncThunk("user/posts", async (thunkAPI) => {
   try {
     const response = await axios.post(LOAD_POSTS);
-    console.log({ response }, "all posts");
     return response.data;
   } catch (error) {
     console.log("error of posts is caught");
@@ -41,10 +33,6 @@ export const addComment = createAsyncThunk(
   async ({ content, postId }, thunkAPI) => {
     try {
       const response = await axios.post(ADD_COMMENT, { content, postId });
-      //   AddComment({
-      //   content,
-      //   postId,
-      // });
       if (response.data.status) {
         return { comments: response.data.comments, postId };
       }
@@ -57,9 +45,6 @@ export const fetchSinglePost = createAsyncThunk(
   "posts/post",
   async ({ postId }, thunkAPI) => {
     try {
-      // const response = await GetPost({
-      //   postId,
-      // });
       const response = await axios.post(SINGLE_POST, { postId });
       if (response.data.status) {
         return {
@@ -76,8 +61,20 @@ export const fetchPostsByUser = createAsyncThunk(
   "/posts/fetchpostsbyuser",
   async ({ getUserId }, thunkAPI) => {
     try {
-      // const response = await FetchPostsByUser(getUserId);
       const response = await axios.post(FETCH_POSTS_BY_USER, { getUserId });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
+export const addPost = createAsyncThunk(
+  "/post/add",
+  async ({ formData }, thunkAPI) => {
+    try {
+      console.log("request cioming to thunk");
+      const response = await axios.post(CREATE_POST, formData);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
@@ -206,6 +203,18 @@ export const postSlice = createSlice({
     [fetchPostsByUser.fulfilled]: (state, action) => {
       state.singleUserPosts = action.payload.posts;
       state.singleUserPostsStatus = "success";
+    },
+    [addPost.fulfilled]: (state, action) => {
+      console.log(action.payload.savedPost);
+      state.posts = [...state.posts, action.payload.savedPost];
+      if (state.profile) {
+        console.log("inside to update posts of perofile");
+        // state.profile.posts.push(action.payload.savedPost);
+        state.preofile.posts = [
+          ...state.profile.posts,
+          action.payload.savedPost,
+        ];
+      }
     },
   },
 });

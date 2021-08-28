@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { followNewUser, unFollowUser } from "./userSlice";
 import nodata from "../../assets/images/nodata.svg";
-import { useEffect } from "react";
 export function UsersList({ users }) {
   const { profile } = useSelector((state) => state.users);
   const dispatch = useDispatch();
@@ -12,19 +11,6 @@ export function UsersList({ users }) {
   function unfollowUserHandler(userToUnfollowId) {
     dispatch(unFollowUser({ userToUnfollowId }));
   }
-  // useEffect(() => {
-  //   if (profile && users) {
-  //     const followersCheckUsers = users.map((user) =>
-  //       profile.following.includes(user._id)
-  //         ? { ...user, followingStatus: true }
-  //         : { ...user, followingStatus: false }
-  //     );
-  //     setFinalUsers(followersCheckUsers);
-  //     setusers(followersCheckUsers);
-  //   }
-  // }, [profile, users]);
-
-  // const usersToMap = users.length > 0 ? users : allUsers;
   return (
     <div>
       {users.length < 1 ? (

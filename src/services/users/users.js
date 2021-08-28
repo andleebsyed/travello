@@ -28,22 +28,18 @@ export async function UserSignUp({ name, username, password, email }) {
 
 export function setUpAuthHeaderForServiceCalls(token) {
   if (token) {
-    console.log("token attached");
     return (axios.defaults.headers.common["Authorization"] = token);
   } else {
-    console.log("token was not recieved");
     delete axios.defaults.headers.common["Authorization"];
   }
 }
 
 export function setupAuthExceptionHandler(dispatch, removeToken, navigate) {
-  console.log("exception handler");
   const UNAUTHORIZED = 401;
   axios.interceptors.response.use(
     (response) => response,
     (error) => {
       if (error?.response?.status === UNAUTHORIZED) {
-        console.log("unauth in auth");
         localStorage.clear();
         dispatch(removeToken());
         navigate("/login");
@@ -55,7 +51,7 @@ export function setupAuthExceptionHandler(dispatch, removeToken, navigate) {
 
 export async function FetchProfile() {
   try {
-    const response = await axios.post(BASE_URL + "user");
+    const response = await axios.post(BASE_URL + "/user");
     console.log(response.data, " of getProfile");
 
     return response.data;
@@ -72,8 +68,7 @@ export async function UpdateUser({ avatar, coverPic, bio, name }) {
     formData.append("coverPic", coverPic);
     formData.append("bio", bio);
     formData.append("name", name);
-    console.log({ formData });
-    const response = await axios.post(BASE_URL + "user/update", formData, {
+    const response = await axios.post(BASE_URL + "/user/update", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -89,8 +84,7 @@ export async function UpdateUser({ avatar, coverPic, bio, name }) {
 
 export async function LoadUsers() {
   try {
-    const response = await axios.post(BASE_URL + "user/allusers");
-    console.log(response.data, " of all uusers");
+    const response = await axios.post(BASE_URL + "/user/allusers");
     return response.data;
   } catch (error) {
     console.log(
@@ -103,7 +97,9 @@ export async function LoadUsers() {
 
 export async function GetUser({ getUserId }) {
   try {
-    const response = await axios.post(BASE_URL + "user/getuser", { getUserId });
+    const response = await axios.post(BASE_URL + "/user/getuser", {
+      getUserId,
+    });
     return response.data;
   } catch (error) {
     console.log("failed to fetch the user ", error?.message);
@@ -113,7 +109,7 @@ export async function GetUser({ getUserId }) {
 
 export async function FollowNewUser(newUserId) {
   try {
-    const response = await axios.post(BASE_URL + "user/follow", newUserId);
+    const response = await axios.post(BASE_URL + "/user/follow", newUserId);
     return response.data;
   } catch (error) {
     console.log("following user failed ", error?.message);

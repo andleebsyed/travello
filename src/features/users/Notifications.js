@@ -16,9 +16,6 @@ export function Notifications() {
       dispatch(getUserProfile());
     }
   });
-  if (profile) {
-    console.log(profile.notifications, "my notifications");
-  }
   return !profile ? (
     <SpinnerLoader />
   ) : (

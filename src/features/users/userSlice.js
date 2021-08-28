@@ -7,17 +7,9 @@ import {
   LOAD_USERS,
   UNFOLLOW_USER,
 } from "../../services/url";
-import {
-  FetchProfile,
-  FollowNewUser,
-  GetUser,
-  LoadUsers,
-  setUpAuthHeaderForServiceCalls,
-  UnFollowUser,
-} from "../../services/users/users";
+import { setUpAuthHeaderForServiceCalls } from "../../services/users/users";
 export const getUserProfile = createAsyncThunk("user", async (thunkAPI) => {
   try {
-    // const response = await FetchProfile();
     const response = await axios.post(FETCH_PROFILE);
     return response.data;
   } catch (error) {
@@ -26,7 +18,6 @@ export const getUserProfile = createAsyncThunk("user", async (thunkAPI) => {
 });
 export const loadUsers = createAsyncThunk("/users/all", async (thunkAPI) => {
   try {
-    // const response = await LoadUsers();
     const response = await axios.post(LOAD_USERS);
     return response.data;
   } catch (error) {
@@ -39,7 +30,6 @@ export const getUser = createAsyncThunk(
   async ({ getUserId }, thunkAPI) => {
     try {
       setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
-      // const response = await GetUser({ getUserId });
       const response = await axios.post(GET_USER, { getUserId });
       return response.data.user;
     } catch (error) {
@@ -51,9 +41,7 @@ export const followNewUser = createAsyncThunk(
   "user/follow",
   async (newUserId, thunkAPI) => {
     try {
-      // const response = await FollowNewUser(newUserId);
       const response = await axios.post(FOLLOW_USER, newUserId);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
@@ -65,10 +53,7 @@ export const unFollowUser = createAsyncThunk(
   "user/unfollow",
   async (userToUnfollowId, thunkAPI) => {
     try {
-      // const response = await UnFollowUser(userToUnfollowId);
       const response = await axios.post(UNFOLLOW_USER, userToUnfollowId);
-      console.log(response.data);
-
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
@@ -136,7 +121,6 @@ export const userSlice = createSlice({
       state.fetchUserProfileStatus = "success";
     },
     [followNewUser.fulfilled]: (state, action) => {
-      console.log(action.payload.data);
       const { followingUser, followerUser } = action.payload.data;
       state.profile.following = [...state.profile.following, followingUser._id];
       if (state.fetchedUserProfile._id === followingUser._id) {

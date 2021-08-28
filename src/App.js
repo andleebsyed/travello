@@ -11,7 +11,6 @@ import {
   setupAuthExceptionHandler,
   setUpAuthHeaderForServiceCalls,
 } from "./services/users/users";
-import { ProgressBar } from "../src/common/components/Loaders/Progress";
 import { authSetup, removeToken } from "./features/users/userSlice";
 import { Profile } from "./features/users/Profile";
 import { Search } from "./features/users/searchUser";
@@ -22,7 +21,6 @@ import { NotFound } from "./common/components/NotFound";
 
 function App() {
   const { authorized } = useSelector((state) => state.users);
-  const { progressBarStatus } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   function PrivateRoute(props) {
