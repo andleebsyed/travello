@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   ADD_COMMENT,
   CREATE_POST,
+  DELETE_POST,
   FETCH_POSTS_BY_USER,
   LOAD_POSTS,
   SINGLE_POST,
@@ -75,6 +76,17 @@ export const addPost = createAsyncThunk(
     try {
       const response = await axios.post(CREATE_POST, formData);
       return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+export const deletePost = createAsyncThunk(
+  "/post/delete",
+  async ({ postId }, thunkAPI) => {
+    try {
+      const response = await axios.post(DELETE_POST, { postId });
+      return { data: response.data, postId };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
     }
@@ -165,6 +177,9 @@ export const postSlice = createSlice({
       state.status = "idle";
       state.posts = null;
     },
+    resetPosts: (state) => {
+      state = initialState;
+    },
     setSingleUserPosts: (state, action) => {
       state.singleUserPosts = action.payload.fethchedUserProfilePosts;
       state.singleUserPostsStatus = "success";
@@ -184,9 +199,6 @@ export const postSlice = createSlice({
       state.allPosts = allPosts;
     },
     [loadPosts.rejected]: (state, action) => {
-      // action.payload === true
-      //   ? (state.status = "401 error")
-      //   : (state.status = "error");
       state.error = action.error.message;
       state.status = "error";
     },
@@ -206,6 +218,14 @@ export const postSlice = createSlice({
     [addPost.fulfilled]: (state, action) => {
       state.posts = [...state.posts, action.payload.savedPost];
     },
+    [deletePost.fulfilled]: (state, action) => {
+      const { data, postId } = action.payload;
+      const { status } = data;
+      if (status) {
+        const filteredPosts = state.posts.filter((post) => post._id !== postId);
+        state.posts = filteredPosts;
+      }
+    },
   },
 });
 export const {
@@ -219,5 +239,6 @@ export const {
   reactionAdded,
   singlePostFetched,
   setSingleUserPosts,
+  resetPosts,
 } = postSlice.actions;
 export default postSlice.reducer;

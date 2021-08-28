@@ -9,3 +9,4 @@ export const LOAD_USERS = `${BASE_URL}/user/allusers`;
 export const FOLLOW_USER = `${BASE_URL}/user/follow`;
 export const UNFOLLOW_USER = `${BASE_URL}/user/unfollow`;
 export const CREATE_POST = `${BASE_URL}/posts/upload`;
+export const DELETE_POST = `${BASE_URL}/posts/deletepost`;
