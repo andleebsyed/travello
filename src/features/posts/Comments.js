@@ -2,12 +2,15 @@ import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import { AddComment, RemoveComment } from "../../services/posts/posts";
 import { AiFillDelete } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { reactionAdded } from "./postSlice";
 import { useNavigate } from "react-router-dom";
-export function Comments({ commentBoxVisibility, post }) {
+import { getUserProfile } from "../users/userSlice";
+export function Comments({ post }) {
   const postId = post?._id;
-
+  const { profile, profileStatus, authSetupStatus } = useSelector(
+    (state) => state.users
+  );
   const [postButtonData, setPostButtonData] = useState({
     text: "Post",
     color: "bg-blue-xlight",
@@ -15,6 +18,11 @@ export function Comments({ commentBoxVisibility, post }) {
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  useEffect(() => {
+    if (profileStatus === "idle" && authSetupStatus === "success") {
+      dispatch(getUserProfile());
+    }
+  }, [authSetupStatus, dispatch, profileStatus]);
   const [commentContent, setCommentContent] = useState({
     commentText: "",
     color: "bg-blue-xlight",
@@ -118,7 +126,11 @@ export function Comments({ commentBoxVisibility, post }) {
             <li key={comment._id} className="flex mt-4 mb-4">
               <img
                 onClick={() =>
-                  navigate(`/user/${comment.author._id}`, { replace: true })
+                  comment.author._id === profile._id
+                    ? navigate(`/profile`)
+                    : navigate(`/user/${comment.author._id}`, {
+                        replace: true,
+                      })
                 }
                 className="rounded-3xl w-12 h-12 mr-4 cursor-pointer  "
                 alt="avatar"
@@ -133,7 +145,11 @@ export function Comments({ commentBoxVisibility, post }) {
                   <span
                     className="font-bold mr-2 mb-4 hover:underline cursor-pointer"
                     onClick={() =>
-                      navigate(`/user/${comment.author._id}`, { replace: true })
+                      comment.author._id === profile._id
+                        ? navigate(`/profile`)
+                        : navigate(`/user/${comment.author._id}`, {
+                            replace: true,
+                          })
                     }
                   >
                     {comment.author.name}

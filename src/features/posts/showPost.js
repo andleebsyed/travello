@@ -75,9 +75,11 @@ export function ShowPost({ post, user }) {
             <img
               onClick={(e) => {
                 e.stopPropagation();
-                navigate(`/user/${post.author._id}`, {
-                  replace: true,
-                });
+                post.author._id === profile._id
+                  ? navigate(`/profile`)
+                  : navigate(`/user/${post.author._id}`, {
+                      replace: true,
+                    });
               }}
               alt="avatar"
               src={avatar ? avatar : "https://via.placeholder.com/48"}
@@ -88,7 +90,11 @@ export function ShowPost({ post, user }) {
                 className=" ml-2 font-bold hover:underline hover:cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  navigate(`/user/${post.author._id}`, { replace: true });
+                  post.author._id === profile._id
+                    ? navigate(`/profile`)
+                    : navigate(`/user/${post.author._id}`, {
+                        replace: true,
+                      });
                 }}
               >
                 {name}
@@ -155,7 +161,7 @@ export function ShowPost({ post, user }) {
       </div>
       {postId && (
         <div className={`  border-b border-opacity-20  p-2 `}>
-          <Comments post={post} />
+          <Comments post={post} profile={profile} />
         </div>
       )}
     </main>
