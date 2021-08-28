@@ -54,8 +54,9 @@ export function EditProfileModal() {
     const response = await UpdateUser(updateData);
     if (response.status) {
       dispatch(updateProfile({ profile: response.updatedUser }));
+    } else {
+      setSaveButtonText("Save");
     }
-    setSaveButtonText("Save");
   }
   const body = (
     <div className="flex  justify-center min-h-screen p-4">
