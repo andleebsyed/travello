@@ -55,6 +55,7 @@ export function Login() {
                   type="text"
                   name="username"
                   className="input-box"
+                  autoComplete="off"
                   required
                   onChange={(e) =>
                     setUserDetails({ ...userDetails, username: e.target.value })
