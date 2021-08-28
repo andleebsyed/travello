@@ -44,7 +44,8 @@ export function CreatePost() {
     formData.append("postText", postContent.text);
 
     await dispatch(addPost({ formData }));
-
+    formRef.current.reset();
+    setImageData({ ...imageData, showStatus: "hidden" });
     setPostButtonDetails({
       ...postButtonDetails,
       text: "Post",
