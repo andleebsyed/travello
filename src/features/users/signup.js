@@ -75,7 +75,7 @@ export function Signup() {
         <h1 className="font-extrabold text-2xl text-white">
           Create your account
         </h1>
-        <p className={`${error.status} text-blue-light`}>{error.message}</p>
+        <p className={`${error.status} text-red`}>{error.message}</p>
         <form
           className="flex flex-col justify-between  text-blue-light"
           onSubmit={SignupHandler}
