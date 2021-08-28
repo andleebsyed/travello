@@ -40,7 +40,7 @@ export function Search() {
   }, [dispatch, fetchUserProfileStatus, profile, status, authSetupStatus]);
   function textAreaHandler(e) {
     const filteredUsers = users.filter((user) =>
-      user.username.includes(e.target.value)
+      user.username.toLowerCase().includes(e.target.value.toLowerCase())
     );
 
     setMatchedUsers(filteredUsers);
