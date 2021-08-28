@@ -20,7 +20,7 @@ export function Profile() {
   const { posts } = useSelector((state) => state.posts);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  let filteredPosts = [];
+  let filteredPosts = null;
 
   useEffect(() => {
     if (profileStatus === "idle" && authSetupStatus === "success") {
@@ -33,12 +33,13 @@ export function Profile() {
     }
   });
   if (posts && posts.length !== 0) {
+    filteredPosts = [];
     posts.forEach((post) =>
-      post.author._id === profile._id ? filteredPosts.push(post) : "nothing"
+      post.author._id === profile._id ? filteredPosts?.push(post) : "nothing"
     );
   }
   const orderedPosts = filteredPosts
-    .slice()
+    ?.slice()
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   return profile === null ? (
     <SpinnerLoader />
@@ -85,20 +86,28 @@ export function Profile() {
         </div>
       </section>
       <section className="border-t ">
-        {profile?.posts?.length === null ? (
-          <div className="flex flex-col justify-center items-center min-h-[50vh] font-bold text-lg">
-            <img src={nodata} alt="empty wall" className="h-[50%] w-[50%]" />
-            <p className="text-xl font-bold">Your feed is empty</p>
-          </div>
-        ) : orderedPosts.length === 0 ? (
-          <SpinnerLoaderTop />
-        ) : (
-          orderedPosts.map((post) => (
-            <div key={post._id}>
-              <ShowPost post={post} user={profile} />
+        {
+          //   profile?.posts?.length === 0 ? (
+          // <div className="flex flex-col justify-center items-center min-h-[50vh] font-bold text-lg">
+          //   <img src={nodata} alt="empty wall" className="h-[50%] w-[50%]" />
+          //   <p className="text-xl font-bold">Your feed is empty</p>
+          // </div>
+          //   )
+          status === "idle" || !orderedPosts ? (
+            <SpinnerLoaderTop />
+          ) : orderedPosts.length === 0 ? (
+            <div className="flex flex-col justify-center items-center min-h-[50vh] font-bold text-lg">
+              <img src={nodata} alt="empty wall" className="h-[50%] w-[50%]" />
+              <p className="text-xl font-bold">Your feed is empty</p>
             </div>
-          ))
-        )}
+          ) : (
+            orderedPosts.map((post) => (
+              <div key={post._id}>
+                <ShowPost post={post} user={profile} />
+              </div>
+            ))
+          )
+        }
       </section>
     </div>
   );

@@ -10,7 +10,7 @@ import {
 const initialState = {
   status: "idle",
   error: null,
-  posts: [],
+  posts: null,
   username: null,
   name: null,
   postComments: [],
@@ -73,7 +73,6 @@ export const addPost = createAsyncThunk(
   "/post/add",
   async ({ formData }, thunkAPI) => {
     try {
-      console.log("request cioming to thunk");
       const response = await axios.post(CREATE_POST, formData);
       return response.data;
     } catch (error) {
@@ -205,16 +204,7 @@ export const postSlice = createSlice({
       state.singleUserPostsStatus = "success";
     },
     [addPost.fulfilled]: (state, action) => {
-      console.log(action.payload.savedPost);
       state.posts = [...state.posts, action.payload.savedPost];
-      if (state.profile) {
-        console.log("inside to update posts of perofile");
-        // state.profile.posts.push(action.payload.savedPost);
-        state.preofile.posts = [
-          ...state.profile.posts,
-          action.payload.savedPost,
-        ];
-      }
     },
   },
 });

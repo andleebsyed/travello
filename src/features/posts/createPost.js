@@ -42,7 +42,10 @@ export function CreatePost() {
     let formData = new FormData();
     formData.append("postImage", postContent.image);
     formData.append("postText", postContent.text);
+    // if (postButtonDetails.text === "Posting") {
     dispatch(addPost({ formData }));
+    // }
+
     setPostButtonDetails({
       ...postButtonDetails,
       text: "Post",

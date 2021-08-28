@@ -12,7 +12,6 @@ export function Homepage() {
   const { profileStatus, profile, authSetupStatus } = useSelector(
     (state) => state.users
   );
-  console.log(posts.length, { posts });
   useEffect(() => {
     if (authSetupStatus === "success" && profileStatus === "idle") {
       dispatch(getUserProfile());
@@ -23,8 +22,9 @@ export function Homepage() {
       dispatch(loadPosts());
     }
   });
-  const orderedPosts = posts
-    .slice()
+  let orderedPosts = null;
+  orderedPosts = posts
+    ?.slice()
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   return (
     <div
@@ -42,12 +42,14 @@ export function Homepage() {
         </div>
 
         <CreatePost />
-        {(status === "idle" && posts === null) ||
-        posts === null ||
-        profile === null ||
-        status === "idle" ? (
+        {status === "idle" || profile === null || !orderedPosts ? (
           <SpinnerLoader />
-        ) : posts.length > 0 ? (
+        ) : orderedPosts.length === 0 ? (
+          <div className="flex flex-col justify-center items-center min-h-[50vh] ">
+            <img src={nodata} alt="data empty" className="h-[50%] w-[50%]" />
+            <p className="text-xl ">Empty</p>
+          </div>
+        ) : (
           <ul className="  ">
             {orderedPosts.map((post) => (
               <li key={post._id}>
@@ -55,11 +57,6 @@ export function Homepage() {
               </li>
             ))}
           </ul>
-        ) : (
-          <div className="flex flex-col justify-center items-center min-h-[50vh] ">
-            <img src={nodata} alt="data empty" className="h-[50%] w-[50%]" />
-            <p className="text-xl ">Empty</p>
-          </div>
         )}
       </section>
     </div>
