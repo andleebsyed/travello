@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { PostCreation } from "../../services/posts/posts";
-import { loadPosts } from "./postSlice";
+import { addPost } from "./postSlice";
 export function CreatePost() {
   const [postContent, setPostContent] = useState({ text: null, image: null });
   const [postButtonDetails, setPostButtonDetails] = useState({
@@ -15,6 +14,7 @@ export function CreatePost() {
   });
   const dispatch = useDispatch();
   const formRef = useRef();
+
   useEffect(() => {
     if (!postContent.text && imageData.showStatus === "hidden") {
       setPostButtonDetails((postButtonDetails) => ({
@@ -29,7 +29,6 @@ export function CreatePost() {
         color: "bg-blue-light",
       }));
     }
-    // }
   }, [postContent.text, imageData.showStatus]);
 
   async function newPostHandler(e) {
@@ -40,18 +39,16 @@ export function CreatePost() {
       diableStatus: true,
       color: "bg-blue-xlight",
     });
-    const response = await PostCreation(postContent);
+    let formData = new FormData();
+    formData.append("postImage", postContent.image);
+    formData.append("postText", postContent.text);
+    dispatch(addPost({ formData }));
     setPostButtonDetails({
       ...postButtonDetails,
       text: "Post",
       diableStatus: false,
       color: "bg-blue-light",
     });
-    if (response.status) {
-      formRef.current.reset();
-      setImageData({ ...imageData, showStatus: "hidden" });
-      dispatch(loadPosts());
-    }
   }
   function fileUploadHandler(e) {
     if (e.target.files && e.target.files[0]) {
