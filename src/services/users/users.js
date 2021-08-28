@@ -1,4 +1,5 @@
 import axios from "axios";
+import { refreshUserPosts } from "../../features/posts/postSlice";
 import { BASE_URL } from "../url";
 
 export async function UserSignIn(userInfo) {
@@ -42,6 +43,7 @@ export function setupAuthExceptionHandler(dispatch, removeToken, navigate) {
       if (error?.response?.status === UNAUTHORIZED) {
         localStorage.clear();
         dispatch(removeToken());
+        dispatch(refreshUserPosts());
         navigate("/login");
       }
       return Promise.reject(error);
