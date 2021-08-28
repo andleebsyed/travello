@@ -1,4 +1,5 @@
-export const BASE_URL = "http://localhost:9000";
+// export const BASE_URL = "http://localhost:9000";
+export const BASE_URL = "https://nirvana-be.herokuapp.com";
 export const GET_USER = `${BASE_URL}/user/getuser`;
 export const LOAD_POSTS = `${BASE_URL}/posts/read`;
 export const ADD_COMMENT = `${BASE_URL}/posts/addcomment`;
