@@ -8,6 +8,19 @@ import {
   UNFOLLOW_USER,
 } from "../../services/url";
 import { setUpAuthHeaderForServiceCalls } from "../../services/users/users";
+const initialState = {
+  fetchedUserProfile: null,
+  fetchUserProfileStatus: "idle",
+  profileStatus: "idle",
+  profile: null,
+  status: "idle",
+  error: null,
+  usersStatus: "idle",
+  users: null,
+  authorized: localStorage.getItem("token") ? true : false,
+  authSetupStatus: "idle",
+};
+
 export const getUserProfile = createAsyncThunk("user", async (thunkAPI) => {
   try {
     const response = await axios.post(FETCH_PROFILE);
@@ -62,18 +75,7 @@ export const unFollowUser = createAsyncThunk(
 );
 export const userSlice = createSlice({
   name: "userSlice",
-  initialState: {
-    fetchedUserProfile: null,
-    fetchUserProfileStatus: "idle",
-    profileStatus: "idle",
-    profile: null,
-    status: "idle",
-    error: null,
-    usersStatus: "idle",
-    users: null,
-    authorized: localStorage.getItem("token") ? true : false,
-    authSetupStatus: "idle",
-  },
+  initialState,
   reducers: {
     authSetup: (state) => {
       state.authSetupStatus = "success";
@@ -160,6 +162,12 @@ export const userSlice = createSlice({
     },
   },
 });
-export const { userAuth, setToken, removeToken, updateProfile, authSetup } =
-  userSlice.actions;
+export const {
+  userAuth,
+  setToken,
+  removeToken,
+  updateProfile,
+  authSetup,
+  resetuser,
+} = userSlice.actions;
 export default userSlice.reducer;
