@@ -34,8 +34,8 @@ export function SinglePost() {
     }
   }, [dispatch, status, authSetupStatus]);
   return (
-    <div className="w-screen min-h-screen md:w-[60vw] lg:w-[50vw]  border border-opacity-10 xsm:mr-4 text-white">
-      <section className="bg-blue  p-2 border-b border-opacity-20  flex">
+    <div className="w-screen min-h-screen md:w-[60vw] lg:w-[50vw]  border border-opacity-10 xsm:mr-4 text-white mb-16 xsm:mb-0">
+      <section className="bg-blue  p-2 border-b border-opacity-20  flex ">
         <button
           onClick={() => navigate(-1)}
           className="self-center text-blue-light hover:bg-blue-light hover:bg-opacity-20 rounded-full p-2"
