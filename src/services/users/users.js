@@ -130,3 +130,15 @@ export async function UnFollowUser(userToUnfollowId) {
     return error.response.data;
   }
 }
+
+export async function GuestAccess() {
+  try {
+    const response = await axios.post(BASE_URL + "/user/guest");
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log("errror occured while signining in ", error?.message);
+    return error.response.data;
+  }
+}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
+  GuestAccess,
   setUpAuthHeaderForServiceCalls,
   UserSignIn,
 } from "../../services/users/users";
@@ -15,10 +16,15 @@ export function Login() {
   const [buttonText, setButtonText] = useState("Login");
   const dispatch = useDispatch();
   const { progressBarStatus } = useSelector((state) => state.posts);
-  async function LoginHandler(e) {
+  async function LoginHandler({ e, guest }) {
     e.preventDefault();
     setButtonText("Logging you in...");
-    const response = await UserSignIn(userDetails);
+    let response;
+    if (guest) {
+      response = await GuestAccess();
+    } else {
+      response = await UserSignIn(userDetails);
+    }
     setButtonText("Login");
     if (response.status && response.allowUser) {
       setUpAuthHeaderForServiceCalls(response.token);
@@ -46,7 +52,7 @@ export function Login() {
             </h1>
             <form
               className="flex flex-col justify-between  text-blue-light h-80  "
-              onSubmit={LoginHandler}
+              onSubmit={(e) => LoginHandler({ e })}
             >
               <div className="flex flex-col mt-4">
                 <p className={`${error.status}`}>{error.message}</p>
@@ -91,6 +97,12 @@ export function Login() {
                 <button>Sign Up</button>
               </Link>
             </section>
+            <button
+              className=" btn-primary text-white font-bold mt-2"
+              onClick={(e) => LoginHandler({ e, guest: true })}
+            >
+              Login as Guest
+            </button>
           </main>
         </div>
       </div>
