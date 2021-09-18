@@ -11,7 +11,7 @@ import {
   setupAuthExceptionHandler,
   setUpAuthHeaderForServiceCalls,
 } from "./services/users/users";
-import { authSetup, removeToken } from "./features/users/userSlice";
+import { authSetup } from "./features/users/userSlice";
 import { Profile } from "./features/users/Profile";
 import { Search } from "./features/users/searchUser";
 import { UserPage } from "./features/users/userPage";
@@ -39,7 +39,7 @@ function App() {
   }
 
   useEffect(() => {
-    setupAuthExceptionHandler(dispatch, removeToken, navigate);
+    setupAuthExceptionHandler(dispatch, navigate);
     setUpAuthHeaderForServiceCalls(localStorage.getItem("token"));
     dispatch(authSetup());
   }, [dispatch, navigate]);

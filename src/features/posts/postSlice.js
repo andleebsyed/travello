@@ -174,7 +174,6 @@ export const postSlice = createSlice({
       }
     },
     refreshUserPosts: (state) => {
-      state.status = "idle";
       state.posts = null;
     },
     resetPosts: (state) => {

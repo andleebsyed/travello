@@ -31,7 +31,7 @@ export function Profile() {
     if (status === "idle" && authSetupStatus === "success") {
       dispatch(loadPosts());
     }
-  });
+  }, [authSetupStatus, dispatch, status]);
   if (posts !== null) {
     filteredPosts = [];
     posts?.forEach((post) =>

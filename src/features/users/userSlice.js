@@ -85,7 +85,7 @@ export const userSlice = createSlice({
     },
     removeToken: (state) => {
       state.authorized = false;
-      state.profileStatus = "idle";
+      // state.profileStatus = "idle";
       state.profile = null;
     },
     updateProfile: (state, action) => {

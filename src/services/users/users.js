@@ -1,5 +1,6 @@
 import axios from "axios";
 import { refreshUserPosts } from "../../features/posts/postSlice";
+import { removeToken } from "../../features/users/userSlice";
 import { BASE_URL } from "../url";
 
 export async function UserSignIn(userInfo) {
@@ -35,7 +36,7 @@ export function setUpAuthHeaderForServiceCalls(token) {
   }
 }
 
-export function setupAuthExceptionHandler(dispatch, removeToken, navigate) {
+export function setupAuthExceptionHandler(dispatch, navigate) {
   const UNAUTHORIZED = 401;
   axios.interceptors.response.use(
     (response) => response,
