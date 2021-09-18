@@ -51,10 +51,9 @@ export function Signup() {
     if (apiCallStatus) {
       setButtonText("Signing You Up...");
       const response = await UserSignUp(userDetails);
-      setUpAuthHeaderForServiceCalls(response.token);
       setButtonText("Sign Up");
-      dispatch(setToken());
       if (response.status) {
+        dispatch(setToken());
         setUpAuthHeaderForServiceCalls(response.token);
         localStorage.setItem("token", response.token);
         localStorage.setItem("userId", response.userId);
