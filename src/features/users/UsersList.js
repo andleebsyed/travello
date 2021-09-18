@@ -11,7 +11,9 @@ export function UsersList({ users }) {
   function unfollowUserHandler(userToUnfollowId) {
     dispatch(unFollowUser({ userToUnfollowId }));
   }
-  return (
+  return users === null ? (
+    <div>loading...</div>
+  ) : (
     <div>
       {users.length < 1 ? (
         <div className="mt-12 flex justify-center">
@@ -49,18 +51,20 @@ export function UsersList({ users }) {
 
                   <h1>{user?.username}</h1>
                 </section>
-                {profile?.following.includes(user._id)
-                  ? profile?._id !== user._id && (
+                {user && profile && profile?.following.includes(user?._id)
+                  ? profile?._id !== user?._id && (
                       <button
-                        onClick={() => unfollowUserHandler(user._id)}
+                        onClick={() => unfollowUserHandler(user?._id)}
                         className="self-center ml-auto rounded-3xl p-2  pb-3 border border-opacity-20 bg-blue-light text-white "
                       >
                         Following
                       </button>
                     )
-                  : profile._id !== user._id && (
+                  : user &&
+                    profile &&
+                    profile._id !== user?._id && (
                       <button
-                        onClick={() => followUserHandler(user._id)}
+                        onClick={() => followUserHandler(user?._id)}
                         className=" ml-auto rounded-3xl p-2  pb-3 border border-blue-light border-opacity-20 hover:bg-blue-light hover:bg-opacity-20 text-white "
                       >
                         Follow
