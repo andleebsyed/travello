@@ -12,9 +12,6 @@ export function Homepage() {
   const { profileStatus, profile, authSetupStatus } = useSelector(
     (state) => state.users
   );
-  console.log({ status });
-  console.log({ posts });
-  console.log({ profileStatus });
   useEffect(() => {
     if (
       authSetupStatus === "success" &&
@@ -29,7 +26,6 @@ export function Homepage() {
       (status === "idle" || status === "error")
     ) {
       dispatch(loadPosts());
-      // dispatch(getUserProfile());
     }
   });
   let orderedPosts = null;
