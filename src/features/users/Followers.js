@@ -3,20 +3,34 @@ import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { SpinnerLoader } from "../../common/components/Loaders/Spinner";
-import { getUser } from "./userSlice";
+import { loadPosts } from "../posts/postSlice";
+import { getUser, getUserProfile } from "./userSlice";
 import { UsersList } from "./UsersList";
 
 export function Followers() {
   const { getUserId, followersOrFollowing } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { fetchedUserProfile, fetchUserProfileStatus } = useSelector(
-    (state) => state.users
-  );
+  const {
+    fetchedUserProfile,
+    fetchUserProfileStatus,
+    authSetupStatus,
+    profileStatus,
+  } = useSelector((state) => state.users);
   const { status } = useSelector((state) => state.posts);
   const [showFollowers, setShowFollowers] = useState(
     followersOrFollowing === "followers" ? true : false
   );
+  useEffect(() => {
+    if (profileStatus === "idle" && authSetupStatus === "success") {
+      dispatch(getUserProfile());
+    }
+  }, [status, dispatch, profileStatus, authSetupStatus]);
+  useEffect(() => {
+    if (status === "idle" && authSetupStatus === "success") {
+      dispatch(loadPosts());
+    }
+  });
   useEffect(() => {
     if (status !== "idle") {
       if (fetchedUserProfile) {

@@ -45,6 +45,7 @@ export function CreatePost() {
 
     await dispatch(addPost({ formData }));
     formRef.current.reset();
+    setPostContent({ image: null, text: null });
     setImageData({ ...imageData, showStatus: "hidden" });
     setPostButtonDetails({
       ...postButtonDetails,
