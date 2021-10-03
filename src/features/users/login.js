@@ -88,13 +88,10 @@ export function Login() {
               />
             </form>
             <section className="flex text-blue-light justify-center mt-4">
-              <Link to="#">
-                <button>New Here?</button>
-              </Link>
-
+              <p>New Here?</p>
               <span className="pl-1 pr-1">.</span>
               <Link to="/signup">
-                <button>Sign Up</button>
+                <button className="underline">Sign Up</button>
               </Link>
             </section>
             <button
