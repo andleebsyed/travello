@@ -17,11 +17,13 @@ export function Search() {
   const { status } = useSelector((state) => state.posts);
   const navigate = useNavigate();
   const [matchedUsers, setMatchedUsers] = useState(
-    users?.map((user) =>
-      profile?.following.includes(user._id)
-        ? { ...user, followingStatus: true }
-        : { ...user, followingStatus: false }
-    )
+    users
+      ?.slice(0, 5)
+      .map((user) =>
+        profile?.following.includes(user._id)
+          ? { ...user, followingStatus: true }
+          : { ...user, followingStatus: false }
+      )
   );
   useEffect(() => {
     if (usersStatus === "idle" && authSetupStatus === "success") {
@@ -66,8 +68,17 @@ export function Search() {
           className="rounded-lg mt-8 bg-grey-outline bg-opacity-10 border border-blue-light h-12 "
           onChange={textAreaHandler}
         />
+
         {matchedUsers.length !== 0 && profile !== null && (
-          <UsersList users={matchedUsers} />
+          <UsersList
+            users={
+              matchedUsers
+              // matchedUsers.length > 5 ? matchedUsers.slice(0, 5) : matchedUsers
+            }
+          />
+        )}
+        {matchedUsers.length === 0 && (
+          <p className="text-lg text-center mt-12">No user found</p>
         )}
       </div>
     </div>
