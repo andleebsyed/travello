@@ -41,7 +41,9 @@ export function CreatePost() {
     });
     let formData = new FormData();
     formData.append("postImage", postContent.image);
-    formData.append("postText", postContent.text);
+    if (postContent.text) {
+      formData.append("postText", postContent.text);
+    }
 
     await dispatch(addPost({ formData }));
     formRef.current.reset();
