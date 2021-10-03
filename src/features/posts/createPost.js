@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addPost } from "./postSlice";
+import { GiCancel } from "react-icons/gi";
 export function CreatePost() {
   const [postContent, setPostContent] = useState({ text: null, image: null });
   const [postButtonDetails, setPostButtonDetails] = useState({
@@ -14,7 +15,6 @@ export function CreatePost() {
   });
   const dispatch = useDispatch();
   const formRef = useRef();
-
   useEffect(() => {
     if (!postContent.text && imageData.showStatus === "hidden") {
       setPostButtonDetails((postButtonDetails) => ({
@@ -87,6 +87,19 @@ export function CreatePost() {
             setPostContent({ ...postContent, text: e.target.value })
           }
         />
+        <div className={`${imageData.showStatus}`}>
+          <button
+            className="relative top-11 left-1 text-red-600 rounded p-2 "
+            onClick={(e) => {
+              e.preventDefault();
+              setImageData({ url: null, showStatus: "hidden" });
+              setPostContent({ ...postContent, image: null });
+            }}
+          >
+            {" "}
+            <GiCancel size={26} />
+          </button>
+        </div>
         <img
           alt="selected file"
           src={imageData.url}
