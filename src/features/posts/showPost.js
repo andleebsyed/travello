@@ -8,9 +8,11 @@ import { useState } from "react";
 import { Comments } from "./Comments";
 import { deletePost, reactionAdded } from "./postSlice";
 export function ShowPost({ post, user }) {
-  const { name, username, avatar } = post ? post?.author : null;
-  const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
   const { profile } = useSelector((state) => state.users);
+  const { name, username, avatar } =
+    post.author._id === profile._id ? profile : post ? post?.author : null;
+  const [commentBoxVisibility, setCommentBoxVisibility] = useState("hidden");
+
   function commentBoxHandler(event) {
     if (commentBoxVisibility === "hidden") {
       setCommentBoxVisibility("block");

@@ -90,7 +90,11 @@ export const userSlice = createSlice({
     },
     updateProfile: (state, action) => {
       const { profile } = action.payload;
-      state.profile = profile;
+      const { avatar, coverPic, name, bio } = profile;
+      state.profile.name = name;
+      state.profile.bio = bio;
+      state.profile.avatar = avatar;
+      state.profile.coverPic = coverPic;
     },
   },
   extraReducers: {

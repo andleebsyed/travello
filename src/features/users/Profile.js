@@ -16,8 +16,8 @@ export function Profile() {
   const { profileStatus, profile, authSetupStatus } = useSelector(
     (state) => state.users
   );
-  const { status } = useSelector((state) => state.posts);
-  const { posts } = useSelector((state) => state.posts);
+  const { status, posts } = useSelector((state) => state.posts);
+  // const { posts } = useSelector((state) => state.posts);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let filteredPosts = null;
