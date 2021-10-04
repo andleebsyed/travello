@@ -9,13 +9,16 @@ import { loadPosts } from "../../../features/posts/postSlice";
 export function Homepage() {
   const dispatch = useDispatch();
   const { posts, status } = useSelector((state) => state.posts);
+
   const { profileStatus, profile, authSetupStatus } = useSelector(
     (state) => state.users
   );
   useEffect(() => {
     if (
       authSetupStatus === "success" &&
-      (profileStatus === "idle" || profileStatus === "error")
+      (profileStatus === "idle" ||
+        profileStatus === "error" ||
+        profile === null)
     ) {
       dispatch(getUserProfile());
     }
@@ -23,15 +26,18 @@ export function Homepage() {
   useEffect(() => {
     if (
       authSetupStatus === "success" &&
-      (status === "idle" || status === "error")
+      (status === "idle" || status === "error" || posts === null)
     ) {
       dispatch(loadPosts());
     }
   });
-  let orderedPosts = null;
-  orderedPosts = posts
-    ?.slice()
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  let orderedPosts = [];
+  if (posts && posts.length > 0) {
+    orderedPosts = posts
+      ?.slice()
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  }
+
   return (
     <div
       className="flex border border-b-0 border-opacity-20 text-white min-h-screen"
@@ -48,7 +54,7 @@ export function Homepage() {
         </div>
 
         <CreatePost />
-        {status === "idle" || profile === null || !orderedPosts ? (
+        {status === "idle" || profile === null || orderedPosts === null ? (
           <SpinnerLoader />
         ) : orderedPosts.length === 0 ? (
           <div className="flex flex-col justify-center items-center min-h-[50vh] ">

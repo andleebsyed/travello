@@ -17,10 +17,9 @@ export function Profile() {
     (state) => state.users
   );
   const { status, posts } = useSelector((state) => state.posts);
-  // const { posts } = useSelector((state) => state.posts);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  let filteredPosts = null;
+  let filteredPosts = [];
 
   useEffect(() => {
     if (profileStatus === "idle" && authSetupStatus === "success") {
