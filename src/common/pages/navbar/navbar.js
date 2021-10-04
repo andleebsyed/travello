@@ -14,7 +14,7 @@ export function Navbar() {
     localStorage.clear();
     dispatch(removeToken());
     dispatch(refreshUserPosts());
-    navigate("/login");
+    navigate("/");
   }
   return (
     <main className=" fixed  xsm:sticky xsm:self-start w-screen bottom-0 xsm:top-0  xsm:pr-8 gridbreak:pr-0 xsm:w-auto bg-blue text-white  ">
