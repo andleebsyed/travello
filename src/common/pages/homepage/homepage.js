@@ -41,7 +41,7 @@ export function Homepage() {
         <div className="hidden xsm:block sticky top-0 bg-blue h-14 ">
           <a
             href="#home"
-            className="text-white  text-xl  m-4 font-semibold outline-none "
+            className="text-white relative top-3 text-xl  m-4 font-semibold outline-none  "
           >
             Home
           </a>
