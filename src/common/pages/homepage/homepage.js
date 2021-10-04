@@ -37,6 +37,9 @@ export function Homepage() {
       ?.slice()
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   }
+  // else {
+  //   orderedPosts = [];
+  // }
 
   return (
     <div
@@ -54,9 +57,12 @@ export function Homepage() {
         </div>
 
         <CreatePost />
-        {status === "idle" || profile === null || orderedPosts === null ? (
+        {status === "idle" ||
+        profile === null ||
+        orderedPosts === null ||
+        (posts === null && orderedPosts.length === 0) ? (
           <SpinnerLoader />
-        ) : orderedPosts.length === 0 ? (
+        ) : orderedPosts.length === 0 && posts && posts.length === 0 ? (
           <div className="flex flex-col justify-center items-center min-h-[50vh] ">
             <img src={nodata} alt="data empty" className="h-[50%] w-[50%]" />
             <p className="text-xl ">Empty</p>

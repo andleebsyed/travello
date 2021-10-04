@@ -78,11 +78,11 @@ export function CreatePost() {
         onSubmit={newPostHandler}
         autoComplete="off"
       >
-        <input
+        <textarea
           type="text"
           name="newPost"
           placeholder="Write Something..."
-          className="h-16 bg-blue outline-none"
+          className="h-16 bg-blue outline-none break-words scrollbar"
           onChange={(e) =>
             setPostContent({ ...postContent, text: e.target.value })
           }
@@ -105,7 +105,7 @@ export function CreatePost() {
           src={imageData.url}
           className={`${imageData.showStatus}  self-center mb-4`}
         />
-        <section className="flex justify-between">
+        <section className="flex justify-between mt-4">
           <label
             className="w-6 h-6 self-center cursor-pointer"
             title="Add Image"

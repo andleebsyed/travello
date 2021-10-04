@@ -26,3 +26,15 @@
     @apply text-center  flex justify-center  w-[50%] h-[53px] hover:bg-grey-outline hover:bg-opacity-20 cursor-pointer;
   }
 }
+
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #9ca3af;
+  border-radius: 20px;
+}

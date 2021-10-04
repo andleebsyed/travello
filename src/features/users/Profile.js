@@ -85,28 +85,20 @@ export function Profile() {
         </div>
       </section>
       <section className="border-t ">
-        {
-          //   profile?.posts?.length === 0 ? (
-          // <div className="flex flex-col justify-center items-center min-h-[50vh] font-bold text-lg">
-          //   <img src={nodata} alt="empty wall" className="h-[50%] w-[50%]" />
-          //   <p className="text-xl font-bold">Your feed is empty</p>
-          // </div>
-          //   )
-          status === "idle" || orderedPosts === undefined ? (
-            <SpinnerLoaderTop />
-          ) : orderedPosts?.length === 0 ? (
-            <div className="flex flex-col justify-center items-center min-h-[50vh] font-bold text-lg">
-              <img src={nodata} alt="empty wall" className="h-[50%] w-[50%]" />
-              <p className="text-xl font-bold">Your feed is empty</p>
+        {status === "idle" || orderedPosts === undefined || posts === null ? (
+          <SpinnerLoaderTop />
+        ) : orderedPosts?.length === 0 ? (
+          <div className="flex flex-col justify-center items-center min-h-[50vh] font-bold text-lg">
+            <img src={nodata} alt="empty wall" className="h-[50%] w-[50%]" />
+            <p className="text-xl font-bold">Your feed is empty</p>
+          </div>
+        ) : (
+          orderedPosts.map((post) => (
+            <div key={post._id}>
+              <ShowPost post={post} user={profile} />
             </div>
-          ) : (
-            orderedPosts.map((post) => (
-              <div key={post._id}>
-                <ShowPost post={post} user={profile} />
-              </div>
-            ))
-          )
-        }
+          ))
+        )}
       </section>
     </div>
   );

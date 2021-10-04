@@ -51,7 +51,7 @@ export function Search() {
   return users === null || matchedUsers === null ? (
     <SpinnerLoader />
   ) : (
-    <div className="text-white min-h-screen border border-opacity-2 mb-14 xsm:mb-0">
+    <div className="text-white min-h-screen border  border-opacity-20 mb-14 xsm:mb-0">
       <section className="bg-blue  p-2 border-b border-opacity-20  flex">
         <button
           onClick={() => navigate(-1)}

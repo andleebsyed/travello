@@ -108,9 +108,14 @@ export function ShowPost({ post, user }) {
             {moment(post.createdAt).fromNow()}
           </span>
         </section>
-        <p className={`${postParameters.postText} mt-2 mb-2 pl-1`}>
+        <p
+          className={`${postParameters.postText} mt-2 mb-2 pl-1 max-w-full break-words whitespace-pre-wrap  `}
+        >
           {post?.postText}
         </p>
+        {/* {!postParameters.singlePost &&  (
+          <span className="underline">more...</span>
+        )} */}
         {post?.postImage ? (
           <img alt="posted update by user pl-1" src={post.postImage} />
         ) : (
