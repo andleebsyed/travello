@@ -136,7 +136,7 @@ export function CreatePost() {
             type="submit"
             disabled={postButtonDetails.diableStatus}
             value={postButtonDetails.text}
-            className={` ${postButtonDetails.color} rounded-2xl cursor-pointer w-16 p-2   `}
+            className={` ${postButtonDetails.color} rounded-2xl cursor-pointer w-16 p-1   `}
           />
         </section>
       </form>

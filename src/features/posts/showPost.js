@@ -121,14 +121,14 @@ export function ShowPost({ post, user }) {
         ) : (
           ""
         )}
-        <div className="flex justify-start ">
+        <div className="flex justify-start mt-2 ">
           <div className="flex mr-32 text-grey-outline hover:text-red ">
             {!post.likedBy.includes(localStorage.getItem("userId")) ? (
               <button
                 onClick={(event) =>
                   likeButtonHandler({ event, postId: post._id, action: "inc" })
                 }
-                className="   hover:bg-red hover:bg-opacity-30 rounded-full p-1"
+                className="   hover:bg-red hover:bg-opacity-20 rounded-full p-2"
               >
                 <AiOutlineHeart size={24} />
               </button>
@@ -137,7 +137,7 @@ export function ShowPost({ post, user }) {
                 onClick={(event) =>
                   likeButtonHandler({ event, postId: post._id, action: "dec" })
                 }
-                className=" text-red hover:bg-red hover:bg-opacity-30 rounded-full p-1"
+                className=" text-red hover:bg-red hover:bg-opacity-20 rounded-full p-2"
               >
                 <AiFillHeart size={24} />
               </button>
@@ -147,9 +147,9 @@ export function ShowPost({ post, user }) {
           <section className="flex text-grey-outline hover:text-blue-light">
             <button
               onClick={commentBoxHandler}
-              className="  hover:bg-blue-light hover:bg-opacity-30 rounded-full p-1"
+              className="  hover:bg-blue-light hover:bg-opacity-10 rounded-full p-2 "
             >
-              <GoComment size={22} />
+              <GoComment size={22} className="mt-1" />
             </button>
             <span className="ml-2 self-center p-1">{post.comments.length}</span>
           </section>
