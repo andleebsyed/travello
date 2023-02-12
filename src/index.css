@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .input-box {
+    @apply h-12 rounded bg-blue text-white border outline-none focus:ring-2 focus:ring-blue-light focus:ring-opacity-100 focus:border-blue-light;
+  }
+  .btn-primary {
+    @apply bg-blue-light p-4 rounded-2xl cursor-pointer;
+  }
+  .navbar-list-item {
+    @apply xsm:flex xsm:rounded-full hover:bg-blue-xlight m-4   gridbreak:p-0  xsm:justify-center xsm:items-center gridbreak:justify-start gridbreak:items-start;
+  }
+  .active-class {
+    @apply bg-blue text-blue-light  xsm:bg-blue-xlight flex   xsm:rounded-full  xsm:justify-center xsm:items-center gridbreak:justify-start gridbreak:items-start;
+  }
+  .navbar-list-item-name {
+    @apply hidden gridbreak:block self-center hover:text-blue-light font-bold text-xl p-4;
+  }
+  .navlink-inactive-class {
+    @apply xsm:flex xsm:p-4 gridbreak:p-0 gridbreak:pl-4 hover:text-blue-light;
+  }
+
+  .followToggle {
+    @apply text-center  flex justify-center  w-[50%] h-[53px] hover:bg-grey-outline hover:bg-opacity-20 cursor-pointer;
+  }
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #9ca3af;
+  border-radius: 20px;
+}
